@@ -390,7 +390,8 @@
         setActiveService(srv);
       };
 
-      const openEmbeddedForm = (srv) => {
+      // Updated: Removed iframe embedding and direct redirect to link in NEW TAB
+      const openEmbeddedForm = async (srv) => {
         if (!currentUser) {
           setPendingApplyService(srv);
           setAuthMode('login');
@@ -400,14 +401,12 @@
           return;
         }
 
-        window.history.pushState({ view: 'iframe' }, '');
-        setIframeUrl(srv.applyLink);
-
-        // Store session so minimizing/switching gallery preserves form state
-        try {
-          sessionStorage.setItem('sgs_active_iframe', srv.applyLink);
-          sessionStorage.setItem('sgs_active_service', JSON.stringify(srv));
-        } catch(e) {}
+        if (srv && srv.applyLink) {
+          await recordApplication(srv);
+          window.open(srv.applyLink, '_blank', 'noopener,noreferrer');
+        } else {
+          showNotification('Apply link uplabdh nahi hai!');
+        }
       };
 
       const recordApplication = async (srv) => {
@@ -430,12 +429,7 @@
 
         const appRef = window.firebaseRef(window.firebaseDb, 'applications/' + appId);
         await window.firebaseSet(appRef, applicationData);
-        showNotification('Aapka Google Form Status Record Ho Gaya!');
-
-        sessionStorage.removeItem('sgs_active_iframe');
-        sessionStorage.removeItem('sgs_active_service');
-        setIframeUrl(null);
-        setActiveModalPage('userStatus');
+        showNotification('Aapka Form Redirect Kiya Gaya Aur Status Record Ho Gaya!');
       };
 
       const handleBackToServices = () => {
@@ -480,7 +474,7 @@
           }
         } catch (err) {
           setUserAuthError('Login Failed: ' + err.message);
-        } finally {
+        } font-medium {
           setIsUserAuthLoading(false);
         }
       };
@@ -1288,6 +1282,78 @@
                     </div>
                   )}
 
+                  {/* ADMIN USER DETAIL VIEW (FIXED & COMPLETED) */}
+                  {activeModalPage === 'adminUserDetail' && isAdmin && (() => {
+                    const targetUser = allUsersList.find(u => u.uid === selectedInspectorUid) || {};
+                    const targetUserApps = applications.filter(app => app.uid === selectedInspectorUid);
+                    
+                    return (
+                      <div className="space-y-4">
+                        <button
+                          onClick={() => setActiveModalPage('allUsers')}
+                          className="inline-flex items-center gap-1 text-xs font-bold text-blue-700 hover:underline mb-2"
+                        >
+                          <Icons.ArrowLeft /> Sabhi Registered Users List Par Wapas
+                        </button>
+
+                        <div className="bg-indigo-50 border border-indigo-200 p-3.5 rounded-xl space-y-1">
+                          <p className="text-[10px] text-slate-500 font-bold uppercase">User Details Summary:</p>
+                          <p className="text-sm font-black text-indigo-900">User ID: {targetUser.customId || 'SGS-USER'}</p>
+                          <p className="text-xs text-slate-700 font-semibold">Email: {targetUser.email || 'N/A'}</p>
+                          <p className="text-[11px] text-slate-500">Firebase UID: {selectedInspectorUid}</p>
+                        </div>
+
+                        <h4 className="font-extrabold text-slate-900 text-sm border-b pb-1">
+                          Is User Ke Sabhi Applied Forms ({targetUserApps.length}):
+                        </h4>
+
+                        {targetUserApps.length === 0 ? (
+                          <p className="text-xs text-slate-400 italic text-center py-6">Is user ne abhi tak koi form apply nahi kiya hai.</p>
+                        ) : (
+                          <div className="space-y-3">
+                            {targetUserApps.map(appItem => {
+                              const currentStatus = getComputedStatus(appItem);
+                              return (
+                                <div key={appItem.id} className="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
+                                  <div>
+                                    <h5 className="font-bold text-slate-900 text-xs">{appItem.serviceTitle}</h5>
+                                    <p className="text-[10px] text-slate-500 mt-0.5">Category: {appItem.category || 'N/A'}</p>
+                                    <p className="text-[10px] text-slate-400">Date: {appItem.applyDate}</p>
+                                  </div>
+
+                                  <div className="flex items-center justify-between border-t pt-2 mt-2">
+                                    <span className="text-xs font-bold text-slate-700">Status: <strong className="text-blue-700">{currentStatus}</strong></span>
+                                    
+                                    <div className="flex items-center gap-1.5">
+                                      <button
+                                        onClick={() => handleUpdateAppStatus(appItem.id, 'Pending')}
+                                        className={`px-2 py-1 rounded text-[10px] font-bold ${currentStatus === 'Pending' ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-700'}`}
+                                      >
+                                        Pending
+                                      </button>
+                                      <button
+                                        onClick={() => handleUpdateAppStatus(appItem.id, 'In Process')}
+                                        className={`px-2 py-1 rounded text-[10px] font-bold ${currentStatus === 'In Process' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-700'}`}
+                                      >
+                                        In Process
+                                      </button>
+                                      <button
+                                        onClick={() => handleUpdateAppStatus(appItem.id, 'Approved')}
+                                        className={`px-2 py-1 rounded text-[10px] font-bold ${currentStatus === 'Approved' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700'}`}
+                                      >
+                                        Approve
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
+
                   {/* PRIVACY POLICY - FULL DETAILED ENGLISH */}
                   {activeModalPage === 'privacy' && (
                     <div className="space-y-4 text-slate-700">
@@ -1302,7 +1368,7 @@
                           <li><strong>Personal Identification:</strong> Full Name, Father's Name, Mother's Name, Date of Birth, and Gender.</li>
                           <li><strong>Contact & Login Details:</strong> Active Mobile Number, Email Address, and System-Generated Unique User ID (e.g., SGS-XXXXXX).</li>
                           <li><strong>Residential & Address Details:</strong> Village/Town, Gram Panchayat / Ward No., Block, Sub-Division, District, State, and Pincode.</li>
-                          <li><strong>Government Identification Documents:</strong> Aadhaar Card details, Passport Size Photographs, Caste/Income/Residence Proofs.</li>
+                          <li><strong>Government Identification Documents:</strong> Identification proofs, Passport Size Photographs, Caste/Income/Residence Proofs.</li>
                           <li><strong>Educational & Academic Credentials:</strong> 10th & 12th Marksheets, Roll Numbers, Registration Cards, Admit Cards, and School/College Details.</li>
                           <li><strong>Banking & Financial Details:</strong> Bank Account Number, IFSC Code, and Bank Branch details (strictly required for Bihar Post Matric Scholarship disbursal and online fee payments).</li>
                         </ul>
@@ -1330,7 +1396,7 @@
 
                       <div>
                         <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Applicant Responsibility & Authenticity:</h4>
-                        <p>The applicant is solely responsible for providing genuine, truthful, and accurate information (Name, Father's Name, Mother's Name, Date of Birth, Aadhaar, Educational Marksheets, Address, etc.). SGS ONLINE SERVICE is not liable for form rejections or legal consequences caused by fake, wrong, or inaccurate details submitted by the applicant.</p>
+                        <p>The applicant is solely responsible for providing genuine, truthful, and accurate information (Name, Father's Name, Mother's Name, Date of Birth, Educational Marksheets, Address, etc.). SGS ONLINE SERVICE is not liable for form rejections or legal consequences caused by fake, wrong, or inaccurate details submitted by the applicant.</p>
                       </div>
 
                       <div>
