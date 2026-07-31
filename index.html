@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8" />5
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SGS ONLINE SERVICE - Government & College Online Seva Portal</title>
   
@@ -67,7 +67,7 @@
     // Base64 Encrypted Admin UID (a7XKd7o4aGNqgGiIO9GRe5Q1Rhn1)
     window.ENCODED_ADMIN_UID = btoa("a7XKd7o4aGNqgGiIO9GRe5Q1Rhn1");
 
-    // Initialize Firebase
+    // Initialize Firebase Global Bindings
     const app = initializeApp(firebaseConfig);
     window.firebaseAuth = getAuth(app);
     window.googleProvider = new GoogleAuthProvider();
@@ -186,7 +186,7 @@
       const [agreeTerms, setAgreeTerms] = useState(false);
       const [userAuthError, setUserAuthError] = useState('');
       const [isUserAuthLoading, setIsUserAuthLoading] = useState(false);
-      const [pendingApplyService, setPendingApplyService] = useState(null); // Service queued for apply after login
+      const [pendingApplyService, setPendingApplyService] = useState(null); 
 
       // Admin Auth State
       const [isAdmin, setIsAdmin] = useState(false);
@@ -214,7 +214,7 @@
       // Notice & Category Modals State
       const [showNoticeModal, setShowNoticeModal] = useState(false);
       const [noticeText, setNoticeText] = useState('');
-      const [editingNoticeId, setEditingNoticeId] = useState(null); // Added notice edit ID state
+      const [editingNoticeId, setEditingNoticeId] = useState(null); // Notice Edit ID State
 
       const [showCategoryModal, setShowCategoryModal] = useState(false);
       const [newCatName, setNewCatName] = useState('');
@@ -306,7 +306,6 @@
               if (snapshot.exists() && snapshot.val().customId) {
                 cid = snapshot.val().customId;
               } else {
-                // Generate permanent 6-digit random ID e.g. SGS-839201
                 const randNum = Math.floor(100000 + Math.random() * 900000);
                 cid = 'SGS-' + randNum;
                 await window.firebaseSet(userRef, {
@@ -333,7 +332,6 @@
         }
       }, []);
 
-      // 📱 Mobile Hardware Back Button Handling
       useEffect(() => {
         const handlePopState = () => {
           if (iframeUrl) {
@@ -369,9 +367,7 @@
           return;
         }
 
-        // Record application in Realtime DB
         recordApplication(srv);
-
         window.history.pushState({ view: 'iframe' }, '');
         setIframeUrl(srv.applyLink);
       };
@@ -391,7 +387,7 @@
           category: srv.category,
           applyTimestamp: now,
           applyDate: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
-          status: 'Pending' // Initial Status
+          status: 'Pending'
         };
 
         const appRef = window.firebaseRef(window.firebaseDb, 'applications/' + appId);
@@ -414,7 +410,6 @@
         }
       };
 
-      // User Auth Handlers
       const handleUserEmailLogin = async (e) => {
         e.preventDefault();
         if (!agreeTerms) {
@@ -524,7 +519,6 @@
         showNotification('Successfully Logged Out!');
       };
 
-      // Admin Email Login Handler
       const handleAdminEmailLogin = async (e) => {
         e.preventDefault();
         setAuthError('');
@@ -559,7 +553,6 @@
         showNotification('Admin Logged Out');
       };
 
-      // Service Add / Edit
       const openServiceModal = (service = null, e = null) => {
         if (e) e.stopPropagation();
 
@@ -635,7 +628,6 @@
         }
       };
 
-      // Notice Add / Edit / Delete
       const openNoticeModal = (notice = null) => {
         if (notice) {
           setEditingNoticeId(notice.id);
@@ -652,14 +644,12 @@
         if (!noticeText.trim()) return;
 
         if (editingNoticeId) {
-          // Edit existing notice in Realtime DB
           const noticeRef = window.firebaseRef(window.firebaseDb, 'notices/' + editingNoticeId);
           window.firebaseUpdate(noticeRef, {
             text: noticeText
           });
           showNotification('Notice Updated Realtime!');
         } else {
-          // Add new notice to Realtime DB
           const newId = 'n-' + Date.now();
           const noticeData = {
             id: newId,
@@ -685,7 +675,6 @@
         }
       };
 
-      // Category Add / Delete
       const handleAddCategory = (e) => {
         e.preventDefault();
         const trimmed = newCatName.trim();
@@ -710,14 +699,12 @@
         }
       };
 
-      // Admin Application Status Update
       const handleUpdateAppStatus = (appId, newStatus) => {
         const appRef = window.firebaseRef(window.firebaseDb, 'applications/' + appId);
         window.firebaseUpdate(appRef, { status: newStatus });
         showNotification(`Application Status Updated to ${newStatus}`);
       };
 
-      // Compute display status with 5-minute auto "In Process" logic
       const getComputedStatus = (appItem) => {
         if (appItem.status === 'Approved') return 'Approved';
         if (appItem.status === 'Rejected') return 'Rejected';
@@ -737,7 +724,6 @@
         return matchCat && matchSearch;
       });
 
-      // Filter Applications for current logged-in user
       const userApplications = applications.filter(app => currentUser && app.uid === currentUser.uid);
 
       return (
@@ -750,11 +736,10 @@
             </div>
           )}
 
-          {/* 🔒 STICKY HEADER - LOCKED ON TOP DURING SCROLL */}
+          {}
           <header className="sticky top-0 z-40 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 text-white shadow-sm border-b border-indigo-500/30 py-1.5 sm:py-2 px-3 transition-all">
             <div className="max-w-6xl mx-auto flex items-center justify-between gap-2">
               
-              {/* Left Side Drawer Menu Button */}
               <button 
                 onClick={() => setShowDrawer(true)}
                 className="p-1.5 text-white hover:bg-white/10 rounded-lg transition-colors focus:outline-none flex items-center gap-1"
@@ -763,7 +748,6 @@
                 <Icons.Menu />
               </button>
 
-              {/* Title Centered */}
               <div 
                 onClick={() => {
                   if (iframeUrl || activeService) {
@@ -781,7 +765,6 @@
                 </p>
               </div>
 
-              {/* Right Side User Login / Profile Status */}
               <div className="flex items-center gap-1.5">
                 {currentUser ? (
                   <button
@@ -804,16 +787,14 @@
             </div>
           </header>
 
-          {/* 🗂️ SIDE DRAWER MENU */}
+          {}
           {showDrawer && (
             <div className="fixed inset-0 z-50 flex">
-              {/* Backdrop */}
               <div 
                 className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity"
                 onClick={() => setShowDrawer(false)}
               ></div>
 
-              {/* Drawer Container */}
               <div className="relative w-72 max-w-[80%] bg-white h-full shadow-2xl flex flex-col justify-between z-10 p-5 overflow-y-auto">
                 <div>
                   <div className="flex items-center justify-between pb-4 border-b border-slate-200 mb-4">
@@ -826,7 +807,6 @@
                     </button>
                   </div>
 
-                  {/* Logged in User ID Banner */}
                   {currentUser && (
                     <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-3 mb-4">
                       <p className="text-[10px] text-slate-500 font-bold uppercase">Aapka Permanent User ID:</p>
@@ -844,7 +824,6 @@
                       <Icons.ChevronRight />
                     </button>
 
-                    {/* STATUS BUTTON FOR USERS */}
                     <button
                       onClick={() => { 
                         if (!currentUser) {
@@ -866,7 +845,6 @@
                       <Icons.ChevronRight />
                     </button>
 
-                    {/* ADMIN APPLICATION STATUS BUTTON */}
                     {isAdmin && (
                       <button
                         onClick={() => { setActiveModalPage('adminStatus'); setShowDrawer(false); }}
@@ -923,7 +901,7 @@
             </div>
           )}
 
-          {/* 🔐 USER LOGIN / SIGNUP / FORGOT PASSWORD MODAL */}
+          {}
           {showUserAuthModal && (
             <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4">
               <div className="bg-white rounded-xl max-w-sm w-full p-5 shadow-xl border border-slate-200">
@@ -964,7 +942,6 @@
                     </div>
                   )}
 
-                  {/* Terms & Privacy Policy Checkbox (Mandatory) */}
                   <div className="flex items-start gap-2 pt-1">
                     <input
                       type="checkbox"
@@ -990,7 +967,6 @@
                   </button>
                 </form>
 
-                {/* Google Sign-In */}
                 <div className="mt-3 pt-3 border-t border-slate-200 text-center space-y-2">
                   <button
                     onClick={handleUserGoogleLogin}
@@ -1022,7 +998,7 @@
             </div>
           )}
 
-          {/* 📄 PRIVACY POLICY, TERMS & STATUS MODAL DISPLAY */}
+          {}
           {activeModalPage && (
             <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 overflow-y-auto">
               <div className="bg-white rounded-xl max-w-2xl w-full p-6 shadow-2xl my-8 border border-slate-200 max-h-[85vh] flex flex-col">
@@ -1044,7 +1020,6 @@
 
                 <div className="flex-1 overflow-y-auto text-xs text-slate-700 space-y-4 pr-1 leading-relaxed">
                   
-                  {/* USER STATUS VIEW */}
                   {activeModalPage === 'userStatus' && (
                     <div className="space-y-3">
                       <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg flex items-center justify-between">
@@ -1094,7 +1069,6 @@
                     </div>
                   )}
 
-                  {/* ADMIN ALL APPLICATION STATUS VIEW */}
                   {activeModalPage === 'adminStatus' && isAdmin && (
                     <div className="space-y-3">
                       <p className="text-xs text-slate-500">Sabhi users dwara apply kiye gaye forms ki list aur unka status yahan se update karein:</p>
@@ -1117,7 +1091,6 @@
                                     <p className="text-[10px] text-slate-400">Date: {appItem.applyDate}</p>
                                   </div>
 
-                                  {/* Button to inspect full user details */}
                                   <button
                                     onClick={() => { setSelectedInspectorUid(appItem.uid); setActiveModalPage('adminUserDetail'); }}
                                     className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[10px] px-2.5 py-1 rounded transition-colors"
@@ -1158,7 +1131,6 @@
                     </div>
                   )}
 
-                  {/* ADMIN USER INSPECTOR DETAIL VIEW */}
                   {activeModalPage === 'adminUserDetail' && isAdmin && (
                     <div className="space-y-4">
                       {(() => {
@@ -1194,7 +1166,6 @@
                     </div>
                   )}
 
-                  {/* PRIVACY POLICY CONTENT */}
                   {activeModalPage === 'privacy' && (
                     <>
                       <div className="bg-blue-50 border-l-4 border-blue-600 p-3 rounded">
@@ -1218,7 +1189,6 @@
                     </>
                   )}
 
-                  {/* TERMS CONTENT */}
                   {activeModalPage === 'terms' && (
                     <>
                       <h4 className="font-bold text-slate-900 text-sm">1. Service Application Terms:</h4>
@@ -1242,7 +1212,7 @@
             </div>
           )}
 
-          {/* 🚀 VIEW 1: IN-APP FORM PLAYER (Google Form Website Ke Andar Khulega) */}
+          {}
           {iframeUrl ? (
             <main className="flex-1 flex flex-col bg-slate-900">
               <div className="bg-slate-800 text-white px-4 py-2.5 border-b border-slate-700 flex items-center justify-between sticky top-[45px] z-30">
@@ -1276,7 +1246,6 @@
             </main>
           ) : 
 
-          /* VIEW 2: FULL PAGE DETAIL VIEW */
           activeService ? (
             <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6">
               <button
@@ -1346,10 +1315,10 @@
             </main>
           ) : 
 
-          /* VIEW 3: MAIN HOME PORTAL */
           (
             <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
               
+              {/* Notice Board */}
               <div className="bg-white border border-slate-300 rounded-xl p-4 shadow-2xs">
                 <div className="flex items-center justify-between border-b border-slate-200 pb-2 mb-3">
                   <div className="flex items-center gap-2">
@@ -1380,7 +1349,6 @@
                           {n.date && <span className="text-[11px] text-slate-400 font-normal">{n.date}</span>}
                           {isAdmin && (
                             <div className="flex items-center gap-1">
-                              {/* Edit Notice Button */}
                               <button 
                                 onClick={() => openNoticeModal(n)} 
                                 className="text-blue-600 hover:bg-blue-50 p-1 rounded transition-colors"
@@ -1388,7 +1356,6 @@
                               >
                                 <Icons.Edit3 />
                               </button>
-                              {/* Delete Notice Button */}
                               <button 
                                 onClick={() => handleDeleteNotice(n.id)} 
                                 className="text-rose-600 hover:bg-rose-50 p-1 rounded transition-colors"
@@ -1533,7 +1500,7 @@
             </main>
           )}
 
-          {/* FIREBASE EMAIL/PASSWORD ADMIN LOGIN MODAL */}
+          {}
           {showLoginModal && (
             <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4">
               <div className="bg-white rounded-xl max-w-sm w-full p-5 shadow-xl border border-slate-200">
@@ -1583,7 +1550,7 @@
             </div>
           )}
 
-          {/* ADD / EDIT SERVICE MODAL */}
+          {}
           {showServiceFormModal && (
             <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-3 overflow-y-auto">
               <div className="bg-white rounded-xl max-w-xl w-full p-5 shadow-2xl my-6 border border-slate-200">
@@ -1709,7 +1676,7 @@
             </div>
           )}
 
-          {/* ADD / EDIT NOTICE MODAL */}
+          {}
           {showNoticeModal && (
             <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-3">
               <div className="bg-white rounded-xl max-w-sm w-full p-5 shadow-xl border border-slate-200">
@@ -1742,7 +1709,7 @@
             </div>
           )}
 
-          {/* ADD CATEGORY MODAL */}
+          {}
           {showCategoryModal && (
             <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-3">
               <div className="bg-white rounded-xl max-w-sm w-full p-5 shadow-xl border border-slate-200">
@@ -1769,7 +1736,7 @@
             </div>
           )}
 
-          {/* FOOTER WITH SUBTLE ADMIN LOGIN LINK & LEGAL LINKS */}
+          {}
           <footer className="bg-slate-900 text-slate-400 text-xs py-6 mt-12 border-t border-slate-800">
             <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
               <div>
@@ -1815,7 +1782,6 @@
       );
     }
 
-    // Render React App
     ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
 </body>
