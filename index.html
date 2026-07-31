@@ -11,6 +11,9 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <style>
+    html, body {
+      overscroll-behavior-y: contain;
+    }
     .scrollbar-none::-webkit-scrollbar {
       display: none;
     }
@@ -107,7 +110,7 @@
 
     window.dispatchEvent(new Event('firebase-ready'));
 
-    // Fast 1.2 second Loader dismiss
+    // Fast 1.2 second Loader dismiss on every page load/refresh
     setTimeout(() => {
       const splash = document.getElementById('splash-screen');
       if (splash) {
@@ -220,6 +223,33 @@
         setToastMsg(msg);
         setTimeout(() => setToastMsg(''), 3000);
       };
+
+      // Restore active form filling session if browser reloaded/minimized
+      useEffect(() => {
+        try {
+          const savedIframe = sessionStorage.getItem('sgs_active_iframe');
+          const savedService = sessionStorage.getItem('sgs_active_service');
+          if (savedIframe && savedService) {
+            setIframeUrl(savedIframe);
+            setActiveService(JSON.parse(savedService));
+          }
+        } catch (e) {
+          console.error("Session restore error:", e);
+        }
+      }, []);
+
+      // Refresh / Unload Lock Warning while form filling
+      useEffect(() => {
+        if (iframeUrl) {
+          const handleBeforeUnload = (e) => {
+            e.preventDefault();
+            e.returnValue = 'Aapka form chal raha hai. Kya aap sach me website chorna chahte hain?';
+            return e.returnValue;
+          };
+          window.addEventListener('beforeunload', handleBeforeUnload);
+          return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+        }
+      }, [iframeUrl]);
 
       useEffect(() => {
         const setupFirebaseSync = () => {
@@ -337,6 +367,8 @@
         const handlePopState = () => {
           if (iframeUrl) {
             setIframeUrl(null);
+            sessionStorage.removeItem('sgs_active_iframe');
+            sessionStorage.removeItem('sgs_active_service');
           } else if (activeService) {
             setActiveService(null);
           } else if (activeModalPage) {
@@ -370,6 +402,12 @@
 
         window.history.pushState({ view: 'iframe' }, '');
         setIframeUrl(srv.applyLink);
+
+        // Store session so minimizing/switching gallery preserves form state
+        try {
+          sessionStorage.setItem('sgs_active_iframe', srv.applyLink);
+          sessionStorage.setItem('sgs_active_service', JSON.stringify(srv));
+        } catch(e) {}
       };
 
       const recordApplication = async (srv) => {
@@ -393,6 +431,9 @@
         const appRef = window.firebaseRef(window.firebaseDb, 'applications/' + appId);
         await window.firebaseSet(appRef, applicationData);
         showNotification('Aapka Google Form Status Record Ho Gaya!');
+
+        sessionStorage.removeItem('sgs_active_iframe');
+        sessionStorage.removeItem('sgs_active_service');
         setIframeUrl(null);
         setActiveModalPage('userStatus');
       };
@@ -406,6 +447,8 @@
       };
 
       const handleBackFromIframe = () => {
+        sessionStorage.removeItem('sgs_active_iframe');
+        sessionStorage.removeItem('sgs_active_service');
         if (window.history.state?.view) {
           window.history.back();
         } else {
@@ -778,6 +821,8 @@
                   setActiveService(null);
                   setSelectedCat('Sabhi Services');
                   setSearchQuery('');
+                  sessionStorage.removeItem('sgs_active_iframe');
+                  sessionStorage.removeItem('sgs_active_service');
                 }}
                 className="cursor-pointer text-center group flex-1"
               >
@@ -841,7 +886,14 @@
 
                   <nav className="space-y-2 text-xs font-bold text-slate-700">
                     <button
-                      onClick={() => { setSelectedCat('Sabhi Services'); setActiveService(null); setIframeUrl(null); setShowDrawer(false); }}
+                      onClick={() => { 
+                        setSelectedCat('Sabhi Services'); 
+                        setActiveService(null); 
+                        setIframeUrl(null); 
+                        setShowDrawer(false); 
+                        sessionStorage.removeItem('sgs_active_iframe');
+                        sessionStorage.removeItem('sgs_active_service');
+                      }}
                       className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-blue-700"
                     >
                       <span>🏠 Home Page / Sabhi Services</span>
