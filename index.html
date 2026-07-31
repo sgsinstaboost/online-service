@@ -133,7 +133,7 @@
       ExternalLink: () => <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>,
       CheckCircle2: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
       FileText: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>,
-      Lock: () => <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>,
+      Lock: () => <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>,
       X: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>,
       ChevronRight: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>,
       Bell: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>,
@@ -175,14 +175,6 @@
       // User Auth State
       const [currentUser, setCurrentUser] = useState(null);
       const [customUserId, setCustomUserId] = useState('');
-      const [showUserAuthModal, setShowUserAuthModal] = useState(false);
-      const [authMode, setAuthMode] = useState('login');
-      const [userEmail, setUserEmail] = useState('');
-      const [userPassword, setUserPassword] = useState('');
-      const [agreeTerms, setAgreeTerms] = useState(false);
-      const [userAuthError, setUserAuthError] = useState('');
-      const [isUserAuthLoading, setIsUserAuthLoading] = useState(false);
-      const [pendingApplyService, setPendingApplyService] = useState(null);
 
       // Admin Auth State
       const [isAdmin, setIsAdmin] = useState(false);
@@ -375,32 +367,21 @@
             setActiveModalPage(null);
           } else if (showDrawer) {
             setShowDrawer(false);
-          } else if (showUserAuthModal) {
-            setShowUserAuthModal(false);
           } else if (showLoginModal) {
             setShowLoginModal(false);
           }
         };
         window.addEventListener('popstate', handlePopState);
         return () => window.removeEventListener('popstate', handlePopState);
-      }, [iframeUrl, activeService, activeModalPage, showDrawer, showUserAuthModal, showLoginModal]);
+      }, [iframeUrl, activeService, activeModalPage, showDrawer, showLoginModal]);
 
       const openServiceDetail = (srv) => {
         window.history.pushState({ view: 'detail' }, '');
         setActiveService(srv);
       };
 
-      // Redirect directly in new tab and record status
+      // Direct open embedded form without login restriction
       const openEmbeddedForm = async (srv) => {
-        if (!currentUser) {
-          setPendingApplyService(srv);
-          setAuthMode('login');
-          setUserAuthError('');
-          setShowUserAuthModal(true);
-          showNotification('Form bharne ke liye pehle Login / Signup karein!');
-          return;
-        }
-
         if (srv && srv.applyLink) {
           await recordApplication(srv);
           window.open(srv.applyLink, '_blank', 'noopener,noreferrer');
@@ -410,15 +391,15 @@
       };
 
       const recordApplication = async (srv) => {
-        if (!currentUser || !srv) return;
+        if (!srv) return;
         const now = Date.now();
         const appId = 'app-' + now;
 
         const applicationData = {
           id: appId,
-          uid: currentUser.uid,
-          userEmail: currentUser.email || 'Anonymous User',
-          customId: customUserId || 'SGS-USER',
+          uid: currentUser ? currentUser.uid : 'guest',
+          userEmail: currentUser ? (currentUser.email || 'Anonymous User') : 'Guest User',
+          customId: customUserId || 'SGS-GUEST',
           serviceId: srv.id,
           serviceTitle: srv.title,
           category: srv.category,
@@ -448,112 +429,6 @@
         } else {
           setIframeUrl(null);
         }
-      };
-
-      // User Auth Handlers (FIXED FINALLY BLOCK)
-      const handleUserEmailLogin = async (e) => {
-        e.preventDefault();
-        if (!agreeTerms) {
-          setUserAuthError('Kripya Terms & Privacy Policy Checkbox ko tick karein!');
-          return;
-        }
-        setUserAuthError('');
-        setIsUserAuthLoading(true);
-
-        try {
-          await window.firebaseSignIn(window.firebaseAuth, userEmail, userPassword);
-          setShowUserAuthModal(false);
-          setUserEmail('');
-          setUserPassword('');
-          showNotification('User Login Successful!');
-
-          if (pendingApplyService) {
-            const srv = pendingApplyService;
-            setPendingApplyService(null);
-            openEmbeddedForm(srv);
-          }
-        } catch (err) {
-          setUserAuthError('Login Failed: ' + err.message);
-        } finally {
-          setIsUserAuthLoading(false);
-        }
-      };
-
-      const handleUserSignUp = async (e) => {
-        e.preventDefault();
-        if (!agreeTerms) {
-          setUserAuthError('Kripya Terms & Privacy Policy Checkbox ko tick karein!');
-          return;
-        }
-        setUserAuthError('');
-        setIsUserAuthLoading(true);
-
-        try {
-          await window.firebaseSignUp(window.firebaseAuth, userEmail, userPassword);
-          setShowUserAuthModal(false);
-          setUserEmail('');
-          setUserPassword('');
-          showNotification('Account Successfully Created!');
-
-          if (pendingApplyService) {
-            const srv = pendingApplyService;
-            setPendingApplyService(null);
-            openEmbeddedForm(srv);
-          }
-        } catch (err) {
-          setUserAuthError('Signup Failed: ' + err.message);
-        } finally {
-          setIsUserAuthLoading(false);
-        }
-      };
-
-      const handleUserGoogleLogin = async () => {
-        if (!agreeTerms) {
-          setUserAuthError('Kripya Terms & Privacy Policy Checkbox ko tick karein!');
-          return;
-        }
-        setUserAuthError('');
-        setIsUserAuthLoading(true);
-
-        try {
-          await window.firebaseGooglePopup();
-          setShowUserAuthModal(false);
-          showNotification('Google Sign-In Successful!');
-
-          if (pendingApplyService) {
-            const srv = pendingApplyService;
-            setPendingApplyService(null);
-            openEmbeddedForm(srv);
-          }
-        } catch (err) {
-          console.error("Google Auth Error:", err);
-          setUserAuthError('Google Sign-In Failed: ' + err.message);
-        } finally {
-          setIsUserAuthLoading(false);
-        }
-      };
-
-      const handleForgotPassword = async (e) => {
-        e.preventDefault();
-        if (!userEmail) {
-          setUserAuthError('Kripya apni registered email id likhein!');
-          return;
-        }
-        setIsUserAuthLoading(true);
-        try {
-          await window.firebaseResetPassword(window.firebaseAuth, userEmail);
-          showNotification('Password Reset Email Bhej Diya Gaya Hai!');
-          setAuthMode('login');
-        } catch (err) {
-          setUserAuthError('Reset Failed: ' + err.message);
-        } finally {
-          setIsUserAuthLoading(false);
-        }
-      };
-
-      const handleUserLogout = async () => {
-        await window.firebaseSignOut(window.firebaseAuth);
-        showNotification('Successfully Logged Out!');
       };
 
       const handleShareWebsite = () => {
@@ -828,25 +703,6 @@
                 </p>
               </div>
 
-              <div className="flex items-center gap-1.5">
-                {currentUser ? (
-                  <button
-                    onClick={() => setShowDrawer(true)}
-                    className="bg-amber-400 text-slate-900 font-extrabold text-[10px] sm:text-xs px-2.5 py-1 rounded-lg flex items-center gap-1 hover:bg-amber-300 transition-colors"
-                  >
-                    <Icons.User />
-                    <span className="hidden sm:inline">{customUserId || 'Profile'}</span>
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => { setAuthMode('login'); setUserAuthError(''); setShowUserAuthModal(true); }}
-                    className="bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-extrabold text-[11px] sm:text-xs px-3 py-1 rounded-lg shadow transition-colors flex items-center gap-1"
-                  >
-                    <Icons.User />
-                    <span>Login</span>
-                  </button>
-                )}
-              </div>
             </div>
           </header>
 
@@ -870,14 +726,6 @@
                     </button>
                   </div>
 
-                  {currentUser && (
-                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-3 mb-4">
-                      <p className="text-[10px] text-slate-500 font-bold uppercase">Aapka Permanent User ID:</p>
-                      <p className="text-base font-black text-blue-800 tracking-wider">{customUserId || 'SGS-USER'}</p>
-                      <p className="text-[11px] text-slate-600 truncate mt-0.5">{currentUser.email}</p>
-                    </div>
-                  )}
-
                   <nav className="space-y-2 text-xs font-bold text-slate-700">
                     <button
                       onClick={() => { 
@@ -894,36 +742,10 @@
                       <Icons.ChevronRight />
                     </button>
 
-                    <div className="pt-2 border-t border-slate-100">
-                      <p className="text-[10px] text-slate-400 uppercase font-black px-2 mb-1">Service Categories:</p>
-                      {categories.filter(c => c !== 'Sabhi Services').map(cat => (
-                        <button
-                          key={cat}
-                          onClick={() => {
-                            setSelectedCat(cat);
-                            setActiveService(null);
-                            setIframeUrl(null);
-                            setShowDrawer(false);
-                          }}
-                          className={`w-full text-left p-2 rounded-lg hover:bg-blue-50 flex items-center justify-between ${selectedCat === cat ? 'bg-blue-100 text-blue-800 font-extrabold' : 'text-slate-700'}`}
-                        >
-                          <span>📁 {cat}</span>
-                          <Icons.ChevronRight />
-                        </button>
-                      ))}
-                    </div>
-
                     <button
                       onClick={() => { 
-                        if (!currentUser) {
-                          setShowDrawer(false);
-                          setAuthMode('login');
-                          setShowUserAuthModal(true);
-                          showNotification('Status dekhne ke liye pehle Login karein!');
-                        } else {
-                          setActiveModalPage('userStatus'); 
-                          setShowDrawer(false); 
-                        }
+                        setActiveModalPage('userStatus'); 
+                        setShowDrawer(false); 
                       }}
                       className="w-full text-left p-2.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-800 flex items-center justify-between border border-blue-200 mt-2"
                     >
@@ -991,122 +813,9 @@
                 </div>
 
                 <div className="pt-4 border-t border-slate-200 space-y-2">
-                  {currentUser ? (
-                    <button
-                      onClick={() => { handleUserLogout(); setShowDrawer(false); }}
-                      className="w-full bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold p-2.5 rounded-lg text-xs transition-colors text-center"
-                    >
-                      Log Out Account
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => { setAuthMode('login'); setShowUserAuthModal(true); setShowDrawer(false); }}
-                      className="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold p-2.5 rounded-lg text-xs transition-colors text-center"
-                    >
-                      Login / Create Account
-                    </button>
-                  )}
-
                   <p className="text-[10px] text-slate-400 text-center">
                     Firebase Realtime Database Secured
                   </p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* USER AUTH MODAL */}
-          {showUserAuthModal && (
-            <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4">
-              <div className="bg-white rounded-xl max-w-sm w-full p-5 shadow-xl border border-slate-200">
-                <div className="flex items-center justify-between mb-3 border-b pb-2">
-                  <h3 className="font-bold text-slate-900 text-base">
-                    {authMode === 'login' ? 'User Login Karein' : authMode === 'signup' ? 'Naya Account Banayein' : 'Reset Password'}
-                  </h3>
-                  <button onClick={() => setShowUserAuthModal(false)} className="text-slate-400 hover:text-slate-600">
-                    <Icons.X />
-                  </button>
-                </div>
-
-                <form onSubmit={authMode === 'login' ? handleUserEmailLogin : authMode === 'signup' ? handleUserSignUp : handleForgotPassword} className="space-y-3">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">Email ID:</label>
-                    <input
-                      type="email"
-                      value={userEmail}
-                      onChange={(e) => setUserEmail(e.target.value)}
-                      placeholder="Apni email id daalein..."
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-medium focus:outline-none focus:border-blue-600"
-                      required
-                      autoFocus
-                    />
-                  </div>
-
-                  {authMode !== 'forgot' && (
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">Password:</label>
-                      <input
-                        type="password"
-                        value={userPassword}
-                        onChange={(e) => setUserPassword(e.target.value)}
-                        placeholder="Password daalein..."
-                        className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-medium focus:outline-none focus:border-blue-600"
-                        required
-                      />
-                    </div>
-                  )}
-
-                  <div className="flex items-start gap-2 pt-1">
-                    <input
-                      type="checkbox"
-                      id="agreeTermsChk"
-                      checked={agreeTerms}
-                      onChange={(e) => setAgreeTerms(e.target.checked)}
-                      className="mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-                      required
-                    />
-                    <label htmlFor="agreeTermsChk" className="text-[11px] text-slate-600 leading-tight">
-                      Main <button type="button" onClick={() => setActiveModalPage('terms')} className="text-blue-700 font-bold underline">Terms & Conditions</button> aur <button type="button" onClick={() => setActiveModalPage('privacy')} className="text-blue-700 font-bold underline">Privacy Policy</button> se sahmat hu.
-                    </label>
-                  </div>
-
-                  {userAuthError && <p className="text-xs text-rose-600 font-bold mt-1">{userAuthError}</p>}
-
-                  <button
-                    type="submit"
-                    disabled={isUserAuthLoading}
-                    className="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2.5 rounded-lg transition-colors flex items-center justify-center gap-1 shadow-xs"
-                  >
-                    {isUserAuthLoading ? 'Processing...' : authMode === 'login' ? 'Login Karein' : authMode === 'signup' ? 'Account Banayein (Sign Up)' : 'Reset Email Bhejein'}
-                  </button>
-                </form>
-
-                <div className="mt-3 pt-3 border-t border-slate-200 text-center space-y-2">
-                  <button
-                    onClick={handleUserGoogleLogin}
-                    disabled={isUserAuthLoading}
-                    className="w-full bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold text-xs py-2 rounded-lg transition-colors flex items-center justify-center gap-2"
-                  >
-                    <Icons.Google />
-                    <span>Google Account Se Login Karein</span>
-                  </button>
-
-                  <div className="flex items-center justify-between text-[11px] text-slate-500 font-bold pt-1">
-                    {authMode === 'login' ? (
-                      <>
-                        <button onClick={() => { setAuthMode('signup'); setUserAuthError(''); }} className="text-blue-700 hover:underline">
-                          Naya Account Banayein?
-                        </button>
-                        <button onClick={() => { setAuthMode('forgot'); setUserAuthError(''); }} className="text-slate-500 hover:underline">
-                          Password Bhool Gaye?
-                        </button>
-                      </>
-                    ) : (
-                      <button onClick={() => { setAuthMode('login'); setUserAuthError(''); }} className="text-blue-700 hover:underline mx-auto">
-                        Pahle Se Account Hai? Login Karein
-                      </button>
-                    )}
-                  </div>
                 </div>
               </div>
             </div>
@@ -1136,14 +845,6 @@
                   
                   {activeModalPage === 'userStatus' && (
                     <div className="space-y-3">
-                      <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg flex items-center justify-between">
-                        <div>
-                          <p className="text-[10px] text-slate-500 font-bold uppercase">Permanent User ID:</p>
-                          <p className="text-base font-black text-blue-800">{customUserId || 'SGS-USER'}</p>
-                        </div>
-                        <p className="text-xs text-slate-600 font-semibold">{currentUser?.email}</p>
-                      </div>
-
                       <h4 className="font-bold text-slate-900 text-sm border-b pb-1">Applied Forms List:</h4>
 
                       {userApplications.length === 0 ? (
