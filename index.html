@@ -60,14 +60,14 @@
       appId: "1:12707331594:web:9f5645f5744b7fc7af29f3".trim()
     };
 
-    // Base64 Encrypted Config Object
+    // Encrypted Config Object
     const encodedConfig = btoa(JSON.stringify(rawConfigObj));
     const firebaseConfig = JSON.parse(atob(encodedConfig));
 
-    // Base64 Encrypted Admin UID (a7XKd7o4aGNqgGiIO9GRe5Q1Rhn1)
+    // Admin UID (a7XKd7o4aGNqgGiIO9GRe5Q1Rhn1)
     window.ENCODED_ADMIN_UID = btoa("a7XKd7o4aGNqgGiIO9GRe5Q1Rhn1");
 
-    // Initialize Firebase Global Bindings
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     window.firebaseAuth = getAuth(app);
     window.googleProvider = new GoogleAuthProvider();
@@ -166,6 +166,7 @@
       const [notices, setNotices] = useState(SEED_NOTICES);
       const [categories, setCategories] = useState(SEED_CATEGORIES);
       const [applications, setApplications] = useState([]);
+      const [allUsersList, setAllUsersList] = useState([]);
 
       const [selectedCat, setSelectedCat] = useState('Sabhi Services');
       const [searchQuery, setSearchQuery] = useState('');
@@ -174,7 +175,7 @@
 
       // Drawer & Modal Views
       const [showDrawer, setShowDrawer] = useState(false);
-      const [activeModalPage, setActiveModalPage] = useState(null); // 'privacy' | 'terms' | 'userStatus' | 'adminStatus' | 'adminUserDetail'
+      const [activeModalPage, setActiveModalPage] = useState(null); // 'privacy' | 'terms' | 'userStatus' | 'adminStatus' | 'adminUserDetail' | 'allUsers'
 
       // User Auth State
       const [currentUser, setCurrentUser] = useState(null);
@@ -186,7 +187,7 @@
       const [agreeTerms, setAgreeTerms] = useState(false);
       const [userAuthError, setUserAuthError] = useState('');
       const [isUserAuthLoading, setIsUserAuthLoading] = useState(false);
-      const [pendingApplyService, setPendingApplyService] = useState(null); 
+      const [pendingApplyService, setPendingApplyService] = useState(null);
 
       // Admin Auth State
       const [isAdmin, setIsAdmin] = useState(false);
@@ -213,8 +214,8 @@
 
       // Notice & Category Modals State
       const [showNoticeModal, setShowNoticeModal] = useState(false);
+      const [editingNoticeId, setEditingNoticeId] = useState(null);
       const [noticeText, setNoticeText] = useState('');
-      const [editingNoticeId, setEditingNoticeId] = useState(null); // Notice Edit ID State
 
       const [showCategoryModal, setShowCategoryModal] = useState(false);
       const [newCatName, setNewCatName] = useState('');
@@ -288,34 +289,49 @@
             }
           });
 
-          // Auth State Listener
+          // Sync All Users (For Admin Inspection)
+          const usersRef = window.firebaseRef(window.firebaseDb, 'users');
+          window.firebaseOnValue(usersRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+              const list = Object.keys(data).map(key => ({ uid: key, ...data[key] }));
+              setAllUsersList(list);
+            } else {
+              setAllUsersList([]);
+            }
+          });
+
+          // Auth State Listener & Custom User ID Generation Fix
           window.firebaseOnAuth(window.firebaseAuth, async (user) => {
             if (user) {
               setCurrentUser(user);
               const adminUid = atob(window.ENCODED_ADMIN_UID);
-              if (user.uid === adminUid) {
-                setIsAdmin(true);
-              } else {
-                setIsAdmin(false);
-              }
+              setIsAdmin(user.uid === adminUid);
 
-              // Fetch or Create Permanent Custom User ID
-              const userRef = window.firebaseRef(window.firebaseDb, 'users/' + user.uid);
-              const snapshot = await window.firebaseGet(userRef);
-              let cid = '';
-              if (snapshot.exists() && snapshot.val().customId) {
-                cid = snapshot.val().customId;
-              } else {
-                const randNum = Math.floor(100000 + Math.random() * 900000);
-                cid = 'SGS-' + randNum;
-                await window.firebaseSet(userRef, {
-                  uid: user.uid,
-                  email: user.email || 'Anonymous',
-                  customId: cid,
-                  createdAt: new Date().toISOString()
-                });
+              // Guaranteed Generation of Permanent Custom User ID (SGS-XXXXXX)
+              try {
+                const userRef = window.firebaseRef(window.firebaseDb, 'users/' + user.uid);
+                const snapshot = await window.firebaseGet(userRef);
+                let cid = '';
+                if (snapshot.exists() && snapshot.val() && snapshot.val().customId) {
+                  cid = snapshot.val().customId;
+                } else {
+                  // Generate unique random 6-digit number
+                  const randNum = Math.floor(100000 + Math.random() * 900000);
+                  cid = 'SGS-' + randNum;
+                  await window.firebaseSet(userRef, {
+                    uid: user.uid,
+                    email: user.email || 'Anonymous User',
+                    customId: cid,
+                    createdAt: new Date().toISOString()
+                  });
+                }
+                setCustomUserId(cid);
+              } catch (err) {
+                console.error("Custom User ID generation error:", err);
+                const fallbackId = 'SGS-' + Math.floor(100000 + Math.random() * 900000);
+                setCustomUserId(fallbackId);
               }
-              setCustomUserId(cid);
 
             } else {
               setCurrentUser(null);
@@ -332,6 +348,7 @@
         }
       }, []);
 
+      // Hardware Back Button Handling
       useEffect(() => {
         const handlePopState = () => {
           if (iframeUrl) {
@@ -367,7 +384,9 @@
           return;
         }
 
+        // Record application in Realtime DB
         recordApplication(srv);
+
         window.history.pushState({ view: 'iframe' }, '');
         setIframeUrl(srv.applyLink);
       };
@@ -380,7 +399,7 @@
         const applicationData = {
           id: appId,
           uid: currentUser.uid,
-          userEmail: currentUser.email || 'Anonymous',
+          userEmail: currentUser.email || 'Anonymous User',
           customId: customUserId || 'SGS-USER',
           serviceId: srv.id,
           serviceTitle: srv.title,
@@ -410,6 +429,7 @@
         }
       };
 
+      // User Auth Handlers
       const handleUserEmailLogin = async (e) => {
         e.preventDefault();
         if (!agreeTerms) {
@@ -486,8 +506,8 @@
           }
         } catch (err) {
           console.error("Google Auth Error:", err);
-          if (err.code === 'auth/api-key-not-valid' || err.message.includes('api-key-not-valid')) {
-            setUserAuthError('Firebase API Key Error: Firebase Console (Authentication -> Sign-in method) me Google Sign-In enable karein.');
+          if (err.code === 'auth/api-key-not-valid' || err.message?.includes('api-key-not-valid')) {
+            setUserAuthError('Firebase API Key Error: Authentication -> Sign-in method me Google Sign-In enable karein.');
           } else {
             setUserAuthError('Google Sign-In Failed: ' + err.message);
           }
@@ -519,6 +539,7 @@
         showNotification('Successfully Logged Out!');
       };
 
+      // Admin Email Login Handler
       const handleAdminEmailLogin = async (e) => {
         e.preventDefault();
         setAuthError('');
@@ -553,6 +574,7 @@
         showNotification('Admin Logged Out');
       };
 
+      // Service Add / Edit
       const openServiceModal = (service = null, e = null) => {
         if (e) e.stopPropagation();
 
@@ -628,6 +650,7 @@
         }
       };
 
+      // Notice Add / Edit / Delete
       const openNoticeModal = (notice = null) => {
         if (notice) {
           setEditingNoticeId(notice.id);
@@ -646,7 +669,8 @@
         if (editingNoticeId) {
           const noticeRef = window.firebaseRef(window.firebaseDb, 'notices/' + editingNoticeId);
           window.firebaseUpdate(noticeRef, {
-            text: noticeText
+            text: noticeText,
+            date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
           });
           showNotification('Notice Updated Realtime!');
         } else {
@@ -656,7 +680,6 @@
             text: noticeText,
             date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
           };
-
           const noticeRef = window.firebaseRef(window.firebaseDb, 'notices/' + newId);
           window.firebaseSet(noticeRef, noticeData);
           showNotification('Notice Published Realtime!');
@@ -675,6 +698,7 @@
         }
       };
 
+      // Category Add / Delete
       const handleAddCategory = (e) => {
         e.preventDefault();
         const trimmed = newCatName.trim();
@@ -699,12 +723,14 @@
         }
       };
 
+      // Admin Application Status Update
       const handleUpdateAppStatus = (appId, newStatus) => {
         const appRef = window.firebaseRef(window.firebaseDb, 'applications/' + appId);
         window.firebaseUpdate(appRef, { status: newStatus });
         showNotification(`Application Status Updated to ${newStatus}`);
       };
 
+      // Compute display status with 5-minute auto "In Process" logic
       const getComputedStatus = (appItem) => {
         if (appItem.status === 'Approved') return 'Approved';
         if (appItem.status === 'Rejected') return 'Rejected';
@@ -724,6 +750,7 @@
         return matchCat && matchSearch;
       });
 
+      // Filter Applications for current logged-in user
       const userApplications = applications.filter(app => currentUser && app.uid === currentUser.uid);
 
       return (
@@ -736,10 +763,11 @@
             </div>
           )}
 
-          {}
+          {/* 🔒 STICKY HEADER - LOCKED ON TOP DURING SCROLL */}
           <header className="sticky top-0 z-40 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 text-white shadow-sm border-b border-indigo-500/30 py-1.5 sm:py-2 px-3 transition-all">
             <div className="max-w-6xl mx-auto flex items-center justify-between gap-2">
               
+              {/* Left Side Drawer Menu Button */}
               <button 
                 onClick={() => setShowDrawer(true)}
                 className="p-1.5 text-white hover:bg-white/10 rounded-lg transition-colors focus:outline-none flex items-center gap-1"
@@ -748,12 +776,13 @@
                 <Icons.Menu />
               </button>
 
+              {/* Title Centered */}
               <div 
                 onClick={() => {
-                  if (iframeUrl || activeService) {
-                    setIframeUrl(null);
-                    setActiveService(null);
-                  }
+                  setIframeUrl(null);
+                  setActiveService(null);
+                  setSelectedCat('Sabhi Services');
+                  setSearchQuery('');
                 }}
                 className="cursor-pointer text-center group flex-1"
               >
@@ -765,6 +794,7 @@
                 </p>
               </div>
 
+              {/* Right Side User Login / Profile Status */}
               <div className="flex items-center gap-1.5">
                 {currentUser ? (
                   <button
@@ -787,14 +817,16 @@
             </div>
           </header>
 
-          {}
+          {/* 🗂️ SIDE DRAWER MENU */}
           {showDrawer && (
             <div className="fixed inset-0 z-50 flex">
+              {/* Backdrop */}
               <div 
                 className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity"
                 onClick={() => setShowDrawer(false)}
               ></div>
 
+              {/* Drawer Container */}
               <div className="relative w-72 max-w-[80%] bg-white h-full shadow-2xl flex flex-col justify-between z-10 p-5 overflow-y-auto">
                 <div>
                   <div className="flex items-center justify-between pb-4 border-b border-slate-200 mb-4">
@@ -807,6 +839,7 @@
                     </button>
                   </div>
 
+                  {/* Logged in User ID Banner */}
                   {currentUser && (
                     <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-3 mb-4">
                       <p className="text-[10px] text-slate-500 font-bold uppercase">Aapka Permanent User ID:</p>
@@ -817,13 +850,34 @@
 
                   <nav className="space-y-2 text-xs font-bold text-slate-700">
                     <button
-                      onClick={() => { setActiveService(null); setIframeUrl(null); setShowDrawer(false); }}
-                      className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between"
+                      onClick={() => { setSelectedCat('Sabhi Services'); setActiveService(null); setIframeUrl(null); setShowDrawer(false); }}
+                      className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-blue-700"
                     >
                       <span>🏠 Home Page / Sabhi Services</span>
                       <Icons.ChevronRight />
                     </button>
 
+                    {/* CATEGORY SHORTCUTS IN DRAWER */}
+                    <div className="pt-2 border-t border-slate-100">
+                      <p className="text-[10px] text-slate-400 uppercase font-black px-2 mb-1">Service Categories:</p>
+                      {categories.filter(c => c !== 'Sabhi Services').map(cat => (
+                        <button
+                          key={cat}
+                          onClick={() => {
+                            setSelectedCat(cat);
+                            setActiveService(null);
+                            setIframeUrl(null);
+                            setShowDrawer(false);
+                          }}
+                          className={`w-full text-left p-2 rounded-lg hover:bg-blue-50 flex items-center justify-between ${selectedCat === cat ? 'bg-blue-100 text-blue-800 font-extrabold' : 'text-slate-700'}`}
+                        >
+                          <span>📁 {cat}</span>
+                          <Icons.ChevronRight />
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* STATUS BUTTON FOR USERS */}
                     <button
                       onClick={() => { 
                         if (!currentUser) {
@@ -836,7 +890,7 @@
                           setShowDrawer(false); 
                         }
                       }}
-                      className="w-full text-left p-2.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-800 flex items-center justify-between border border-blue-200"
+                      className="w-full text-left p-2.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-800 flex items-center justify-between border border-blue-200 mt-2"
                     >
                       <span className="flex items-center gap-1.5">
                         <Icons.Clock />
@@ -845,24 +899,38 @@
                       <Icons.ChevronRight />
                     </button>
 
+                    {/* ADMIN BUTTONS */}
                     {isAdmin && (
-                      <button
-                        onClick={() => { setActiveModalPage('adminStatus'); setShowDrawer(false); }}
-                        className="w-full text-left p-2.5 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-900 flex items-center justify-between border border-purple-200"
-                      >
-                        <span className="flex items-center gap-1.5 font-extrabold">
-                          <Icons.ShieldCheck />
-                          <span>Admin All Application Status</span>
-                        </span>
-                        <Icons.ChevronRight />
-                      </button>
+                      <div className="space-y-1 pt-2 border-t border-purple-100">
+                        <button
+                          onClick={() => { setActiveModalPage('adminStatus'); setShowDrawer(false); }}
+                          className="w-full text-left p-2.5 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-900 flex items-center justify-between border border-purple-200"
+                        >
+                          <span className="flex items-center gap-1.5 font-extrabold">
+                            <Icons.ShieldCheck />
+                            <span>Admin All Applications</span>
+                          </span>
+                          <Icons.ChevronRight />
+                        </button>
+
+                        <button
+                          onClick={() => { setActiveModalPage('allUsers'); setShowDrawer(false); }}
+                          className="w-full text-left p-2.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-900 flex items-center justify-between border border-indigo-200"
+                        >
+                          <span className="flex items-center gap-1.5 font-extrabold">
+                            <Icons.User />
+                            <span>Admin Registered Users ({allUsersList.length})</span>
+                          </span>
+                          <Icons.ChevronRight />
+                        </button>
+                      </div>
                     )}
 
                     <button
                       onClick={() => { setActiveModalPage('privacy'); setShowDrawer(false); }}
                       className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-slate-800"
                     >
-                      <span>🔒 Privacy Policy (Gopniyata Niti)</span>
+                      <span>🔒 Privacy Policy</span>
                       <Icons.ChevronRight />
                     </button>
 
@@ -870,7 +938,7 @@
                       onClick={() => { setActiveModalPage('terms'); setShowDrawer(false); }}
                       className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-slate-800"
                     >
-                      <span>📜 Terms & Conditions (Niyam v Shart)</span>
+                      <span>📜 Terms & Conditions</span>
                       <Icons.ChevronRight />
                     </button>
                   </nav>
@@ -901,7 +969,7 @@
             </div>
           )}
 
-          {}
+          {/* 🔐 USER LOGIN / SIGNUP / FORGOT PASSWORD MODAL */}
           {showUserAuthModal && (
             <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4">
               <div className="bg-white rounded-xl max-w-sm w-full p-5 shadow-xl border border-slate-200">
@@ -942,6 +1010,7 @@
                     </div>
                   )}
 
+                  {/* Terms & Privacy Policy Checkbox */}
                   <div className="flex items-start gap-2 pt-1">
                     <input
                       type="checkbox"
@@ -967,6 +1036,7 @@
                   </button>
                 </form>
 
+                {/* Google Sign-In */}
                 <div className="mt-3 pt-3 border-t border-slate-200 text-center space-y-2">
                   <button
                     onClick={handleUserGoogleLogin}
@@ -999,6 +1069,7 @@
           )}
 
           {}
+          {/* 📄 PRIVACY POLICY, TERMS & STATUS MODAL DISPLAY */}
           {activeModalPage && (
             <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 overflow-y-auto">
               <div className="bg-white rounded-xl max-w-2xl w-full p-6 shadow-2xl my-8 border border-slate-200 max-h-[85vh] flex flex-col">
@@ -1006,11 +1077,12 @@
                   <h3 className="font-extrabold text-slate-900 text-lg flex items-center gap-2">
                     <Icons.ShieldCheck />
                     <span>
-                      {activeModalPage === 'privacy' && 'Privacy Policy (Gopniyata Niti)'}
-                      {activeModalPage === 'terms' && 'Terms & Conditions (Niyam v Shart)'}
+                      {activeModalPage === 'privacy' && 'Privacy Policy'}
+                      {activeModalPage === 'terms' && 'Terms & Conditions'}
                       {activeModalPage === 'userStatus' && 'Aapke Dwara Apply Kiye Gaye Forms Ka Status'}
                       {activeModalPage === 'adminStatus' && 'Admin Status Management'}
-                      {activeModalPage === 'adminUserDetail' && 'User Complete Application History'}
+                      {activeModalPage === 'adminUserDetail' && 'User Complete Application Details'}
+                      {activeModalPage === 'allUsers' && 'Admin Registered Users List'}
                     </span>
                   </h3>
                   <button onClick={() => setActiveModalPage(null)} className="text-slate-400 hover:text-slate-600">
@@ -1020,6 +1092,7 @@
 
                 <div className="flex-1 overflow-y-auto text-xs text-slate-700 space-y-4 pr-1 leading-relaxed">
                   
+                  {/* USER STATUS VIEW */}
                   {activeModalPage === 'userStatus' && (
                     <div className="space-y-3">
                       <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg flex items-center justify-between">
@@ -1069,6 +1142,42 @@
                     </div>
                   )}
 
+                  {/* ADMIN REGISTERED USERS VIEW */}
+                  {activeModalPage === 'allUsers' && isAdmin && (
+                    <div className="space-y-3">
+                      <p className="text-xs text-slate-500">System me registered sabhi users ki list. Click karke specific user ka sara data aur forms dekhein:</p>
+
+                      {allUsersList.length === 0 ? (
+                        <p className="text-xs text-slate-400 italic text-center py-6">Koi registered user nahi mila.</p>
+                      ) : (
+                        <div className="space-y-2">
+                          {allUsersList.map(u => {
+                            const userFormCount = applications.filter(a => a.uid === u.uid).length;
+                            return (
+                              <div key={u.uid} className="p-3 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
+                                <div>
+                                  <span className="bg-blue-100 text-blue-800 text-[10px] font-extrabold px-2 py-0.5 rounded">
+                                    {u.customId || 'SGS-USER'}
+                                  </span>
+                                  <p className="font-bold text-slate-900 text-xs mt-1">{u.email}</p>
+                                  <p className="text-[10px] text-slate-400">Total Applied Forms: {userFormCount}</p>
+                                </div>
+
+                                <button
+                                  onClick={() => { setSelectedInspectorUid(u.uid); setActiveModalPage('adminUserDetail'); }}
+                                  className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[10px] px-3 py-1.5 rounded transition-colors"
+                                >
+                                  View Forms & Details →
+                                </button>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* ADMIN ALL APPLICATION STATUS VIEW */}
                   {activeModalPage === 'adminStatus' && isAdmin && (
                     <div className="space-y-3">
                       <p className="text-xs text-slate-500">Sabhi users dwara apply kiye gaye forms ki list aur unka status yahan se update karein:</p>
@@ -1083,9 +1192,12 @@
                               <div key={appItem.id} className="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
                                 <div className="flex items-start justify-between gap-2">
                                   <div>
-                                    <span className="bg-blue-100 text-blue-800 text-[10px] font-extrabold px-2 py-0.5 rounded">
-                                      {appItem.customId || 'SGS-USER'}
-                                    </span>
+                                    <button 
+                                      onClick={() => { setSelectedInspectorUid(appItem.uid); setActiveModalPage('adminUserDetail'); }}
+                                      className="bg-blue-100 hover:bg-blue-200 text-blue-800 text-[10px] font-extrabold px-2 py-0.5 rounded underline"
+                                    >
+                                      User ID: {appItem.customId || 'SGS-USER'}
+                                    </button>
                                     <h5 className="font-bold text-slate-900 text-xs mt-1">{appItem.serviceTitle}</h5>
                                     <p className="text-[11px] text-slate-500">User Email: {appItem.userEmail}</p>
                                     <p className="text-[10px] text-slate-400">Date: {appItem.applyDate}</p>
@@ -1093,9 +1205,9 @@
 
                                   <button
                                     onClick={() => { setSelectedInspectorUid(appItem.uid); setActiveModalPage('adminUserDetail'); }}
-                                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[10px] px-2.5 py-1 rounded transition-colors"
+                                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[10px] px-2.5 py-1 rounded transition-colors shrink-0"
                                   >
-                                    View Full User Details
+                                    View User All Forms
                                   </button>
                                 </div>
 
@@ -1131,81 +1243,119 @@
                     </div>
                   )}
 
+                  {/* ADMIN USER INSPECTOR DETAIL VIEW */}
                   {activeModalPage === 'adminUserDetail' && isAdmin && (
                     <div className="space-y-4">
                       {(() => {
                         const userApps = applications.filter(a => a.uid === selectedInspectorUid);
-                        const firstApp = userApps[0] || {};
+                        const userInfo = allUsersList.find(u => u.uid === selectedInspectorUid) || {};
+                        const userEmailDisp = userInfo.email || userApps[0]?.userEmail || 'N/A';
+                        const userCidDisp = userInfo.customId || userApps[0]?.customId || 'SGS-USER';
+
                         return (
                           <div>
                             <div className="bg-indigo-50 border border-indigo-200 p-3 rounded-lg mb-4">
                               <h4 className="text-sm font-black text-indigo-950">User Profile Summary</h4>
-                              <p className="text-xs text-indigo-800 font-bold mt-1">Permanent User Custom ID: {firstApp.customId || 'SGS-USER'}</p>
-                              <p className="text-xs text-slate-600">User Email ID: {firstApp.userEmail}</p>
+                              <p className="text-xs text-indigo-800 font-bold mt-1">Permanent Custom User ID: {userCidDisp}</p>
+                              <p className="text-xs text-slate-600">User Email ID: {userEmailDisp}</p>
                               <p className="text-[10px] text-slate-400">Firebase User UID: {selectedInspectorUid}</p>
                             </div>
 
                             <h5 className="font-bold text-slate-900 text-xs mb-2">Total Forms Applied By This User ({userApps.length}):</h5>
 
-                            <div className="space-y-2">
-                              {userApps.map(app => (
-                                <div key={app.id} className="p-3 bg-slate-50 border border-slate-200 rounded-lg flex justify-between items-center">
-                                  <div>
-                                    <p className="font-bold text-slate-900 text-xs">{app.serviceTitle}</p>
-                                    <p className="text-[10px] text-slate-400">Applied Date: {app.applyDate}</p>
+                            {userApps.length === 0 ? (
+                              <p className="text-xs text-slate-400 italic py-4">Is user ne abhi tak koi form apply nahi kiya hai.</p>
+                            ) : (
+                              <div className="space-y-2">
+                                {userApps.map(app => (
+                                  <div key={app.id} className="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
+                                    <div className="flex justify-between items-start">
+                                      <div>
+                                        <p className="font-bold text-slate-900 text-xs">{app.serviceTitle}</p>
+                                        <p className="text-[10px] text-slate-400">Applied Date: {app.applyDate}</p>
+                                      </div>
+                                      <span className="font-extrabold text-xs px-2.5 py-1 bg-white border rounded">
+                                        {getComputedStatus(app)}
+                                      </span>
+                                    </div>
+
+                                    {/* Inline Status Update Controls */}
+                                    <div className="flex items-center justify-between border-t pt-2">
+                                      <span className="text-[10px] text-slate-500 font-bold">Update Status:</span>
+                                      <div className="flex gap-1">
+                                        <button
+                                          onClick={() => handleUpdateAppStatus(app.id, 'Pending')}
+                                          className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 hover:bg-amber-200"
+                                        >
+                                          Pending
+                                        </button>
+                                        <button
+                                          onClick={() => handleUpdateAppStatus(app.id, 'In Process')}
+                                          className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800 hover:bg-blue-200"
+                                        >
+                                          In Process
+                                        </button>
+                                        <button
+                                          onClick={() => handleUpdateAppStatus(app.id, 'Approved')}
+                                          className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 hover:bg-emerald-200"
+                                        >
+                                          Approve
+                                        </button>
+                                      </div>
+                                    </div>
                                   </div>
-                                  <span className="font-extrabold text-xs px-2.5 py-1 bg-white border rounded">
-                                    {getComputedStatus(app)}
-                                  </span>
-                                </div>
-                              ))}
-                            </div>
+                                ))}
+                              </div>
+                            )}
                           </div>
                         );
                       })()}
                     </div>
                   )}
 
+                  {/* PRIVACY POLICY CONTENT (FULL DETAILED ENGLISH) */}
                   {activeModalPage === 'privacy' && (
-                    <>
-                      <div className="bg-blue-50 border-l-4 border-blue-600 p-3 rounded">
-                        <strong>📌 User Data Collection Declaration:</strong> SGS ONLINE SERVICE ke dwara Government (RTPS Bihar, Caste, Income, Residence), College Admission, aur Scholarship forms ko online apply karne ke liye chhatro aur grahako se aavashyak jaankari li jaati hai.
+                    <div className="space-y-3">
+                      <div className="bg-blue-50 border-l-4 border-blue-600 p-3 rounded text-slate-800">
+                        <strong>📌 Declaration of Data Processing:</strong> SGS ONLINE SERVICE operates as an authorized Cyber Seva Kendra. To facilitate government forms (Bihar RTPS, Income, Caste, Residence Certificates), College Admissions, and Scholarship registrations, we collect necessary user data with strict confidentiality.
                       </div>
 
-                      <h4 className="font-bold text-slate-900 text-sm">1. Hum Kaun Sa Data Collect Karte Hain:</h4>
-                      <ul className="list-disc pl-5 space-y-1">
-                        <li><strong>Personal Information:</strong> Student/User ka Name, Father Name, Mother Name, Date of Birth.</li>
-                        <li><strong>Contact Details:</strong> Active Mobile Number aur Email ID.</li>
-                        <li><strong>Identity & Location:</strong> Aadhaar Card details, Village/Address details, Post Office, Block, District.</li>
-                        <li><strong>Educational Information:</strong> College/School Marksheets, Roll Number, Registration Number, Admit Card details.</li>
-                        <li><strong>Financial & Certificate Details:</strong> Bank Passbook details (For Scholarship/RTPS), Income Details.</li>
+                      <h4 className="font-bold text-slate-900 text-sm">1. Explicit Personal & Identity Data Collected:</h4>
+                      <ul className="list-disc pl-5 space-y-1 text-slate-700">
+                        <li><strong>Personal Identification:</strong> Student/Applicant Full Name, Father's Name, Mother's Name, Gender, and Date of Birth.</li>
+                        <li><strong>Contact & Login Data:</strong> Registered Email ID, Active Mobile Number, and System-Generated Unique Custom User ID (e.g. SGS-XXXXXX).</li>
+                        <li><strong>Government Identity Proofs:</strong> Aadhaar Card Number, Photo ID copies, and Residential Proof documents.</li>
+                        <li><strong>Address & Location Details:</strong> Village/Town, Gram Panchayat, Block, Sub-Division, District, State, and Pincode.</li>
+                        <li><strong>Academic & Educational Records:</strong> 10th & 12th Marksheets, Roll Numbers, Registration Certificates, Admit Cards, and Institution names.</li>
+                        <li><strong>Financial & Bank Credentials:</strong> Bank Account Number, IFSC Code, and Bank Branch details (Required strictly for Scholarship disbursal and Bihar RTPS processing).</li>
                       </ul>
 
-                      <h4 className="font-bold text-slate-900 text-sm">2. Hum Data Ka Upyog Kyu Karte Hain:</h4>
-                      <p>SGS ONLINE SERVICE ek authorized Cyber Seva Kendra hai. Aap dwara di gayi jaankari ka upyog sirf aapke dwara requested College Admission, Bihar RTPS Government Certificates (Jati, Aaya, Niwas), Scholarship Forms, aur Online Application ko official government/university portal par sahi-sahi bharne ke liye kiya jata hai.</p>
+                      <h4 className="font-bold text-slate-900 text-sm">2. Purpose and Utilization of Collected Information:</h4>
+                      <p>Your information is processed strictly to submit forms on official university and government portals (e.g., Patliputra University, Bihar Post Matric Scholarship, RTPS Bihar Portal) on your behalf. We do not sell, leak, or share user data with unauthorized third parties.</p>
 
-                      <h4 className="font-bold text-slate-900 text-sm">3. Payment & Security Policy:</h4>
-                      <p>Form filling aur government processing fee ke liye liya gaya payment completely authorized services ke liye hota hai. Aapki privacy aur documents 100% confidential rakhe jaate hain aur kisi tisre vyakti ko share nahi kiye jaate hain.</p>
-                    </>
+                      <h4 className="font-bold text-slate-900 text-sm">3. Security & Cloud Data Protection:</h4>
+                      <p>All data is synchronized securely using Google Firebase Cloud Realtime Database with encrypted user authentication. Digital documents are stored with standard encryption access controls.</p>
+                    </div>
                   )}
 
+                  {/* TERMS CONTENT (FULL DETAILED ENGLISH) */}
                   {activeModalPage === 'terms' && (
-                    <>
-                      <h4 className="font-bold text-slate-900 text-sm">1. Service Application Terms:</h4>
-                      <p>SGS ONLINE SERVICE portal ke madhyam se online apply karne par sabhi chhatra aur users ko aavedan form me sahi aur satya jaankari pradan karni hogi. Galat documents ya details pradan karne par aavedan radd hone ki jimmedari user ki hogi.</p>
+                    <div className="space-y-3">
+                      <h4 className="font-bold text-slate-900 text-sm">1. Terms of Online Application & Form Submission:</h4>
+                      <p>By using SGS ONLINE SERVICE, users agree to provide authentic and accurate documents. The applicant bears full responsibility for any rejection caused by incorrect details provided in the form.</p>
 
-                      <h4 className="font-bold text-slate-900 text-sm">2. Processing Time & Government Standards:</h4>
-                      <p>RTPS Bihar Praman Patra (Jati, Aaya, Niwas), University Admission, aur Scholarship ki processing time official government aur college guidelines ke anusar hota hai.</p>
+                      <h4 className="font-bold text-slate-900 text-sm">2. Processing Timeline & Government Authority:</h4>
+                      <p>SGS ONLINE SERVICE is a facilitation portal. Certificate generation (RTPS Jati/Aaya/Niwas), university admission confirmation, and scholarship disbursal depend entirely on official government and university authorities.</p>
 
-                      <h4 className="font-bold text-slate-900 text-sm">3. Service Charge & Refund Policy:</h4>
-                      <p>Online application submit hone ke baad government/university portal fee non-refundable hoti hai. Cyber seva charges application processing ke liye liye jaate hain.</p>
-                    </>
+                      <h4 className="font-bold text-slate-900 text-sm">3. Cyber Service Charges & Non-Refundable Fee Policy:</h4>
+                      <p>Once an application form is submitted to official government or university portals, government portal fees and cyber processing fees become completely non-refundable.</p>
+                    </div>
                   )}
                 </div>
 
                 <div className="pt-4 border-t mt-4 flex justify-end">
                   <button onClick={() => setActiveModalPage(null)} className="bg-slate-800 text-white font-bold px-4 py-2 rounded-lg text-xs">
-                    Main Samajh Gaya (Close)
+                    Close Window
                   </button>
                 </div>
               </div>
@@ -1213,6 +1363,7 @@
           )}
 
           {}
+          {/* 🚀 VIEW 1: IN-APP FORM PLAYER */}
           {iframeUrl ? (
             <main className="flex-1 flex flex-col bg-slate-900">
               <div className="bg-slate-800 text-white px-4 py-2.5 border-b border-slate-700 flex items-center justify-between sticky top-[45px] z-30">
@@ -1246,6 +1397,7 @@
             </main>
           ) : 
 
+          /* VIEW 2: FULL PAGE DETAIL VIEW */
           activeService ? (
             <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6">
               <button
@@ -1315,113 +1467,140 @@
             </main>
           ) : 
 
+          /* VIEW 3: MAIN HOME PORTAL / FOCUSED CATEGORY VIEW */
           (
             <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
               
-              {/* Notice Board */}
-              <div className="bg-white border border-slate-300 rounded-xl p-4 shadow-2xs">
-                <div className="flex items-center justify-between border-b border-slate-200 pb-2 mb-3">
-                  <div className="flex items-center gap-2">
-                    <span className="text-blue-700"><Icons.Bell /></span>
-                    <h2 className="font-extrabold text-slate-900 text-sm sm:text-base uppercase tracking-wider">
-                      Notice Board / Taaza Updates
+              {/* IF A SPECIFIC CATEGORY IS CLICKED -> HIDE NOTICE BOARD, SEARCH, & OTHER CLUTTER */}
+              {selectedCat !== 'Sabhi Services' ? (
+                <div className="bg-gradient-to-r from-blue-900 to-indigo-900 text-white rounded-xl p-5 shadow-md flex items-center justify-between gap-3">
+                  <div>
+                    <span className="text-[10px] bg-amber-400 text-slate-900 font-extrabold px-2 py-0.5 rounded uppercase">
+                      Focused Category View
+                    </span>
+                    <h2 className="text-xl sm:text-2xl font-black text-white mt-1">
+                      📂 {selectedCat}
                     </h2>
+                    <p className="text-xs text-blue-200 mt-0.5">
+                      Is section me kul {filteredServices.length} active service buttons hain.
+                    </p>
                   </div>
-                  {isAdmin && (
-                    <button
-                      onClick={() => openNoticeModal(null)}
-                      className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1 rounded transition-colors"
-                    >
-                      + Add Notice
-                    </button>
-                  )}
-                </div>
 
-                <div className="space-y-2">
-                  {notices.length > 0 ? (
-                    notices.map((n) => (
-                      <div key={n.id} className="flex items-start justify-between gap-3 p-2 rounded hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-0">
-                        <div className="flex items-start gap-2 text-xs sm:text-sm font-medium text-slate-800">
-                          <span className="text-blue-600 font-bold shrink-0 mt-0.5">•</span>
-                          <span>{n.text}</span>
-                        </div>
-                        <div className="flex items-center gap-2 shrink-0">
-                          {n.date && <span className="text-[11px] text-slate-400 font-normal">{n.date}</span>}
-                          {isAdmin && (
-                            <div className="flex items-center gap-1">
-                              <button 
-                                onClick={() => openNoticeModal(n)} 
-                                className="text-blue-600 hover:bg-blue-50 p-1 rounded transition-colors"
-                                title="Edit Notice"
-                              >
-                                <Icons.Edit3 />
-                              </button>
-                              <button 
-                                onClick={() => handleDeleteNotice(n.id)} 
-                                className="text-rose-600 hover:bg-rose-50 p-1 rounded transition-colors"
-                                title="Delete Notice"
-                              >
-                                <Icons.Trash2 />
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-xs text-slate-400 italic">Abhi koi naya notice nahi hai.</p>
-                  )}
+                  <button
+                    onClick={() => { setSelectedCat('Sabhi Services'); setSearchQuery(''); }}
+                    className="bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-extrabold text-xs px-4 py-2 rounded-lg shadow transition-colors shrink-0 flex items-center gap-1"
+                  >
+                    <Icons.ArrowLeft /> Sabhi Services Par Wapas Jayein
+                  </button>
                 </div>
-              </div>
-
-              {/* Search & Categories */}
-              <div className="space-y-3">
-                <div className="relative">
-                  <div className="absolute left-3.5 top-3 text-slate-400"><Icons.Search /></div>
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="College Admission, Jati, Scholarship Form search karein..."
-                    className="w-full bg-white border border-slate-300 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm font-medium focus:outline-none focus:border-blue-600"
-                  />
-                </div>
-
-                <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-                  {categories.map((cat) => (
-                    <div key={cat} className="flex items-center shrink-0">
-                      <button
-                        onClick={() => setSelectedCat(cat)}
-                        className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border ${
-                          selectedCat === cat
-                            ? 'bg-blue-700 text-white border-blue-700'
-                            : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-200'
-                        }`}
-                      >
-                        {cat}
-                      </button>
-                      {isAdmin && cat !== 'Sabhi Services' && (
-                        <button 
-                          onClick={() => handleDeleteCategory(cat)}
-                          className="ml-1 text-slate-400 hover:text-rose-600 p-1"
-                          title="Delete Category"
-                        >
-                          <Icons.X />
-                        </button>
-                      )}
+              ) : (
+                /* SHOW NOTICE BOARD ONLY WHEN IN MAIN "Sabhi Services" VIEW */
+                <div className="bg-white border border-slate-300 rounded-xl p-4 shadow-2xs">
+                  <div className="flex items-center justify-between border-b border-slate-200 pb-2 mb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-blue-700"><Icons.Bell /></span>
+                      <h2 className="font-extrabold text-slate-900 text-sm sm:text-base uppercase tracking-wider">
+                        Notice Board / Taaza Updates
+                      </h2>
                     </div>
-                  ))}
+                    {isAdmin && (
+                      <button
+                        onClick={() => openNoticeModal(null)}
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1 rounded transition-colors"
+                      >
+                        + Add Notice
+                      </button>
+                    )}
+                  </div>
 
-                  {isAdmin && (
-                    <button
-                      onClick={() => setShowCategoryModal(true)}
-                      className="bg-slate-800 text-white text-xs font-bold px-3 py-1.5 rounded-lg shrink-0"
-                    >
-                      + Add Category
-                    </button>
-                  )}
+                  <div className="space-y-2">
+                    {notices.length > 0 ? (
+                      notices.map((n) => (
+                        <div key={n.id} className="flex items-start justify-between gap-3 p-2 rounded hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-0">
+                          <div className="flex items-start gap-2 text-xs sm:text-sm font-medium text-slate-800">
+                            <span className="text-blue-600 font-bold shrink-0 mt-0.5">•</span>
+                            <span>{n.text}</span>
+                          </div>
+                          <div className="flex items-center gap-1.5 shrink-0">
+                            {n.date && <span className="text-[11px] text-slate-400 font-normal mr-1">{n.date}</span>}
+                            {isAdmin && (
+                              <>
+                                <button 
+                                  onClick={() => openNoticeModal(n)} 
+                                  className="text-blue-600 hover:bg-blue-50 p-1 rounded"
+                                  title="Edit Notice"
+                                >
+                                  <Icons.Edit3 />
+                                </button>
+                                <button 
+                                  onClick={() => handleDeleteNotice(n.id)} 
+                                  className="text-rose-600 hover:bg-rose-50 p-1 rounded"
+                                  title="Delete Notice"
+                                >
+                                  <Icons.Trash2 />
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-xs text-slate-400 italic">Abhi koi naya notice nahi hai.</p>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {/* SEARCH & CATEGORIES TABS (Shown in ALL SERVICES view) */}
+              {selectedCat === 'Sabhi Services' && (
+                <div className="space-y-3">
+                  <div className="relative">
+                    <div className="absolute left-3.5 top-3 text-slate-400"><Icons.Search /></div>
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="College Admission, Jati, Scholarship Form search karein..."
+                      className="w-full bg-white border border-slate-300 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm font-medium focus:outline-none focus:border-blue-600 shadow-2xs"
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+                    {categories.map((cat) => (
+                      <div key={cat} className="flex items-center shrink-0">
+                        <button
+                          onClick={() => setSelectedCat(cat)}
+                          className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border ${
+                            selectedCat === cat
+                              ? 'bg-blue-700 text-white border-blue-700'
+                              : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-200'
+                          }`}
+                        >
+                          {cat}
+                        </button>
+                        {isAdmin && cat !== 'Sabhi Services' && (
+                          <button 
+                            onClick={() => handleDeleteCategory(cat)}
+                            className="ml-1 text-slate-400 hover:text-rose-600 p-1"
+                            title="Delete Category"
+                          >
+                            <Icons.X />
+                          </button>
+                        )}
+                      </div>
+                    ))}
+
+                    {isAdmin && (
+                      <button
+                        onClick={() => setShowCategoryModal(true)}
+                        className="bg-slate-800 text-white text-xs font-bold px-3 py-1.5 rounded-lg shrink-0"
+                      >
+                        + Add Category
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
 
               {/* Service Buttons Cards Grid */}
               <div className="space-y-3">
@@ -1441,7 +1620,7 @@
 
                 {filteredServices.length === 0 ? (
                   <div className="bg-white p-8 rounded-xl border border-slate-200 text-center">
-                    <p className="text-slate-500 font-bold text-sm">Koi service nahi mili!</p>
+                    <p className="text-slate-500 font-bold text-sm">Is category me abhi koi service nahi hai!</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -1501,6 +1680,7 @@
           )}
 
           {}
+          {/* FIREBASE EMAIL/PASSWORD ADMIN LOGIN MODAL */}
           {showLoginModal && (
             <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4">
               <div className="bg-white rounded-xl max-w-sm w-full p-5 shadow-xl border border-slate-200">
@@ -1550,7 +1730,7 @@
             </div>
           )}
 
-          {}
+          {/* ADD / EDIT SERVICE MODAL */}
           {showServiceFormModal && (
             <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-3 overflow-y-auto">
               <div className="bg-white rounded-xl max-w-xl w-full p-5 shadow-2xl my-6 border border-slate-200">
@@ -1676,12 +1856,12 @@
             </div>
           )}
 
-          {}
+          {/* ADD / EDIT NOTICE MODAL */}
           {showNoticeModal && (
             <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-3">
               <div className="bg-white rounded-xl max-w-sm w-full p-5 shadow-xl border border-slate-200">
                 <h3 className="font-bold text-slate-900 text-sm mb-3">
-                  {editingNoticeId ? 'Notice Board Text Edit Karein' : 'Notice Board Me Naya Notice Add Karein'}
+                  {editingNoticeId ? 'Notice Board Edit Karein' : 'Notice Board Me Naya Notice Add Karein'}
                 </h3>
                 <form onSubmit={handleSaveNotice} className="space-y-3 text-xs">
                   <input
@@ -1693,15 +1873,11 @@
                     required
                   />
                   <div className="flex justify-end gap-2">
-                    <button 
-                      type="button" 
-                      onClick={() => { setShowNoticeModal(false); setEditingNoticeId(null); }} 
-                      className="px-3 py-1.5 bg-slate-200 font-bold rounded-lg"
-                    >
+                    <button type="button" onClick={() => setShowNoticeModal(false)} className="px-3 py-1.5 bg-slate-200 font-bold rounded-lg">
                       Cancel
                     </button>
                     <button type="submit" className="px-3 py-1.5 bg-blue-700 text-white font-bold rounded-lg">
-                      {editingNoticeId ? 'Update Notice' : 'Save Notice'}
+                      Save Notice
                     </button>
                   </div>
                 </form>
@@ -1709,7 +1885,7 @@
             </div>
           )}
 
-          {}
+          {/* ADD CATEGORY MODAL */}
           {showCategoryModal && (
             <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-3">
               <div className="bg-white rounded-xl max-w-sm w-full p-5 shadow-xl border border-slate-200">
@@ -1736,7 +1912,7 @@
             </div>
           )}
 
-          {}
+          {/* FOOTER */}
           <footer className="bg-slate-900 text-slate-400 text-xs py-6 mt-12 border-t border-slate-800">
             <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
               <div>
@@ -1782,6 +1958,7 @@
       );
     }
 
+    // Render React App
     ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
 </body>
