@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SGS ONLINE SERVICE - Government & College Online Seva Portal</title>
   
-  <!-- Tailwind CSS & React UMD Libraries -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -25,7 +24,6 @@
   
   <div id="root"></div>
 
-  <!-- Firebase v11 Module Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { 
@@ -49,7 +47,7 @@
       update 
     } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
-    // Firebase Config Object
+    // Clean Raw Config Object
     const rawConfigObj = {
       apiKey: "AIzaSyDnYNpfLEsGOhTMT1dkDReH4fRA0pgOs94".trim(),
       authDomain: "sgs-online-service.firebaseapp.com".trim(),
@@ -88,11 +86,10 @@
     window.dispatchEvent(new Event('firebase-ready'));
   </script>
 
-  <!-- React Application Script -->
   <script type="text/babel">
     const { useState, useEffect } = React;
 
-    // SVG Icons Components
+    // SVG Icons
     const Icons = {
       Search: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>,
       Plus: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"/></svg>,
@@ -114,7 +111,7 @@
       Google: () => <svg className="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
     };
 
-    // Clean initial state (All example data removed)
+    // Clean initial arrays - No dummy examples!
     const SEED_NOTICES = [];
     const SEED_SERVICES = [];
     const SEED_CATEGORIES = [
@@ -139,13 +136,13 @@
 
       // Drawer & Modal Views
       const [showDrawer, setShowDrawer] = useState(false);
-      const [activeModalPage, setActiveModalPage] = useState(null); // 'privacy' | 'terms' | 'userStatus' | 'adminStatus' | 'adminUserDetail' | 'allUsers'
+      const [activeModalPage, setActiveModalPage] = useState(null);
 
       // User Auth State
       const [currentUser, setCurrentUser] = useState(null);
       const [customUserId, setCustomUserId] = useState('');
       const [showUserAuthModal, setShowUserAuthModal] = useState(false);
-      const [authMode, setAuthMode] = useState('login'); // 'login' | 'signup' | 'forgot'
+      const [authMode, setAuthMode] = useState('login');
       const [userEmail, setUserEmail] = useState('');
       const [userPassword, setUserPassword] = useState('');
       const [agreeTerms, setAgreeTerms] = useState(false);
@@ -175,6 +172,7 @@
       const [formDescription, setFormDescription] = useState('');
       const [formDocs, setFormDocs] = useState('');
       const [formApplyLink, setFormApplyLink] = useState('');
+      const [formBannerUrl, setFormBannerUrl] = useState('');
 
       // Notice & Category Modals State
       const [showNoticeModal, setShowNoticeModal] = useState(false);
@@ -259,7 +257,7 @@
             }
           });
 
-          // Auth Listener & Permanent Custom User ID Generator
+          // Auth State Listener & Custom User ID
           window.firebaseOnAuth(window.firebaseAuth, async (user) => {
             if (user) {
               setCurrentUser(user);
@@ -304,7 +302,6 @@
         }
       }, []);
 
-      // Hardware Back Button Handling
       useEffect(() => {
         const handlePopState = () => {
           if (iframeUrl) {
@@ -505,12 +502,11 @@
           tempInput.select();
           document.execCommand('copy');
           document.body.removeChild(tempInput);
-          showNotification('Website link copy ho gaya hai! Kahi bhi share karein.');
+          showNotification('Website link copy ho gaya hai!');
         }
         setShowDrawer(false);
       };
 
-      // Admin Email Login Handler
       const handleAdminEmailLogin = async (e) => {
         e.preventDefault();
         setAuthError('');
@@ -545,7 +541,6 @@
         showNotification('Admin Logged Out');
       };
 
-      // Service Add / Edit
       const openServiceModal = (service = null, e = null) => {
         if (e) e.stopPropagation();
 
@@ -561,6 +556,7 @@
           setFormDescription(service.description || '');
           setFormDocs(Array.isArray(service.requiredDocs) ? service.requiredDocs.join('\n') : '');
           setFormApplyLink(service.applyLink || '');
+          setFormBannerUrl(service.bannerUrl || '');
         } else {
           setEditingServiceId(null);
           setFormCategory(defaultCat);
@@ -570,6 +566,7 @@
           setFormDescription('');
           setFormDocs('');
           setFormApplyLink('');
+          setFormBannerUrl('');
         }
         setShowServiceFormModal(true);
       };
@@ -590,7 +587,8 @@
           descType: formDescType,
           description: formDescription,
           requiredDocs: docsArray,
-          applyLink: formApplyLink
+          applyLink: formApplyLink,
+          bannerUrl: formBannerUrl
         };
 
         if (editingServiceId) {
@@ -621,7 +619,6 @@
         }
       };
 
-      // Notice Add / Edit / Delete
       const openNoticeModal = (notice = null) => {
         if (notice) {
           setEditingNoticeId(notice.id);
@@ -669,7 +666,6 @@
         }
       };
 
-      // Category Add / Delete
       const handleAddCategory = (e) => {
         e.preventDefault();
         const trimmed = newCatName.trim();
@@ -694,14 +690,12 @@
         }
       };
 
-      // Admin Application Status Update
       const handleUpdateAppStatus = (appId, newStatus) => {
         const appRef = window.firebaseRef(window.firebaseDb, 'applications/' + appId);
         window.firebaseUpdate(appRef, { status: newStatus });
         showNotification(`Application Status Updated to ${newStatus}`);
       };
 
-      // Compute display status with 5-minute auto "In Process" logic
       const getComputedStatus = (appItem) => {
         if (appItem.status === 'Approved') return 'Approved';
         if (appItem.status === 'Rejected') return 'Rejected';
@@ -726,7 +720,7 @@
       return (
         <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col relative">
           
-          {/* Toast Notification Alert */}
+          {/* Toast Alert */}
           {toastMsg && (
             <div className="fixed top-3 right-3 z-50 bg-slate-900 text-yellow-300 font-bold text-xs px-4 py-2.5 rounded-xl shadow-xl border border-yellow-400/30 animate-bounce">
               ⚡ {toastMsg}
@@ -861,7 +855,6 @@
                       <Icons.ChevronRight />
                     </button>
 
-                    {/* SHARE WEBSITE BUTTON IN DRAWER */}
                     <button
                       onClick={handleShareWebsite}
                       className="w-full text-left p-2.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 flex items-center justify-between border border-emerald-200 mt-1"
@@ -936,7 +929,7 @@
                   )}
 
                   <p className="text-[10px] text-slate-400 text-center">
-                    Firebase Realtime Cloud Database Enabled
+                    Firebase Realtime Database Secured
                   </p>
                 </div>
               </div>
@@ -1040,7 +1033,7 @@
             </div>
           )}
 
-          {/* PAGE MODALS (PRIVACY, TERMS, STATUS, ADMIN VIEWS) */}
+          {}
           {activeModalPage && (
             <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 overflow-y-auto">
               <div className="bg-white rounded-xl max-w-2xl w-full p-6 shadow-2xl my-8 border border-slate-200 max-h-[85vh] flex flex-col">
@@ -1211,108 +1204,64 @@
                     </div>
                   )}
 
-                  {activeModalPage === 'adminUserDetail' && isAdmin && (
-                    <div className="space-y-4">
-                      {(() => {
-                        const userApps = applications.filter(a => a.uid === selectedInspectorUid);
-                        const userInfo = allUsersList.find(u => u.uid === selectedInspectorUid) || {};
-                        const userEmailDisp = userInfo.email || userApps[0]?.userEmail || 'N/A';
-                        const userCidDisp = userInfo.customId || userApps[0]?.customId || 'SGS-USER';
-
-                        return (
-                          <div>
-                            <div className="bg-indigo-50 border border-indigo-200 p-3 rounded-lg mb-4">
-                              <h4 className="text-sm font-black text-indigo-950">User Profile Summary</h4>
-                              <p className="text-xs text-indigo-800 font-bold mt-1">Permanent Custom User ID: {userCidDisp}</p>
-                              <p className="text-xs text-slate-600">User Email ID: {userEmailDisp}</p>
-                              <p className="text-[10px] text-slate-400">Firebase User UID: {selectedInspectorUid}</p>
-                            </div>
-
-                            <h5 className="font-bold text-slate-900 text-xs mb-2">Total Forms Applied By This User ({userApps.length}):</h5>
-
-                            {userApps.length === 0 ? (
-                              <p className="text-xs text-slate-400 italic py-4">Is user ne abhi tak koi form apply nahi kiya hai.</p>
-                            ) : (
-                              <div className="space-y-2">
-                                {userApps.map(app => (
-                                  <div key={app.id} className="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
-                                    <div className="flex justify-between items-start">
-                                      <div>
-                                        <p className="font-bold text-slate-900 text-xs">{app.serviceTitle}</p>
-                                        <p className="text-[10px] text-slate-400">Applied Date: {app.applyDate}</p>
-                                      </div>
-                                      <span className="font-extrabold text-xs px-2.5 py-1 bg-white border rounded">
-                                        {getComputedStatus(app)}
-                                      </span>
-                                    </div>
-
-                                    <div className="flex items-center justify-between border-t pt-2">
-                                      <span className="text-[10px] text-slate-500 font-bold">Update Status:</span>
-                                      <div className="flex gap-1">
-                                        <button
-                                          onClick={() => handleUpdateAppStatus(app.id, 'Pending')}
-                                          className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 hover:bg-amber-200"
-                                        >
-                                          Pending
-                                        </button>
-                                        <button
-                                          onClick={() => handleUpdateAppStatus(app.id, 'In Process')}
-                                          className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800 hover:bg-blue-200"
-                                        >
-                                          In Process
-                                        </button>
-                                        <button
-                                          onClick={() => handleUpdateAppStatus(app.id, 'Approved')}
-                                          className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 hover:bg-emerald-200"
-                                        >
-                                          Approve
-                                        </button>
-                                      </div>
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })()}
-                    </div>
-                  )}
-
+                  {/* PRIVACY POLICY - FULL DETAILED ENGLISH */}
                   {activeModalPage === 'privacy' && (
-                    <div className="space-y-3">
-                      <div className="bg-blue-50 border-l-4 border-blue-600 p-3 rounded text-slate-800">
-                        <strong>📌 Declaration of Data Processing:</strong> SGS ONLINE SERVICE operates as an authorized Cyber Seva Kendra. To facilitate government forms (Bihar RTPS, Income, Caste, Residence Certificates), College Admissions, and Scholarship registrations, we collect necessary user data with strict confidentiality.
+                    <div className="space-y-4 text-slate-700">
+                      <div className="bg-blue-50 border-l-4 border-blue-600 p-3.5 rounded text-slate-900 font-medium">
+                        <strong>📌 Official Cyber Seva Kendra Declaration:</strong> SGS ONLINE SERVICE operates as an authorized online assistance service center. We facilitate government online forms (such as Bihar RTPS Caste, Income, Residence Certificates), College/University Admissions (PPU, etc.), Scholarship applications, and various e-services for our customers upon their explicit request.
                       </div>
 
-                      <h4 className="font-bold text-slate-900 text-sm">1. Explicit Personal & Identity Data Collected:</h4>
-                      <ul className="list-disc pl-5 space-y-1 text-slate-700">
-                        <li><strong>Personal Identification:</strong> Student/Applicant Full Name, Father's Name, Mother's Name, Gender, and Date of Birth.</li>
-                        <li><strong>Contact & Login Data:</strong> Registered Email ID, Active Mobile Number, and System-Generated Unique Custom User ID (e.g. SGS-XXXXXX).</li>
-                        <li><strong>Government Identity Proofs:</strong> Aadhaar Card Number, Photo ID copies, and Residential Proof documents.</li>
-                        <li><strong>Address & Location Details:</strong> Village/Town, Gram Panchayat, Block, Sub-Division, District, State, and Pincode.</li>
-                        <li><strong>Academic & Educational Records:</strong> 10th & 12th Marksheets, Roll Numbers, Registration Certificates, Admit Cards, and Institution names.</li>
-                        <li><strong>Financial & Bank Credentials:</strong> Bank Account Number, IFSC Code, and Bank Branch details (Required strictly for Scholarship disbursal and Bihar RTPS processing).</li>
-                      </ul>
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">1. Personal Data & Identifiers We Collect:</h4>
+                        <p className="mb-2">To process online applications accurately on government and university portals, we collect the following personal details from users:</p>
+                        <ul className="list-disc pl-5 space-y-1 text-slate-700">
+                          <li><strong>Personal Identification:</strong> Full Name, Father's Name, Mother's Name, Date of Birth, and Gender.</li>
+                          <li><strong>Contact & Login Details:</strong> Active Mobile Number, Email Address, and System-Generated Unique User ID (e.g., SGS-XXXXXX).</li>
+                          <li><strong>Residential & Address Details:</strong> Village/Town, Gram Panchayat / Ward No., Block, Sub-Division, District, State, and Pincode.</li>
+                          <li><strong>Government Identification Documents:</strong> Aadhaar Card details, Passport Size Photographs, Caste/Income/Residence Proofs.</li>
+                          <li><strong>Educational & Academic Credentials:</strong> 10th & 12th Marksheets, Roll Numbers, Registration Cards, Admit Cards, and School/College Details.</li>
+                          <li><strong>Banking & Financial Details:</strong> Bank Account Number, IFSC Code, and Bank Branch details (strictly required for Bihar Post Matric Scholarship disbursal and online fee payments).</li>
+                        </ul>
+                      </div>
 
-                      <h4 className="font-bold text-slate-900 text-sm">2. Purpose and Utilization of Collected Information:</h4>
-                      <p>Your information is processed strictly to submit forms on official university and government portals (e.g., Patliputra University, Bihar Post Matric Scholarship, RTPS Bihar Portal) on your behalf. We do not sell, leak, or share user data with unauthorized third parties.</p>
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Purpose and Utilization of Collected Information:</h4>
+                        <p>All information and document copies provided by users are utilized strictly and exclusively for filling and submitting official online application forms on designated government servers (e.g., RTPS Bihar, Patliputra University, Post Matric Scholarship Portal) on behalf of the user. We guarantee 100% data confidentiality. We do NOT sell, lease, share, or disclose user data to any unauthorized third-party commercial entities.</p>
+                      </div>
 
-                      <h4 className="font-bold text-slate-900 text-sm">3. Security & Cloud Data Protection:</h4>
-                      <p>All data is synchronized securely using Google Firebase Cloud Realtime Database with encrypted user authentication. Digital documents are stored with standard encryption access controls.</p>
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. Security & Cloud Data Protection:</h4>
+                        <p>All user information is synchronized securely through Google Firebase Realtime Database with strict authentication access controls. Only authorized system administrators have access to verify and process application forms.</p>
+                      </div>
                     </div>
                   )}
 
+                  {/* TERMS & CONDITIONS - FULL DETAILED ENGLISH */}
                   {activeModalPage === 'terms' && (
-                    <div className="space-y-3">
-                      <h4 className="font-bold text-slate-900 text-sm">1. Terms of Online Application & Form Submission:</h4>
-                      <p>By using SGS ONLINE SERVICE, users agree to provide authentic and accurate documents. The applicant bears full responsibility for any rejection caused by incorrect details provided in the form.</p>
+                    <div className="space-y-4 text-slate-700">
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Online Facilitation Service Overview:</h4>
+                        <p>SGS ONLINE SERVICE acts as a third-party Cyber Seva Kendra facilitator assisting applicants in filling out government and educational forms correctly. Final approval, certificate issuance, exam admit card generation, or university admission confirmation rests solely with the respective official government or university authorities.</p>
+                      </div>
 
-                      <h4 className="font-bold text-slate-900 text-sm">2. Processing Timeline & Government Authority:</h4>
-                      <p>SGS ONLINE SERVICE is a facilitation portal. Certificate generation (RTPS Jati/Aaya/Niwas), university admission confirmation, and scholarship disbursal depend entirely on official government and university authorities.</p>
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Applicant Responsibility & Authenticity:</h4>
+                        <p>The applicant is solely responsible for providing genuine, truthful, and accurate information (Name, Father's Name, Mother's Name, Date of Birth, Aadhaar, Educational Marksheets, Address, etc.). SGS ONLINE SERVICE is not liable for form rejections or legal consequences caused by fake, wrong, or inaccurate details submitted by the applicant.</p>
+                      </div>
 
-                      <h4 className="font-bold text-slate-900 text-sm">3. Cyber Service Charges & Non-Refundable Fee Policy:</h4>
-                      <p>Once an application form is submitted to official government or university portals, government portal fees and cyber processing fees become completely non-refundable.</p>
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. Government Portal Fees & Cyber Processing Charges:</h4>
+                        <p>Total payment collected from users for any service consists of:</p>
+                        <ul className="list-disc pl-5 space-y-1 mt-1 text-slate-700">
+                          <li>Official Government / University Portal Application Fees.</li>
+                          <li>SGS Cyber Service Charges for online form filling, document scanning, formatting, and status tracking.</li>
+                        </ul>
+                      </div>
+
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">4. Refund & Cancellation Policy:</h4>
+                        <p>Once an application form is filled and submitted to the official government or university portal, all official portal fees and cyber processing service charges become strictly non-refundable under any circumstances.</p>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -1326,7 +1275,7 @@
             </div>
           )}
 
-          {/* VIEW 1: IN-APP FORM PLAYER */}
+          {}
           {iframeUrl ? (
             <main className="flex-1 flex flex-col bg-slate-900">
               <div className="bg-slate-800 text-white px-4 py-2.5 border-b border-slate-700 flex items-center justify-between sticky top-[45px] z-30">
@@ -1360,7 +1309,6 @@
             </main>
           ) : 
 
-          /* VIEW 2: FULL PAGE SERVICE DETAIL VIEW */
           activeService ? (
             <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6">
               <button
@@ -1371,14 +1319,28 @@
               </button>
 
               <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
-                <div className="bg-slate-900 text-white p-6 sm:p-8">
-                  <span className="bg-blue-600 text-white text-[11px] font-bold px-2.5 py-1 rounded uppercase tracking-wider">
-                    {activeService.category}
-                  </span>
-                  <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-3 leading-snug">
-                    {activeService.title}
-                  </h2>
-                </div>
+                {activeService.bannerUrl ? (
+                  <div className="w-full h-48 sm:h-64 overflow-hidden bg-slate-900 relative">
+                    <img src={activeService.bannerUrl} alt={activeService.title} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent p-6 flex flex-col justify-end">
+                      <span className="bg-blue-600 text-white text-[11px] font-bold px-2.5 py-1 rounded uppercase tracking-wider w-fit">
+                        {activeService.category}
+                      </span>
+                      <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2 leading-snug drop-shadow-md">
+                        {activeService.title}
+                      </h2>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="bg-slate-900 text-white p-6 sm:p-8">
+                    <span className="bg-blue-600 text-white text-[11px] font-bold px-2.5 py-1 rounded uppercase tracking-wider">
+                      {activeService.category}
+                    </span>
+                    <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-3 leading-snug">
+                      {activeService.title}
+                    </h2>
+                  </div>
+                )}
 
                 <div className="p-6 sm:p-8 space-y-6">
                   {activeService.requiredDocs && activeService.requiredDocs.length > 0 && (
@@ -1421,16 +1383,12 @@
                     >
                       ONLINE APPLY KAREIN
                     </button>
-                    <p className="text-xs text-slate-400 mt-2">
-                      (Button par click karte hi form isi website me khulega)
-                    </p>
                   </div>
                 </div>
               </div>
             </main>
           ) : 
 
-          /* VIEW 3: MAIN HOME PORTAL / CATEGORY VIEW */
           (
             <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
               
@@ -1512,6 +1470,7 @@
                 </div>
               )}
 
+              {/* SEARCH & CATEGORIES TABS */}
               {selectedCat === 'Sabhi Services' && (
                 <div className="space-y-3">
                   <div className="relative">
@@ -1562,7 +1521,7 @@
                 </div>
               )}
 
-              {/* Service Buttons Cards Grid */}
+              {/* Service Cards Grid */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <h3 className="font-extrabold text-slate-900 text-sm sm:text-base">
@@ -1580,8 +1539,7 @@
 
                 {filteredServices.length === 0 ? (
                   <div className="bg-white p-8 rounded-xl border border-slate-200 text-center">
-                    <p className="text-slate-500 font-bold text-sm">Is category me abhi koi service nahi hai!</p>
-                    <p className="text-xs text-slate-400 mt-1">Admin Panel se login karke "Naya Service Button Add Karein" par click karke form button add karein.</p>
+                    <p className="text-slate-500 font-bold text-sm">Is category me abhi koi service nahi hai! Admin login karke naya form add karein.</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -1589,46 +1547,54 @@
                       <div
                         key={srv.id}
                         onClick={() => openServiceDetail(srv)}
-                        className="bg-white rounded-xl p-4 border border-slate-300 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group relative"
+                        className="bg-white rounded-xl border border-slate-300 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group overflow-hidden"
                       >
                         <div>
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="bg-slate-100 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded border border-slate-200">
-                              {srv.category}
-                            </span>
+                          {srv.bannerUrl && (
+                            <div className="h-28 w-full overflow-hidden bg-slate-100">
+                              <img src={srv.bannerUrl} alt={srv.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            </div>
+                          )}
 
-                            {isAdmin && (
-                              <div className="flex items-center gap-1 z-10" onClick={(e) => e.stopPropagation()}>
-                                <button
-                                  onClick={(e) => openServiceModal(srv, e)}
-                                  className="p-1.5 text-blue-600 hover:bg-blue-50 rounded bg-blue-50/50 border border-blue-200"
-                                  title="Edit Service"
-                                >
-                                  <Icons.Edit3 />
-                                </button>
-                                <button
-                                  onClick={(e) => handleDeleteService(srv.id, e)}
-                                  className="p-1.5 text-rose-600 hover:bg-rose-50 rounded bg-rose-50/50 border border-rose-200"
-                                  title="Delete Service"
-                                >
-                                  <Icons.Trash2 />
-                                </button>
-                              </div>
+                          <div className="p-4">
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="bg-slate-100 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded border border-slate-200">
+                                {srv.category}
+                              </span>
+
+                              {isAdmin && (
+                                <div className="flex items-center gap-1 z-10" onClick={(e) => e.stopPropagation()}>
+                                  <button
+                                    onClick={(e) => openServiceModal(srv, e)}
+                                    className="p-1.5 text-blue-600 hover:bg-blue-50 rounded bg-blue-50/50 border border-blue-200"
+                                    title="Edit Service"
+                                  >
+                                    <Icons.Edit3 />
+                                  </button>
+                                  <button
+                                    onClick={(e) => handleDeleteService(srv.id, e)}
+                                    className="p-1.5 text-rose-600 hover:bg-rose-50 rounded bg-rose-50/50 border border-rose-200"
+                                    title="Delete Service"
+                                  >
+                                    <Icons.Trash2 />
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+
+                            <h4 className="font-bold text-slate-900 text-sm group-hover:text-blue-700 leading-snug">
+                              {srv.title}
+                            </h4>
+
+                            {srv.shortDesc && (
+                              <p className="text-xs text-slate-500 mt-1.5 line-clamp-2">
+                                {srv.shortDesc}
+                              </p>
                             )}
                           </div>
-
-                          <h4 className="font-bold text-slate-900 text-sm group-hover:text-blue-700 leading-snug">
-                            {srv.title}
-                          </h4>
-
-                          {srv.shortDesc && (
-                            <p className="text-xs text-slate-500 mt-1.5 line-clamp-2">
-                              {srv.shortDesc}
-                            </p>
-                          )}
                         </div>
 
-                        <div className="mt-4 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-700">
+                        <div className="p-4 pt-2 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-700">
                           <span>Full Detail & Apply</span>
                           <span className="group-hover:translate-x-1 transition-transform"><Icons.ChevronRight /></span>
                         </div>
@@ -1726,6 +1692,17 @@
                       placeholder="e.g. Patliputra University Graduation Form"
                       className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs"
                       required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-slate-700 font-bold mb-1">Banner Image Link / URL (Optional):</label>
+                    <input
+                      type="url"
+                      value={formBannerUrl}
+                      onChange={(e) => setFormBannerUrl(e.target.value)}
+                      placeholder="https://example.com/banner.jpg"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs"
                     />
                   </div>
 
@@ -1918,7 +1895,6 @@
       );
     }
 
-    // Render React App
     ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
 </body>
