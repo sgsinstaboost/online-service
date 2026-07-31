@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8" />5
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SGS ONLINE SERVICE - Government & College Online Seva Portal</title>
   
@@ -214,6 +214,7 @@
       // Notice & Category Modals State
       const [showNoticeModal, setShowNoticeModal] = useState(false);
       const [noticeText, setNoticeText] = useState('');
+      const [editingNoticeId, setEditingNoticeId] = useState(null); // Added notice edit ID state
 
       const [showCategoryModal, setShowCategoryModal] = useState(false);
       const [newCatName, setNewCatName] = useState('');
@@ -634,24 +635,46 @@
         }
       };
 
-      // Notice Add / Delete
-      const handleAddNotice = (e) => {
+      // Notice Add / Edit / Delete
+      const openNoticeModal = (notice = null) => {
+        if (notice) {
+          setEditingNoticeId(notice.id);
+          setNoticeText(notice.text || '');
+        } else {
+          setEditingNoticeId(null);
+          setNoticeText('');
+        }
+        setShowNoticeModal(true);
+      };
+
+      const handleSaveNotice = (e) => {
         e.preventDefault();
         if (!noticeText.trim()) return;
 
-        const newId = 'n-' + Date.now();
-        const noticeData = {
-          id: newId,
-          text: noticeText,
-          date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-        };
+        if (editingNoticeId) {
+          // Edit existing notice in Realtime DB
+          const noticeRef = window.firebaseRef(window.firebaseDb, 'notices/' + editingNoticeId);
+          window.firebaseUpdate(noticeRef, {
+            text: noticeText
+          });
+          showNotification('Notice Updated Realtime!');
+        } else {
+          // Add new notice to Realtime DB
+          const newId = 'n-' + Date.now();
+          const noticeData = {
+            id: newId,
+            text: noticeText,
+            date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+          };
 
-        const noticeRef = window.firebaseRef(window.firebaseDb, 'notices/' + newId);
-        window.firebaseSet(noticeRef, noticeData);
+          const noticeRef = window.firebaseRef(window.firebaseDb, 'notices/' + newId);
+          window.firebaseSet(noticeRef, noticeData);
+          showNotification('Notice Published Realtime!');
+        }
 
         setNoticeText('');
+        setEditingNoticeId(null);
         setShowNoticeModal(false);
-        showNotification('Notice Published Realtime!');
       };
 
       const handleDeleteNotice = (id) => {
@@ -1337,7 +1360,7 @@
                   </div>
                   {isAdmin && (
                     <button
-                      onClick={() => setShowNoticeModal(true)}
+                      onClick={() => openNoticeModal(null)}
                       className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1 rounded transition-colors"
                     >
                       + Add Notice
@@ -1356,13 +1379,24 @@
                         <div className="flex items-center gap-2 shrink-0">
                           {n.date && <span className="text-[11px] text-slate-400 font-normal">{n.date}</span>}
                           {isAdmin && (
-                            <button 
-                              onClick={() => handleDeleteNotice(n.id)} 
-                              className="text-rose-600 hover:bg-rose-50 p-1 rounded"
-                              title="Delete Notice"
-                            >
-                              <Icons.Trash2 />
-                            </button>
+                            <div className="flex items-center gap-1">
+                              {/* Edit Notice Button */}
+                              <button 
+                                onClick={() => openNoticeModal(n)} 
+                                className="text-blue-600 hover:bg-blue-50 p-1 rounded transition-colors"
+                                title="Edit Notice"
+                              >
+                                <Icons.Edit3 />
+                              </button>
+                              {/* Delete Notice Button */}
+                              <button 
+                                onClick={() => handleDeleteNotice(n.id)} 
+                                className="text-rose-600 hover:bg-rose-50 p-1 rounded transition-colors"
+                                title="Delete Notice"
+                              >
+                                <Icons.Trash2 />
+                              </button>
+                            </div>
                           )}
                         </div>
                       </div>
@@ -1675,12 +1709,14 @@
             </div>
           )}
 
-          {/* ADD NOTICE MODAL */}
+          {/* ADD / EDIT NOTICE MODAL */}
           {showNoticeModal && (
             <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-3">
               <div className="bg-white rounded-xl max-w-sm w-full p-5 shadow-xl border border-slate-200">
-                <h3 className="font-bold text-slate-900 text-sm mb-3">Notice Board Me Naya Notice Add Karein</h3>
-                <form onSubmit={handleAddNotice} className="space-y-3 text-xs">
+                <h3 className="font-bold text-slate-900 text-sm mb-3">
+                  {editingNoticeId ? 'Notice Board Text Edit Karein' : 'Notice Board Me Naya Notice Add Karein'}
+                </h3>
+                <form onSubmit={handleSaveNotice} className="space-y-3 text-xs">
                   <input
                     type="text"
                     value={noticeText}
@@ -1690,11 +1726,15 @@
                     required
                   />
                   <div className="flex justify-end gap-2">
-                    <button type="button" onClick={() => setShowNoticeModal(false)} className="px-3 py-1.5 bg-slate-200 font-bold rounded-lg">
+                    <button 
+                      type="button" 
+                      onClick={() => { setShowNoticeModal(false); setEditingNoticeId(null); }} 
+                      className="px-3 py-1.5 bg-slate-200 font-bold rounded-lg"
+                    >
                       Cancel
                     </button>
                     <button type="submit" className="px-3 py-1.5 bg-blue-700 text-white font-bold rounded-lg">
-                      Save Notice
+                      {editingNoticeId ? 'Update Notice' : 'Save Notice'}
                     </button>
                   </div>
                 </form>
