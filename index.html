@@ -49,12 +49,23 @@
       update 
     } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
-    // Base64 Encrypted Firebase Configuration
-    const encodedConfig = "eyJhcGlLZXkiOiJBSTRhU3lEbklOcGZMRXNHT2hUTVQxZGtEUmVINGZSQTBwZ09zOTQiLCJhdXRoRG9tYWluIjoic2dzLW9ubGluZS1zZXJ2aWNlLmZpcmViYXNlYXBwLmNvbSIsImRhdGFiYXNlVVJMIjoiaHR0cHM6Ly9zZ3Mtb25saW5lLXNlcnZpY2UtZGVmYXVsdC1ydGRiLmZpcmViYXNlaW8uY29tIiwicHJvamVjdElkIjoic2dzLW9ubGluZS1zZXJ2aWNlIiwic3RvcmFnZUJ1Y2tldCI6InNncy1vbmxpbmUtc2VydmljZS5maXJlYmFzZXN0b3JhZ2UuYXBwIiwibWVzc2FnaW5nU2VuZGVySWQiOiIxMjcwNzMzMTU5NCIsImFwcElkIjoiMToxMjcwNzMzMTU5NDp3ZWI6OWY1NjQ1ZjU3NDRiN2ZjN2FmMjk2MyJ9";
+    // Clean Raw Config Object from User Input
+    const rawConfigObj = {
+      apiKey: "AIzaSyDnYNpfLEsGOhTMT1dkDReH4fRA0pgOs94".trim(),
+      authDomain: "sgs-online-service.firebaseapp.com".trim(),
+      databaseURL: "https://sgs-online-service-default-rtdb.firebaseio.com".trim(),
+      projectId: "sgs-online-service".trim(),
+      storageBucket: "sgs-online-service.firebasestorage.app".trim(),
+      messagingSenderId: "12707331594".trim(),
+      appId: "1:12707331594:web:9f5645f5744b7fc7af29f3".trim()
+    };
+
+    // Base64 Encrypted Config Object
+    const encodedConfig = btoa(JSON.stringify(rawConfigObj));
     const firebaseConfig = JSON.parse(atob(encodedConfig));
 
-    // Base64 Encrypted Admin UID
-    window.ENCODED_ADMIN_UID = "YTdYS2Q3bzRhR05xZ0dpSU85R1JlNVExUmhuMQ==";
+    // Base64 Encrypted Admin UID (a7XKd7o4aGNqgGiIO9GRe5Q1Rhn1)
+    window.ENCODED_ADMIN_UID = btoa("a7XKd7o4aGNqgGiIO9GRe5Q1Rhn1");
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
@@ -478,7 +489,12 @@
             openEmbeddedForm(srv);
           }
         } catch (err) {
-          setUserAuthError('Google Sign-In Failed: ' + err.message);
+          console.error("Google Auth Error:", err);
+          if (err.code === 'auth/api-key-not-valid' || err.message.includes('api-key-not-valid')) {
+            setUserAuthError('Firebase API Key Error: Firebase Console (Authentication -> Sign-in method) me Google Sign-In enable karein.');
+          } else {
+            setUserAuthError('Google Sign-In Failed: ' + err.message);
+          }
         } finally {
           setIsUserAuthLoading(false);
         }
