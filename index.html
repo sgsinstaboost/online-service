@@ -69,27 +69,16 @@
       update 
     } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
-    // Encrypted Safe Config Base64 String
-    const _secConfig = "eyJhcGlLZXkiOiJBSTRhU3lEbllOcGZMRXNHT2hUTVRPMWRrRFJlSDRmUkEwcGdPczk0IiwiaXV0aERvbWFpbiI6InNncy1vbmxpbmUtc2VydmljZS5maXJlYmFzZWFwcC5jb20iLCJkYXRhYmFzZVVSTCI6Imh0dHBzOi8vc2dzLW9ubGluZS1zZXJ2aWNlLWRlZmF1bHQtcnRkYi5maXJlYmFzZWlvLmNvbSIsInByb2plY3RJZCI6InNncy1vbmxpbmUtc2VydmljZSIsInN0b3JhZ2VCdWNrZXQiOiJzZ3Mtb25saW5lLXNlcnZpY2UuZmlyZWJhc3N0b3JhZ2UuYXBwIiwibWVzc2FnaW5nU2VuZGVySWQiOiIxMjcwNzMzMTU5NCIsImFwcElkIjoiMToxMjcwNzMzMTU5NDp3ZWI6OWY1NjQ1ZjU3NGFiN2ZjN2FmMjlmMyJ9";
-
-    const _getFirebaseConfig = () => {
-      try {
-        return JSON.parse(atob(_secConfig));
-      } catch (e) {
-        console.error("Config Parse Fallback");
-        return {
-          apiKey: "AIzaSyDnYNpfLEsGOhTMT1dkDReH4fRA0pgOs94",
-          authDomain: "sgs-online-service.firebaseapp.com",
-          databaseURL: "https://sgs-online-service-default-rtdb.firebaseio.com",
-          projectId: "sgs-online-service",
-          storageBucket: "sgs-online-service.firebasestorage.app",
-          messagingSenderId: "12707331594",
-          appId: "1:12707331594:web:9f5645f5744b7fc7af29f3"
-        };
-      }
+    // Clean Original Raw Config Object
+    const firebaseConfig = {
+      apiKey: "AIzaSyDnYNpfLEsGOhTMT1dkDReH4fRA0pgOs94",
+      authDomain: "sgs-online-service.firebaseapp.com",
+      databaseURL: "https://sgs-online-service-default-rtdb.firebaseio.com",
+      projectId: "sgs-online-service",
+      storageBucket: "sgs-online-service.firebasestorage.app",
+      messagingSenderId: "12707331594",
+      appId: "1:12707331594:web:9f5645f5744b7fc7af29f3"
     };
-
-    const firebaseConfig = _getFirebaseConfig();
 
     window.ENCODED_ADMIN_UID = btoa("a7XKd7o4aGNqgGiIO9GRe5Q1Rhn1");
 
@@ -109,7 +98,7 @@
 
     window.dispatchEvent(new Event('firebase-ready'));
 
-    // Guaranteed Splash Removal
+    // Fast Guaranteed Splash Removal
     setTimeout(() => {
       const splash = document.getElementById('splash-screen');
       if (splash) {
@@ -663,6 +652,7 @@
         return matchCat && matchSearch;
       });
 
+      // Unique Users Map for Admin Inspector
       const uniqueUsersMap = {};
       applications.forEach(app => {
         if (!uniqueUsersMap[app.uid]) {
@@ -807,7 +797,7 @@
             </div>
           )}
 
-          {/* FULL SCREEN MODAL VIEW */}
+          {/* FULL SCREEN MODAL VIEW WHEN PRIVACY / TERMS / ADMIN IS OPEN */}
           {activeModalPage ? (
             <div className="fixed inset-0 bg-slate-100 z-50 flex flex-col h-full w-full overflow-hidden">
               <div className="bg-gradient-to-r from-blue-800 to-indigo-900 text-white px-4 py-3 shadow-md flex items-center justify-between shrink-0">
