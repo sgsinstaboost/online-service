@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-
-
-<meta name="google-site-verification" content="iPJ9gvz-pcq0qMUyfYB6cbjm11o3cwUVpMwtqDtXbVo" />
-
-  
-  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SGS ONLINE SERVICE - Government & College Online Seva Portal</title>
@@ -150,6 +144,27 @@
       'Admit Card & Result'
     ];
 
+    // Helper functions for synchronous local device & custom ID
+    function getStoredDeviceId() {
+      let stored = localStorage.getItem('sgs_device_id');
+      if (!stored) {
+        stored = 'dev-' + Date.now() + '-' + Math.floor(100000 + Math.random() * 900000);
+        localStorage.setItem('sgs_device_id', stored);
+      }
+      return stored;
+    }
+
+    function getStoredCustomId() {
+      let stored = localStorage.getItem('sgs_custom_id');
+      if (!stored) {
+        const storedName = localStorage.getItem('sgs_user_name') || 'USER';
+        const cleanName = storedName.replace(/[^a-zA-Z0-9]/g, '');
+        stored = 'SGS-' + (cleanName ? cleanName.substring(0, 8) : 'USER') + '-' + Math.floor(100000 + Math.random() * 900000);
+        localStorage.setItem('sgs_custom_id', stored);
+      }
+      return stored;
+    }
+
     function App() {
       const [services, setServices] = useState(SEED_SERVICES);
       const [notices, setNotices] = useState(SEED_NOTICES);
@@ -165,10 +180,10 @@
       const [activeModalPage, setActiveModalPage] = useState(null);
 
       // User State
-      const [userName, setUserName] = useState('');
-      const [userCustomId, setUserCustomId] = useState('');
-      const [deviceId, setDeviceId] = useState('');
-      const [showNamePromptModal, setShowNamePromptModal] = useState(false);
+      const [userName, setUserName] = useState(localStorage.getItem('sgs_user_name') || '');
+      const [userCustomId, setUserCustomId] = useState(getStoredCustomId());
+      const [deviceId, setDeviceId] = useState(getStoredDeviceId());
+      const [showNamePromptModal, setShowNamePromptModal] = useState(!localStorage.getItem('sgs_user_name'));
       const [inputName, setInputName] = useState('');
 
       // Admin Auth State
@@ -209,22 +224,7 @@
         setTimeout(() => setToastMsg(''), 3000);
       };
 
-      // Check User Name & Unique ID on Initial Load
-      useEffect(() => {
-        const storedName = localStorage.getItem('sgs_user_name');
-        const storedCustomId = localStorage.getItem('sgs_custom_id');
-        const storedDeviceId = localStorage.getItem('sgs_device_id');
-
-        if (storedName && storedCustomId && storedDeviceId) {
-          setUserName(storedName);
-          setUserCustomId(storedCustomId);
-          setDeviceId(storedDeviceId);
-        } else {
-          setShowNamePromptModal(true);
-        }
-      }, []);
-
-      // Handle Initial Name Submission & Generate Random UID
+      // Save Name on First Visit Modal Submit
       const handleSaveUserName = async (e) => {
         e.preventDefault();
         const trimmed = inputName.trim();
@@ -233,28 +233,27 @@
           return;
         }
 
+        const currentDeviceId = getStoredDeviceId();
         const cleanName = trimmed.replace(/[^a-zA-Z0-9]/g, '');
         const randomDigits = Math.floor(100000 + Math.random() * 900000);
         const generatedCustomId = `SGS-${cleanName ? cleanName.substring(0, 8) : 'USER'}-${randomDigits}`;
-        const generatedDeviceId = `dev-${Date.now()}-${randomDigits}`;
 
         localStorage.setItem('sgs_user_name', trimmed);
         localStorage.setItem('sgs_custom_id', generatedCustomId);
-        localStorage.setItem('sgs_device_id', generatedDeviceId);
 
         setUserName(trimmed);
         setUserCustomId(generatedCustomId);
-        setDeviceId(generatedDeviceId);
+        setDeviceId(currentDeviceId);
         setShowNamePromptModal(false);
 
-        // Save User To Firebase Realtime Database
+        // Save User Details To Firebase Database
         if (window.firebaseDb) {
           try {
-            const userRef = window.firebaseRef(window.firebaseDb, 'users/' + generatedDeviceId);
+            const userRef = window.firebaseRef(window.firebaseDb, 'users/' + currentDeviceId);
             await window.firebaseSet(userRef, {
               name: trimmed,
               customId: generatedCustomId,
-              uid: generatedDeviceId,
+              uid: currentDeviceId,
               createdAt: new Date().toISOString()
             });
           } catch (err) {
@@ -365,12 +364,16 @@
         const now = Date.now();
         const appId = 'app-' + now;
 
+        const currentDeviceId = getStoredDeviceId();
+        const currentCustomId = getStoredCustomId();
+        const currentName = localStorage.getItem('sgs_user_name') || 'Anonymous User';
+
         const applicationData = {
           id: appId,
-          uid: deviceId || 'guest-uid',
-          customId: userCustomId || 'SGS-GUEST',
-          userName: userName || 'Anonymous User',
-          userEmail: `${userName || 'User'} (${userCustomId || 'GUEST'})`,
+          uid: currentDeviceId,
+          customId: currentCustomId,
+          userName: currentName,
+          userEmail: `${currentName} (${currentCustomId})`,
           serviceId: srv.id || 'N/A',
           serviceTitle: srv.title || 'Untitled Form',
           category: srv.category || 'General',
@@ -634,8 +637,9 @@
         return matchCat && matchSearch;
       });
 
-      // Filter applications by current device ID
-      const myDeviceApplications = applications.filter(app => app.uid === deviceId);
+      // Filter applications strictly by current device ID
+      const currentStoredDeviceId = getStoredDeviceId();
+      const myDeviceApplications = applications.filter(app => app.uid === currentStoredDeviceId);
 
       // Unique Users Map for Admin Inspector
       const uniqueUsersMap = {};
@@ -927,12 +931,18 @@
 
                       <div>
                         <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">1. Personal Data & Identifiers We Collect:</h4>
-                        <p className="mb-2">To process online applications accurately on government and university portals, we collect necessary basic details provided voluntarily by users while submitting online forms.</p>
+                        <p className="mb-2 font-semibold">To process online applications accurately on official government and university portals, we collect necessary user information including:</p>
+                        <ul className="list-disc pl-5 space-y-1 text-slate-700 font-medium">
+                          <li><strong>Full Name, Father's Name, & Mother's Name</strong></li>
+                          <li><strong>Date of Birth, Gender, & Full Residential Address</strong></li>
+                          <li><strong>Educational Documents & Academic Marksheets</strong> (10th/12th/Graduation)</li>
+                          <li><strong>Identity Identification Copies & Passport Photographs</strong></li>
+                        </ul>
                       </div>
 
                       <div>
-                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Security & Realtime Cloud Protection:</h4>
-                        <p>All application status details are synchronized securely through Firebase Realtime Database. We guarantee strict data privacy and confidentiality.</p>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Data Security & Confidentially Assurance:</h4>
+                        <p>All personal details and form application updates are synchronized securely through Firebase Realtime Database. We guarantee strict data privacy, zero commercial sharing, and maximum security for all user paperwork.</p>
                       </div>
                     </div>
                   )}
@@ -947,7 +957,7 @@
 
                       <div>
                         <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Applicant Responsibility:</h4>
-                        <p>Applicants are responsible for providing authentic and truthful information. SGS ONLINE SERVICE is not liable for form rejections caused by inaccurate details provided by users.</p>
+                        <p>Applicants are responsible for providing authentic and truthful information (Full Name, Father's Name, Marksheets, Address, etc.). SGS ONLINE SERVICE is not liable for form rejections caused by inaccurate details provided by users.</p>
                       </div>
                     </div>
                   )}
