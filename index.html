@@ -144,25 +144,6 @@
       'Admit Card & Result'
     ];
 
-    // Synchronous Local Device ID Helper Functions
-    function getStoredDeviceId() {
-      let storedDeviceId = localStorage.getItem('sgs_device_id');
-      if (!storedDeviceId) {
-        storedDeviceId = 'dev-' + Date.now() + '-' + Math.floor(Math.random() * 100000);
-        localStorage.setItem('sgs_device_id', storedDeviceId);
-      }
-      return storedDeviceId;
-    }
-
-    function getStoredCustomId() {
-      let storedCustomId = localStorage.getItem('sgs_custom_id');
-      if (!storedCustomId) {
-        storedCustomId = 'SGS-' + Math.floor(100000 + Math.random() * 900000);
-        localStorage.setItem('sgs_custom_id', storedCustomId);
-      }
-      return storedCustomId;
-    }
-
     function App() {
       const [services, setServices] = useState(SEED_SERVICES);
       const [notices, setNotices] = useState(SEED_NOTICES);
@@ -172,15 +153,17 @@
       const [selectedCat, setSelectedCat] = useState('Sabhi Services');
       const [searchQuery, setSearchQuery] = useState('');
       const [activeService, setActiveService] = useState(null); 
-      const [iframeUrl, setIframeUrl] = useState(null); 
 
       // Drawer & Modal Views
       const [showDrawer, setShowDrawer] = useState(false);
       const [activeModalPage, setActiveModalPage] = useState(null);
 
-      // Device Specific Unique ID for Anonymous tracking
-      const [deviceId, setDeviceId] = useState(getStoredDeviceId());
-      const [userCustomId, setUserCustomId] = useState(getStoredCustomId());
+      // User State
+      const [userName, setUserName] = useState('');
+      const [userCustomId, setUserCustomId] = useState('');
+      const [deviceId, setDeviceId] = useState('');
+      const [showNamePromptModal, setShowNamePromptModal] = useState(false);
+      const [inputName, setInputName] = useState('');
 
       // Admin Auth State
       const [isAdmin, setIsAdmin] = useState(false);
@@ -218,6 +201,62 @@
       const showNotification = (msg) => {
         setToastMsg(msg);
         setTimeout(() => setToastMsg(''), 3000);
+      };
+
+      // Check User Name & Unique ID on Initial Load
+      useEffect(() => {
+        const storedName = localStorage.getItem('sgs_user_name');
+        const storedCustomId = localStorage.getItem('sgs_custom_id');
+        const storedDeviceId = localStorage.getItem('sgs_device_id');
+
+        if (storedName && storedCustomId && storedDeviceId) {
+          setUserName(storedName);
+          setUserCustomId(storedCustomId);
+          setDeviceId(storedDeviceId);
+        } else {
+          setShowNamePromptModal(true);
+        }
+      }, []);
+
+      // Handle Initial Name Submission & Generate Random UID
+      const handleSaveUserName = async (e) => {
+        e.preventDefault();
+        const trimmed = inputName.trim();
+        if (!trimmed) {
+          showNotification('Kripya apna naam likhein!');
+          return;
+        }
+
+        const cleanName = trimmed.replace(/[^a-zA-Z0-9]/g, '');
+        const randomDigits = Math.floor(100000 + Math.random() * 900000);
+        const generatedCustomId = `SGS-${cleanName ? cleanName.substring(0, 8) : 'USER'}-${randomDigits}`;
+        const generatedDeviceId = `dev-${Date.now()}-${randomDigits}`;
+
+        localStorage.setItem('sgs_user_name', trimmed);
+        localStorage.setItem('sgs_custom_id', generatedCustomId);
+        localStorage.setItem('sgs_device_id', generatedDeviceId);
+
+        setUserName(trimmed);
+        setUserCustomId(generatedCustomId);
+        setDeviceId(generatedDeviceId);
+        setShowNamePromptModal(false);
+
+        // Save User To Firebase Realtime Database
+        if (window.firebaseDb) {
+          try {
+            const userRef = window.firebaseRef(window.firebaseDb, 'users/' + generatedDeviceId);
+            await window.firebaseSet(userRef, {
+              name: trimmed,
+              customId: generatedCustomId,
+              uid: generatedDeviceId,
+              createdAt: new Date().toISOString()
+            });
+          } catch (err) {
+            console.error("User DB Save Error:", err);
+          }
+        }
+
+        showNotification(`Welcome ${trimmed}! Aapka Unique ID: ${generatedCustomId}`);
       };
 
       useEffect(() => {
@@ -264,7 +303,7 @@
             }
           });
 
-          // Sync Applications
+          // Sync Applications Realtime
           const applicationsRef = window.firebaseRef(window.firebaseDb, 'applications');
           window.firebaseOnValue(applicationsRef, (snapshot) => {
             const data = snapshot.val();
@@ -301,6 +340,11 @@
 
       // Direct Apply & Automatic Status Record Function
       const openEmbeddedForm = async (srv) => {
+        if (!userName) {
+          setShowNamePromptModal(true);
+          return;
+        }
+
         if (srv && srv.applyLink) {
           await recordApplication(srv);
           const link = srv.applyLink.startsWith('http') ? srv.applyLink : `https://${srv.applyLink}`;
@@ -314,14 +358,13 @@
         if (!srv) return;
         const now = Date.now();
         const appId = 'app-' + now;
-        const currentDeviceId = getStoredDeviceId();
-        const currentCustomId = getStoredCustomId();
 
         const applicationData = {
           id: appId,
-          uid: currentDeviceId,
-          customId: currentCustomId,
-          userEmail: 'Public Applicant (' + currentCustomId + ')',
+          uid: deviceId || 'guest-uid',
+          customId: userCustomId || 'SGS-GUEST',
+          userName: userName || 'Anonymous User',
+          userEmail: `${userName || 'User'} (${userCustomId || 'GUEST'})`,
           serviceId: srv.id || 'N/A',
           serviceTitle: srv.title || 'Untitled Form',
           category: srv.category || 'General',
@@ -333,7 +376,7 @@
         try {
           const appRef = window.firebaseRef(window.firebaseDb, 'applications/' + appId);
           await window.firebaseSet(appRef, applicationData);
-          showNotification('Form Applied! Status Added To Your Device History.');
+          showNotification('Form Apply Record Saved! Status Tracker Me Add Ho Gaya.');
         } catch (e) {
           console.error("Database Record Error:", e);
         }
@@ -456,7 +499,7 @@
         if (editingServiceId) {
           const srvRef = window.firebaseRef(window.firebaseDb, 'services/' + editingServiceId);
           window.firebaseUpdate(srvRef, serviceData);
-          showNotification('Service Updated & Renamed Realtime!');
+          showNotification('Service Updated Realtime!');
           
           if (activeService?.id === editingServiceId) {
             setActiveService({ id: editingServiceId, ...serviceData });
@@ -571,7 +614,7 @@
         }
       };
 
-      // Admin Status Update
+      // Admin Status Update (Pending, In Process, Approved, Rejected)
       const handleUpdateAppStatus = (appId, newStatus) => {
         const appRef = window.firebaseRef(window.firebaseDb, 'applications/' + appId);
         window.firebaseUpdate(appRef, { status: newStatus });
@@ -585,16 +628,17 @@
         return matchCat && matchSearch;
       });
 
-      // Directly filter by current device ID from storage for 100% accuracy
-      const currentStoredDeviceId = getStoredDeviceId();
-      const myDeviceApplications = applications.filter(app => app.uid === currentStoredDeviceId);
+      // Filter applications by current device ID
+      const myDeviceApplications = applications.filter(app => app.uid === deviceId);
 
+      // Unique Users Map for Admin Inspector
       const uniqueUsersMap = {};
       applications.forEach(app => {
         if (!uniqueUsersMap[app.uid]) {
           uniqueUsersMap[app.uid] = {
             uid: app.uid,
             customId: app.customId || 'SGS-USER',
+            userName: app.userName || 'Anonymous',
             userEmail: app.userEmail || 'Anonymous',
             count: 1
           };
@@ -609,8 +653,42 @@
           
           {/* Toast Notification */}
           {toastMsg && (
-            <div className="fixed top-3 right-3 z-50 bg-slate-900 text-yellow-300 font-bold text-xs px-4 py-2.5 rounded-xl shadow-xl border border-yellow-400/30 animate-bounce">
+            <div className="fixed top-3 right-3 z-[60] bg-slate-900 text-yellow-300 font-bold text-xs px-4 py-2.5 rounded-xl shadow-xl border border-yellow-400/30 animate-bounce">
               ⚡ {toastMsg}
+            </div>
+          )}
+
+          {/* MANDATORY FIRST VISIT NAME ENTRY MODAL */}
+          {showNamePromptModal && (
+            <div className="fixed inset-0 z-[100] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+              <div className="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 text-center animate-pulse-none">
+                <div className="w-14 h-14 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-xl font-black mx-auto mb-3 shadow-md">
+                  SGS
+                </div>
+                <h3 className="font-extrabold text-slate-900 text-lg">Aapka Naam Kya Hai?</h3>
+                <p className="text-xs text-slate-500 mt-1 mb-4">
+                  SGS Portal use karne aur forms apply karne ke liye apna naam likhein. Aapka unique ID automatically ban jayega.
+                </p>
+
+                <form onSubmit={handleSaveUserName} className="space-y-3">
+                  <input
+                    type="text"
+                    value={inputName}
+                    onChange={(e) => setInputName(e.target.value)}
+                    placeholder="Apna poora naam daalein..."
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm font-bold text-slate-900 focus:outline-none focus:border-blue-600 focus:bg-white text-center"
+                    required
+                    autoFocus
+                  />
+
+                  <button
+                    type="submit"
+                    className="w-full bg-blue-700 hover:bg-blue-800 text-white font-extrabold text-sm py-3 rounded-xl transition-all shadow-md active:scale-95"
+                  >
+                    Submit & Continue →
+                  </button>
+                </form>
+              </div>
             </div>
           )}
 
@@ -628,7 +706,6 @@
 
               <div 
                 onClick={() => {
-                  setIframeUrl(null);
                   setActiveService(null);
                   setSelectedCat('Sabhi Services');
                   setSearchQuery('');
@@ -659,7 +736,8 @@
                   <div className="flex items-center justify-between pb-4 border-b border-slate-200 mb-4">
                     <div>
                       <h3 className="font-extrabold text-blue-800 text-base">SGS ONLINE SERVICE</h3>
-                      <p className="text-[10px] text-slate-500 font-semibold">User ID: <span className="font-bold text-blue-700">{userCustomId}</span></p>
+                      <p className="text-xs text-slate-700 font-bold mt-1">👤 {userName || 'Guest User'}</p>
+                      <p className="text-[10px] text-slate-500 font-semibold">ID: <span className="font-bold text-blue-700">{userCustomId || 'Not Set'}</span></p>
                     </div>
                     <button onClick={() => setShowDrawer(false)} className="text-slate-400 hover:text-slate-600 p-1">
                       <Icons.X />
@@ -671,7 +749,6 @@
                       onClick={() => { 
                         setSelectedCat('Sabhi Services'); 
                         setActiveService(null); 
-                        setIframeUrl(null); 
                         setShowDrawer(false); 
                       }}
                       className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-blue-700"
@@ -787,8 +864,9 @@
                     <div className="space-y-3">
                       <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg flex items-center justify-between">
                         <div>
-                          <p className="text-[10px] text-slate-500 font-bold uppercase">Aapka Permanent ID:</p>
-                          <p className="text-base font-black text-blue-800">{userCustomId}</p>
+                          <p className="text-[10px] text-slate-500 font-bold uppercase">Name & ID:</p>
+                          <p className="text-sm font-black text-slate-900">{userName || 'Guest User'}</p>
+                          <p className="text-xs font-bold text-blue-800">{userCustomId}</p>
                         </div>
                         <span className="text-[10px] bg-blue-200 text-blue-900 font-bold px-2 py-1 rounded">Live Firebase Sync</span>
                       </div>
@@ -883,7 +961,7 @@
                                 <span className="bg-blue-100 text-blue-800 text-[10px] font-extrabold px-2 py-0.5 rounded">
                                   {u.customId}
                                 </span>
-                                <p className="font-bold text-slate-900 text-xs mt-1">{u.userEmail}</p>
+                                <p className="font-bold text-slate-900 text-xs mt-1">👤 {u.userName}</p>
                                 <p className="text-[10px] text-slate-400">Applied Forms: {u.count}</p>
                               </div>
 
@@ -917,7 +995,7 @@
                                     onClick={() => { setSelectedInspectorUid(appItem.uid); setActiveModalPage('adminUserDetail'); }}
                                     className="bg-blue-100 hover:bg-blue-200 text-blue-800 text-[10px] font-extrabold px-2 py-0.5 rounded underline"
                                   >
-                                    User ID: {appItem.customId || 'SGS-USER'}
+                                    User ID: {appItem.customId || 'SGS-USER'} ({appItem.userName || 'Guest'})
                                   </button>
                                   <h5 className="font-bold text-slate-900 text-xs mt-1">{appItem.serviceTitle}</h5>
                                   <p className="text-[10px] text-slate-400">Apply Date: {appItem.applyDate}</p>
@@ -984,8 +1062,9 @@
 
                         <div className="bg-indigo-50 border border-indigo-200 p-3.5 rounded-xl space-y-1">
                           <p className="text-[10px] text-slate-500 font-bold uppercase">Target User Overview:</p>
-                          <p className="text-sm font-black text-indigo-900">User ID: {sampleUser.customId || 'SGS-USER'}</p>
-                          <p className="text-xs text-slate-700 font-semibold">Device UID: {selectedInspectorUid}</p>
+                          <p className="text-sm font-black text-indigo-900">Name: {sampleUser.userName || 'Guest User'}</p>
+                          <p className="text-xs text-indigo-800 font-bold">User ID: {sampleUser.customId || 'SGS-USER'}</p>
+                          <p className="text-[10px] text-slate-500">Device UID: {selectedInspectorUid}</p>
                         </div>
 
                         <h4 className="font-extrabold text-slate-900 text-sm border-b pb-1">
@@ -1617,6 +1696,20 @@
               </div>
 
               <div className="flex items-center gap-4 text-xs">
+                <button
+                  onClick={() => setActiveModalPage('privacy')}
+                  className="text-slate-400 hover:text-white underline underline-offset-2"
+                >
+                  Privacy Policy
+                </button>
+
+                <button
+                  onClick={() => setActiveModalPage('terms')}
+                  className="text-slate-400 hover:text-white underline underline-offset-2"
+                >
+                  Terms & Conditions
+                </button>
+
                 {isAdmin ? (
                   <button
                     onClick={handleAdminLogout}
