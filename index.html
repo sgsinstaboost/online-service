@@ -343,7 +343,7 @@
         setActiveService(srv);
       };
 
-      // Guaranteed Async Record and Direct Apply Redirect
+      // Guaranteed Popup-Blocker Safe Redirection & Realtime Record Function
       const openEmbeddedForm = async (srv) => {
         if (!userName) {
           setShowNamePromptModal(true);
@@ -351,9 +351,18 @@
         }
 
         if (srv && srv.applyLink) {
-          await recordApplication(srv);
           const link = srv.applyLink.startsWith('http') ? srv.applyLink : `https://${srv.applyLink}`;
-          window.open(link, '_blank', 'noopener,noreferrer');
+          
+          // Open new tab synchronously first to bypass browser popup blockers
+          const newTab = window.open('about:blank', '_blank');
+          
+          // Write to Realtime Database
+          await recordApplication(srv);
+          
+          // Redirect the opened tab to actual link
+          if (newTab) {
+            newTab.location.href = link;
+          }
         } else {
           showNotification('Apply link uplabdh nahi hai!');
         }
