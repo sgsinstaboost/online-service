@@ -144,6 +144,25 @@
       'Admit Card & Result'
     ];
 
+    // Synchronous Local Device ID Helper Functions
+    function getStoredDeviceId() {
+      let storedDeviceId = localStorage.getItem('sgs_device_id');
+      if (!storedDeviceId) {
+        storedDeviceId = 'dev-' + Date.now() + '-' + Math.floor(Math.random() * 100000);
+        localStorage.setItem('sgs_device_id', storedDeviceId);
+      }
+      return storedDeviceId;
+    }
+
+    function getStoredCustomId() {
+      let storedCustomId = localStorage.getItem('sgs_custom_id');
+      if (!storedCustomId) {
+        storedCustomId = 'SGS-' + Math.floor(100000 + Math.random() * 900000);
+        localStorage.setItem('sgs_custom_id', storedCustomId);
+      }
+      return storedCustomId;
+    }
+
     function App() {
       const [services, setServices] = useState(SEED_SERVICES);
       const [notices, setNotices] = useState(SEED_NOTICES);
@@ -160,8 +179,8 @@
       const [activeModalPage, setActiveModalPage] = useState(null);
 
       // Device Specific Unique ID for Anonymous tracking
-      const [deviceId, setDeviceId] = useState('');
-      const [userCustomId, setUserCustomId] = useState('');
+      const [deviceId, setDeviceId] = useState(getStoredDeviceId());
+      const [userCustomId, setUserCustomId] = useState(getStoredCustomId());
 
       // Admin Auth State
       const [isAdmin, setIsAdmin] = useState(false);
@@ -201,24 +220,6 @@
         setTimeout(() => setToastMsg(''), 3000);
       };
 
-      // Persistent Local Device Identifier initialization
-      useEffect(() => {
-        let storedDeviceId = localStorage.getItem('sgs_device_id');
-        let storedCustomId = localStorage.getItem('sgs_custom_id');
-
-        if (!storedDeviceId) {
-          storedDeviceId = 'dev-' + Date.now() + '-' + Math.floor(Math.random() * 100000);
-          localStorage.setItem('sgs_device_id', storedDeviceId);
-        }
-        if (!storedCustomId) {
-          storedCustomId = 'SGS-' + Math.floor(100000 + Math.random() * 900000);
-          localStorage.setItem('sgs_custom_id', storedCustomId);
-        }
-
-        setDeviceId(storedDeviceId);
-        setUserCustomId(storedCustomId);
-      }, []);
-
       useEffect(() => {
         const setupFirebaseSync = () => {
           if (!window.firebaseDb) return;
@@ -229,6 +230,7 @@
             const data = snapshot.val();
             if (data) {
               const list = Object.keys(data).map(key => ({ id: key, ...data[key] }));
+              list.sort((a, b) => (a.order || 0) - (b.order || 0));
               setServices(list);
             } else {
               setServices([]);
@@ -297,7 +299,7 @@
         setActiveService(srv);
       };
 
-      // Direct Apply & Redirect URL Fix
+      // Direct Apply & Automatic Status Record Function
       const openEmbeddedForm = async (srv) => {
         if (srv && srv.applyLink) {
           await recordApplication(srv);
@@ -312,12 +314,14 @@
         if (!srv) return;
         const now = Date.now();
         const appId = 'app-' + now;
+        const currentDeviceId = getStoredDeviceId();
+        const currentCustomId = getStoredCustomId();
 
         const applicationData = {
           id: appId,
-          uid: deviceId || 'device-guest',
-          customId: userCustomId || 'SGS-GUEST',
-          userEmail: 'Public Applicant (' + (userCustomId || 'Guest') + ')',
+          uid: currentDeviceId,
+          customId: currentCustomId,
+          userEmail: 'Public Applicant (' + currentCustomId + ')',
           serviceId: srv.id || 'N/A',
           serviceTitle: srv.title || 'Untitled Form',
           category: srv.category || 'General',
@@ -329,7 +333,7 @@
         try {
           const appRef = window.firebaseRef(window.firebaseDb, 'applications/' + appId);
           await window.firebaseSet(appRef, applicationData);
-          showNotification('Form Apply Record Saved in Realtime Database!');
+          showNotification('Form Applied! Status Added To Your Device History.');
         } catch (e) {
           console.error("Database Record Error:", e);
         }
@@ -445,13 +449,14 @@
           description: formDescription,
           requiredDocs: docsArray,
           applyLink: formApplyLink,
-          bannerUrl: formBannerUrl
+          bannerUrl: formBannerUrl,
+          order: editingServiceId ? (services.find(s => s.id === editingServiceId)?.order || services.length) : services.length
         };
 
         if (editingServiceId) {
           const srvRef = window.firebaseRef(window.firebaseDb, 'services/' + editingServiceId);
-          window.firebaseSet(srvRef, { id: editingServiceId, ...serviceData });
-          showNotification('Service Updated Realtime!');
+          window.firebaseUpdate(srvRef, serviceData);
+          showNotification('Service Updated & Renamed Realtime!');
           
           if (activeService?.id === editingServiceId) {
             setActiveService({ id: editingServiceId, ...serviceData });
@@ -474,6 +479,25 @@
           if (activeService?.id === id) setActiveService(null);
           showNotification('Service Deleted!');
         }
+      };
+
+      // Move Service Position (Left / Right Order)
+      const handleMoveService = (index, direction, e) => {
+        e.stopPropagation();
+        const targetIndex = direction === 'left' ? index - 1 : index + 1;
+        if (targetIndex < 0 || targetIndex >= filteredServices.length) return;
+
+        const updatedList = [...filteredServices];
+        const temp = updatedList[index];
+        updatedList[index] = updatedList[targetIndex];
+        updatedList[targetIndex] = temp;
+
+        updatedList.forEach((srv, idx) => {
+          const srvRef = window.firebaseRef(window.firebaseDb, 'services/' + srv.id);
+          window.firebaseUpdate(srvRef, { order: idx });
+        });
+
+        showNotification('Position Updated Realtime!');
       };
 
       const openNoticeModal = (notice = null) => {
@@ -561,7 +585,9 @@
         return matchCat && matchSearch;
       });
 
-      const myDeviceApplications = applications.filter(app => app.uid === deviceId);
+      // Directly filter by current device ID from storage for 100% accuracy
+      const currentStoredDeviceId = getStoredDeviceId();
+      const myDeviceApplications = applications.filter(app => app.uid === currentStoredDeviceId);
 
       const uniqueUsersMap = {};
       applications.forEach(app => {
@@ -1258,11 +1284,11 @@
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {filteredServices.map((srv) => (
+                    {filteredServices.map((srv, idx) => (
                       <div
                         key={srv.id}
                         onClick={() => openServiceDetail(srv)}
-                        className="bg-white rounded-xl border border-slate-300 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group overflow-hidden"
+                        className="bg-white rounded-xl border border-slate-300 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group overflow-hidden relative"
                       >
                         <div>
                           {srv.bannerUrl && (
@@ -1279,10 +1305,28 @@
 
                               {isAdmin && (
                                 <div className="flex items-center gap-1 z-10" onClick={(e) => e.stopPropagation()}>
+                                  {idx > 0 && (
+                                    <button
+                                      onClick={(e) => handleMoveService(idx, 'left', e)}
+                                      className="px-1.5 py-0.5 text-[10px] bg-amber-100 text-amber-800 font-bold rounded border border-amber-300"
+                                      title="Move Left / Up"
+                                    >
+                                      ⬅️
+                                    </button>
+                                  )}
+                                  {idx < filteredServices.length - 1 && (
+                                    <button
+                                      onClick={(e) => handleMoveService(idx, 'right', e)}
+                                      className="px-1.5 py-0.5 text-[10px] bg-amber-100 text-amber-800 font-bold rounded border border-amber-300"
+                                      title="Move Right / Down"
+                                    >
+                                      ➡️
+                                    </button>
+                                  )}
                                   <button
                                     onClick={(e) => openServiceModal(srv, e)}
                                     className="p-1.5 text-blue-600 hover:bg-blue-50 rounded bg-blue-50/50 border border-blue-200"
-                                    title="Edit Service"
+                                    title="Edit & Rename Service"
                                   >
                                     <Icons.Edit3 />
                                   </button>
@@ -1371,13 +1415,13 @@
             </div>
           )}
 
-          {/* ADD / EDIT SERVICE MODAL */}
+          {/* ADD / EDIT & RENAME SERVICE MODAL */}
           {showServiceFormModal && (
             <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-3 overflow-y-auto">
               <div className="bg-white rounded-xl max-w-xl w-full p-5 shadow-2xl my-6 border border-slate-200">
                 <div className="flex items-center justify-between mb-4 border-b pb-2">
                   <h3 className="font-bold text-slate-900 text-sm">
-                    {editingServiceId ? 'Service Edit Karein (Realtime DB)' : 'Naya Service Add Karein (Realtime DB)'}
+                    {editingServiceId ? 'Service Edit & Rename Karein (Realtime DB)' : 'Naya Service Add Karein (Realtime DB)'}
                   </h3>
                   <button onClick={() => setShowServiceFormModal(false)} className="text-slate-400">
                     <Icons.X />
@@ -1399,13 +1443,13 @@
                   </div>
 
                   <div>
-                    <label className="block text-slate-700 font-bold mb-1">Title (Heading):</label>
+                    <label className="block text-slate-700 font-bold mb-1">Title / Rename Service Name:</label>
                     <input
                       type="text"
                       value={formTitle}
                       onChange={(e) => setFormTitle(e.target.value)}
                       placeholder="e.g. Patliputra University Graduation Form"
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs font-bold text-blue-800"
                       required
                     />
                   </div>
@@ -1500,7 +1544,7 @@
                       type="submit"
                       className="px-4 py-1.5 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-lg shadow-sm"
                     >
-                      Save To Realtime DB
+                      Save & Rename To Realtime DB
                     </button>
                   </div>
                 </form>
@@ -1573,20 +1617,6 @@
               </div>
 
               <div className="flex items-center gap-4 text-xs">
-                <button
-                  onClick={() => setActiveModalPage('privacy')}
-                  className="text-slate-400 hover:text-white underline underline-offset-2"
-                >
-                  Privacy Policy
-                </button>
-
-                <button
-                  onClick={() => setActiveModalPage('terms')}
-                  className="text-slate-400 hover:text-white underline underline-offset-2"
-                >
-                  Terms & Conditions
-                </button>
-
                 {isAdmin ? (
                   <button
                     onClick={handleAdminLogout}
