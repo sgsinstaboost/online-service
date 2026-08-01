@@ -380,46 +380,37 @@
         setActiveService(srv);
       };
 
-      // ✅ FIXED: Direct Open Application Link Safely
+      // Direct open embedded form without login restriction
       const openEmbeddedForm = async (srv) => {
         if (srv && srv.applyLink) {
-          // Record in DB if Firebase is available
-          try {
-            recordApplication(srv);
-          } catch(e) {
-            console.log("Record Application skipped:", e);
-          }
+          await recordApplication(srv);
           window.open(srv.applyLink, '_blank', 'noopener,noreferrer');
-          showNotification('Form link nayi window me khol diya gaya hai!');
         } else {
           showNotification('Apply link uplabdh nahi hai!');
         }
       };
 
       const recordApplication = async (srv) => {
-        if (!srv || !window.firebaseDb) return;
+        if (!srv) return;
         const now = Date.now();
         const appId = 'app-' + now;
 
         const applicationData = {
           id: appId,
-          uid: currentUser ? currentUser.uid : 'guest_user',
-          userEmail: currentUser ? (currentUser.email || 'Anonymous User') : 'Public Applicant',
-          customId: customUserId || 'SGS-PUBLIC',
-          serviceId: srv.id || 'N/A',
-          serviceTitle: srv.title || 'Untitled Form',
-          category: srv.category || 'General',
+          uid: currentUser ? currentUser.uid : 'guest',
+          userEmail: currentUser ? (currentUser.email || 'Anonymous User') : 'Guest User',
+          customId: customUserId || 'SGS-GUEST',
+          serviceId: srv.id,
+          serviceTitle: srv.title,
+          category: srv.category,
           applyTimestamp: now,
           applyDate: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
           status: 'Pending'
         };
 
-        try {
-          const appRef = window.firebaseRef(window.firebaseDb, 'applications/' + appId);
-          await window.firebaseSet(appRef, applicationData);
-        } catch (e) {
-          console.error("Database Record Error:", e);
-        }
+        const appRef = window.firebaseRef(window.firebaseDb, 'applications/' + appId);
+        await window.firebaseSet(appRef, applicationData);
+        showNotification('Aapka Form Redirect Kiya Gaya Aur Status Record Ho Gaya!');
       };
 
       const handleBackToServices = () => {
@@ -669,7 +660,7 @@
         return matchCat && matchSearch;
       });
 
-      const userApplications = applications.filter(app => currentUser ? app.uid === currentUser.uid : true);
+      const userApplications = applications.filter(app => currentUser && app.uid === currentUser.uid);
 
       return (
         <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col relative">
@@ -1064,26 +1055,63 @@
                     );
                   })()}
 
-                  {/* PRIVACY POLICY */}
+                  {/* PRIVACY POLICY - FULL DETAILED ENGLISH */}
                   {activeModalPage === 'privacy' && (
                     <div className="space-y-4 text-slate-700">
                       <div className="bg-blue-50 border-l-4 border-blue-600 p-3.5 rounded text-slate-900 font-medium">
-                        <strong>📌 Official Cyber Seva Kendra Declaration:</strong> SGS ONLINE SERVICE operates as an authorized online assistance service center. We facilitate government online forms (such as Bihar RTPS Caste, Income, Residence Certificates), College/University Admissions (PPU, VKSU, etc.), Scholarship applications, and various e-services for our customers upon their explicit request.
+                        <strong>📌 Official Cyber Seva Kendra Declaration:</strong> SGS ONLINE SERVICE operates as an authorized online assistance service center. We facilitate government online forms (such as Bihar RTPS Caste, Income, Residence Certificates), College/University Admissions (PPU, etc.), Scholarship applications, and various e-services for our customers upon their explicit request.
                       </div>
 
                       <div>
                         <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">1. Personal Data & Identifiers We Collect:</h4>
-                        <p className="mb-2">To process online applications accurately on government and university portals, we collect necessary details from users.</p>
+                        <p className="mb-2">To process online applications accurately on government and university portals, we collect the following personal details from users:</p>
+                        <ul className="list-disc pl-5 space-y-1 text-slate-700">
+                          <li><strong>Personal Identification:</strong> Full Name, Father's Name, Mother's Name, Date of Birth, and Gender.</li>
+                          <li><strong>Contact & Login Details:</strong> Active Mobile Number, Email Address, and System-Generated Unique User ID (e.g., SGS-XXXXXX).</li>
+                          <li><strong>Residential & Address Details:</strong> Village/Town, Gram Panchayat / Ward No., Block, Sub-Division, District, State, and Pincode.</li>
+                          <li><strong>Government Identification Documents:</strong> Identification proofs, Passport Size Photographs, Caste/Income/Residence Proofs.</li>
+                          <li><strong>Educational & Academic Credentials:</strong> 10th & 12th Marksheets, Roll Numbers, Registration Cards, Admit Cards, and School/College Details.</li>
+                          <li><strong>Banking & Financial Details:</strong> Bank Account Number, IFSC Code, and Bank Branch details (strictly required for Bihar Post Matric Scholarship disbursal and online fee payments).</li>
+                        </ul>
+                      </div>
+
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Purpose and Utilization of Collected Information:</h4>
+                        <p>All information and document copies provided by users are utilized strictly and exclusively for filling and submitting official online application forms on designated government servers (e.g., RTPS Bihar, Patliputra University, Post Matric Scholarship Portal) on behalf of the user. We guarantee 100% data confidentiality. We do NOT sell, lease, share, or disclose user data to any unauthorized third-party commercial entities.</p>
+                      </div>
+
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. Security & Cloud Data Protection:</h4>
+                        <p>All user information is synchronized securely through Google Firebase Realtime Database with strict authentication access controls. Only authorized system administrators have access to verify and process application forms.</p>
                       </div>
                     </div>
                   )}
 
-                  {/* TERMS & CONDITIONS */}
+                  {/* TERMS & CONDITIONS - FULL DETAILED ENGLISH */}
                   {activeModalPage === 'terms' && (
                     <div className="space-y-4 text-slate-700">
                       <div>
                         <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Online Facilitation Service Overview:</h4>
-                        <p>SGS ONLINE SERVICE acts as a third-party Cyber Seva Kendra facilitator assisting applicants in filling out government and educational forms correctly.</p>
+                        <p>SGS ONLINE SERVICE acts as a third-party Cyber Seva Kendra facilitator assisting applicants in filling out government and educational forms correctly. Final approval, certificate issuance, exam admit card generation, or university admission confirmation rests solely with the respective official government or university authorities.</p>
+                      </div>
+
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Applicant Responsibility & Authenticity:</h4>
+                        <p>The applicant is solely responsible for providing genuine, truthful, and accurate information (Name, Father's Name, Mother's Name, Date of Birth, Educational Marksheets, Address, etc.). SGS ONLINE SERVICE is not liable for form rejections or legal consequences caused by fake, wrong, or inaccurate details submitted by the applicant.</p>
+                      </div>
+
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. Government Portal Fees & Cyber Processing Charges:</h4>
+                        <p>Total payment collected from users for any service consists of:</p>
+                        <ul className="list-disc pl-5 space-y-1 mt-1 text-slate-700">
+                          <li>Official Government / University Portal Application Fees.</li>
+                          <li>SGS Cyber Service Charges for online form filling, document scanning, formatting, and status tracking.</li>
+                        </ul>
+                      </div>
+
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">4. Refund & Cancellation Policy:</h4>
+                        <p>Once an application form is filled and submitted to the official government or university portal, all official portal fees and cyber processing service charges become strictly non-refundable under any circumstances.</p>
                       </div>
                     </div>
                   )}
