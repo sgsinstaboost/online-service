@@ -262,7 +262,7 @@
             }
           });
 
-          // Sync Applications (Realtime Listener across devices)
+          // Sync Applications
           const applicationsRef = window.firebaseRef(window.firebaseDb, 'applications');
           window.firebaseOnValue(applicationsRef, (snapshot) => {
             const data = snapshot.val();
@@ -297,11 +297,12 @@
         setActiveService(srv);
       };
 
-      // Direct Apply Without Login with Realtime DB Record
+      // Direct Apply & Redirect URL Fix
       const openEmbeddedForm = async (srv) => {
         if (srv && srv.applyLink) {
           await recordApplication(srv);
-          window.open(srv.applyLink, '_blank', 'noopener,noreferrer');
+          const link = srv.applyLink.startsWith('http') ? srv.applyLink : `https://${srv.applyLink}`;
+          window.open(link, '_blank', 'noopener,noreferrer');
         } else {
           showNotification('Apply link uplabdh nahi hai!');
         }
@@ -328,7 +329,7 @@
         try {
           const appRef = window.firebaseRef(window.firebaseDb, 'applications/' + appId);
           await window.firebaseSet(appRef, applicationData);
-          showNotification('Form Status Record Saved in Realtime Database!');
+          showNotification('Form Apply Record Saved in Realtime Database!');
         } catch (e) {
           console.error("Database Record Error:", e);
         }
@@ -546,7 +547,7 @@
         }
       };
 
-      // Admin Status Update (Pending, In Process, Approved, Rejected)
+      // Admin Status Update
       const handleUpdateAppStatus = (appId, newStatus) => {
         const appRef = window.firebaseRef(window.firebaseDb, 'applications/' + appId);
         window.firebaseUpdate(appRef, { status: newStatus });
@@ -560,10 +561,8 @@
         return matchCat && matchSearch;
       });
 
-      // Filter applications applied by this device
       const myDeviceApplications = applications.filter(app => app.uid === deviceId);
 
-      // Extract unique user groups for Admin Inspector
       const uniqueUsersMap = {};
       applications.forEach(app => {
         if (!uniqueUsersMap[app.uid]) {
@@ -680,9 +679,25 @@
                       <Icons.ChevronRight />
                     </button>
 
+                    <button
+                      onClick={() => { setActiveModalPage('privacy'); setShowDrawer(false); }}
+                      className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-slate-800 mt-1"
+                    >
+                      <span>🔒 Privacy Policy</span>
+                      <Icons.ChevronRight />
+                    </button>
+
+                    <button
+                      onClick={() => { setActiveModalPage('terms'); setShowDrawer(false); }}
+                      className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-slate-800"
+                    >
+                      <span>📜 Terms & Conditions</span>
+                      <Icons.ChevronRight />
+                    </button>
+
                     {/* ADMIN BUTTONS */}
                     {isAdmin && (
-                      <div className="space-y-1 pt-2 border-t border-purple-100">
+                      <div className="space-y-1 pt-2 border-t border-purple-100 mt-2">
                         <button
                           onClick={() => { setActiveModalPage('adminStatus'); setShowDrawer(false); }}
                           className="w-full text-left p-2.5 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-900 flex items-center justify-between border border-purple-200"
@@ -718,7 +733,7 @@
             </div>
           )}
 
-          {/* STATUS & ADMIN MODAL PAGES */}
+          {/* STATUS, PRIVACY, TERMS & ADMIN MODAL PAGES */}
           {activeModalPage && (
             <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 overflow-y-auto">
               <div className="bg-white rounded-xl max-w-2xl w-full p-6 shadow-2xl my-8 border border-slate-200 max-h-[85vh] flex flex-col">
@@ -727,6 +742,8 @@
                     <Icons.ShieldCheck />
                     <span>
                       {activeModalPage === 'userStatus' && 'Aapke Dwara Apply Kiye Gaye Forms Ka Realtime Status'}
+                      {activeModalPage === 'privacy' && 'Privacy Policy'}
+                      {activeModalPage === 'terms' && 'Terms & Conditions'}
                       {activeModalPage === 'adminStatus' && 'Admin Application Status Management'}
                       {activeModalPage === 'adminUserDetail' && 'User Specific Complete Application Details'}
                       {activeModalPage === 'allUsers' && 'Admin Active Users Inspector'}
@@ -788,6 +805,40 @@
                           ))}
                         </div>
                       )}
+                    </div>
+                  )}
+
+                  {/* PRIVACY POLICY */}
+                  {activeModalPage === 'privacy' && (
+                    <div className="space-y-4 text-slate-700">
+                      <div className="bg-blue-50 border-l-4 border-blue-600 p-3.5 rounded text-slate-900 font-medium">
+                        <strong>📌 Official Cyber Seva Kendra Declaration:</strong> SGS ONLINE SERVICE operates as an authorized online assistance service center. We facilitate government online forms (such as Bihar RTPS Caste, Income, Residence Certificates), College/University Admissions, Scholarship applications, and various e-services for our customers upon their explicit request.
+                      </div>
+
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">1. Personal Data & Identifiers We Collect:</h4>
+                        <p className="mb-2">To process online applications accurately on government and university portals, we collect necessary basic details provided voluntarily by users while submitting online forms.</p>
+                      </div>
+
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Security & Realtime Cloud Protection:</h4>
+                        <p>All application status details are synchronized securely through Firebase Realtime Database. We guarantee strict data privacy and confidentiality.</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* TERMS & CONDITIONS */}
+                  {activeModalPage === 'terms' && (
+                    <div className="space-y-4 text-slate-700">
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Online Facilitation Service Overview:</h4>
+                        <p>SGS ONLINE SERVICE acts as a third-party Cyber Seva Kendra facilitator assisting applicants in filling out government and educational forms correctly. Final approval, certificate issuance, or university admission rests solely with the respective official government or university authorities.</p>
+                      </div>
+
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Applicant Responsibility:</h4>
+                        <p>Applicants are responsible for providing authentic and truthful information. SGS ONLINE SERVICE is not liable for form rejections caused by inaccurate details provided by users.</p>
+                      </div>
                     </div>
                   )}
 
@@ -902,7 +953,7 @@
                           onClick={() => setActiveModalPage('allUsers')}
                           className="inline-flex items-center gap-1 text-xs font-bold text-blue-700 hover:underline mb-2"
                         >
-                          <Icons.ArrowLeft /> Sabhi Active Users List Par Wapas
+                          <Icons.ArrowLeft /> Back
                         </button>
 
                         <div className="bg-indigo-50 border border-indigo-200 p-3.5 rounded-xl space-y-1">
@@ -982,7 +1033,7 @@
                 onClick={handleBackToServices}
                 className="inline-flex items-center gap-2 bg-white hover:bg-slate-200 text-slate-800 font-bold text-xs sm:text-sm px-4 py-2 rounded-xl border border-slate-300 shadow-2xs mb-6 transition-all"
               >
-                <Icons.ArrowLeft /> Sabhi Services Par Wapas Jayein
+                <Icons.ArrowLeft /> Back
               </button>
 
               <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
@@ -1057,6 +1108,29 @@
           ) : (
             <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
               
+              {selectedCat !== 'Sabhi Services' && (
+                <div className="bg-gradient-to-r from-blue-900 to-indigo-900 text-white rounded-xl p-5 shadow-md flex items-center justify-between gap-3">
+                  <div>
+                    <span className="text-[10px] bg-amber-400 text-slate-900 font-extrabold px-2 py-0.5 rounded uppercase">
+                      Focused Category View
+                    </span>
+                    <h2 className="text-xl sm:text-2xl font-black text-white mt-1">
+                      📂 {selectedCat}
+                    </h2>
+                    <p className="text-xs text-blue-200 mt-0.5">
+                      Is section me kul {filteredServices.length} active service buttons hain.
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={() => { setSelectedCat('Sabhi Services'); setSearchQuery(''); }}
+                    className="bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-extrabold text-xs px-4 py-2 rounded-lg shadow transition-colors shrink-0 flex items-center gap-1"
+                  >
+                    <Icons.ArrowLeft /> Back
+                  </button>
+                </div>
+              )}
+
               {/* NOTICE BOARD */}
               <div className="bg-white border border-slate-300 rounded-xl p-4 shadow-2xs">
                 <div className="flex items-center justify-between border-b border-slate-200 pb-2 mb-3">
@@ -1499,6 +1573,20 @@
               </div>
 
               <div className="flex items-center gap-4 text-xs">
+                <button
+                  onClick={() => setActiveModalPage('privacy')}
+                  className="text-slate-400 hover:text-white underline underline-offset-2"
+                >
+                  Privacy Policy
+                </button>
+
+                <button
+                  onClick={() => setActiveModalPage('terms')}
+                  className="text-slate-400 hover:text-white underline underline-offset-2"
+                >
+                  Terms & Conditions
+                </button>
+
                 {isAdmin ? (
                   <button
                     onClick={handleAdminLogout}
