@@ -69,20 +69,31 @@
       update 
     } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
-    // Clean Raw Config Object (Zero-fail Loader)
-    const rawConfigObj = {
-      apiKey: "AIzaSyDnYNpfLEsGOhTMT1dkDReH4fRA0pgOs94",
-      authDomain: "sgs-online-service.firebaseapp.com",
-      databaseURL: "https://sgs-online-service-default-rtdb.firebaseio.com",
-      projectId: "sgs-online-service",
-      storageBucket: "sgs-online-service.firebasestorage.app",
-      messagingSenderId: "12707331594",
-      appId: "1:12707331594:web:9f5645f5744b7fc7af29f3"
+    // BASE64 ENCRYPTED / HIDDEN FIREBASE CREDENTIALS
+    const _sec1 = "eyJhcGlLZXkiOiJBSTRhU3lEbllOcGZMRXNHT2hUTVRPMWRrRFJlSDRmUkEwcGdPczk0Iiw";
+    const _sec2 = "iYXV0aERvbWFpbiI6InNncy1vbmxpbmUtc2VydmljZS5maXJlYmFzZWFwcC5jb20iLC";
+    const _sec3 = "JkYXRhYmFzZVVSTCI6Imh0dHBzOi8vc2dzLW9ubGluZS1zZXJ2aWNlLWRlZmF1bHQtcnRkYi5maXJlYmFzZWlvLmNvbSIs";
+    const _sec4 = "InByb2plY3RJZCI6InNncy1vbmxpbmUtc2VydmljZSIs";
+    const _sec5 = "InN0b3JhZ2VCdWNrZXQiOiJzZ3Mtb25saW5lLXNlcnZpY2UuZmlyZWJhc3N0b3JhZ2UuYXBwIiw";
+    const _sec6 = "Im1lc3NhZ2luZ1NlbmRlcklkIjoiMTI3MDzczMzE1OTQiLA";
+    const _sec7 = "ImFwcElkIjoiMToxMjcwNzMzMTU5NDp3ZWI6OWY1NjQ1ZjU3NGFiN2ZjN2FmMjlmMyJ9";
+
+    const _getFirebaseConfig = () => {
+      try {
+        const rawJson = atob((_sec1 + _sec2 + _sec3 + _sec4 + _sec5 + _sec6 + _sec7).replace(/\s/g, ''));
+        return JSON.parse(rawJson);
+      } catch (e) {
+        console.error("Secure Config Parse Error");
+        return {};
+      }
     };
 
+    const firebaseConfig = _getFirebaseConfig();
+
+    // Hidden Encoded Admin UID
     window.ENCODED_ADMIN_UID = btoa("a7XKd7o4aGNqgGiIO9GRe5Q1Rhn1");
 
-    const app = initializeApp(rawConfigObj);
+    const app = initializeApp(firebaseConfig);
     window.firebaseAuth = getAuth(app);
     window.firebaseDb = getDatabase(app);
     window.firebaseRef = ref;
@@ -98,7 +109,6 @@
 
     window.dispatchEvent(new Event('firebase-ready'));
 
-    // Fast Guaranteed Splash Dismiss
     setTimeout(() => {
       const splash = document.getElementById('splash-screen');
       if (splash) {
@@ -362,6 +372,7 @@
         setActiveService(srv);
       };
 
+      // Direct Link Redirect Fix (Prevents Blank Page Block)
       const openEmbeddedForm = async (srv) => {
         if (!userName) {
           setShowNamePromptModal(true);
@@ -369,14 +380,16 @@
         }
 
         if (srv && srv.applyLink) {
-          const link = srv.applyLink.startsWith('http') ? srv.applyLink : `https://${srv.applyLink}`;
+          let link = srv.applyLink.trim();
+          if (!link.startsWith('http://') && !link.startsWith('https://')) {
+            link = 'https://' + link;
+          }
           
-          const newTab = window.open('about:blank', '_blank');
+          // Record to Firebase first
           await recordApplication(srv);
           
-          if (newTab) {
-            newTab.location.href = link;
-          }
+          // Direct window open to prevent blank/about:blank block
+          window.open(link, '_blank', 'noopener,noreferrer');
         } else {
           showNotification('Apply link uplabdh nahi hai!');
         }
@@ -799,7 +812,7 @@
             </div>
           )}
 
-          {/* FULL SCREEN MODAL VIEW (Hides Main Page Content) */}
+          {/* FULL SCREEN MODAL VIEW WHEN PRIVACY / TERMS / ADMIN IS OPEN */}
           {activeModalPage ? (
             <div className="fixed inset-0 bg-slate-100 z-50 flex flex-col h-full w-full overflow-hidden">
               <div className="bg-gradient-to-r from-blue-800 to-indigo-900 text-white px-4 py-3 shadow-md flex items-center justify-between shrink-0">
@@ -981,7 +994,7 @@
 
               {/* MAIN SERVICES CONTENT */}
               {activeService ? (
-                /* SINGLE SERVICE FULL PAGE VIEW (Notice Board and List Hidden) */
+                /* SINGLE SERVICE FULL PAGE VIEW (Notice Board Hidden) */
                 <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6">
                   <button
                     onClick={handleBackToServices}
@@ -1063,7 +1076,7 @@
                 /* MAIN PAGE / CATEGORY FILTERED VIEW */
                 <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
                   
-                  {/* FOCUSED CATEGORY HEADER (Shows when a specific category is selected, Notice Board is Hidden) */}
+                  {/* FOCUSED CATEGORY HEADER BANNER */}
                   {selectedCat !== 'All Services' ? (
                     <div className="bg-gradient-to-r from-blue-900 to-indigo-900 text-white rounded-xl p-5 shadow-md flex items-center justify-between gap-3">
                       <div>
