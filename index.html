@@ -343,7 +343,7 @@
         setActiveService(srv);
       };
 
-      // Direct Apply & Automatic Status Record Function
+      // Guaranteed Async Record and Direct Apply Redirect
       const openEmbeddedForm = async (srv) => {
         if (!userName) {
           setShowNamePromptModal(true);
@@ -351,6 +351,7 @@
         }
 
         if (srv && srv.applyLink) {
+          // Record first to guarantee Realtime Database insertion
           await recordApplication(srv);
           const link = srv.applyLink.startsWith('http') ? srv.applyLink : `https://${srv.applyLink}`;
           window.open(link, '_blank', 'noopener,noreferrer');
@@ -366,7 +367,7 @@
 
         const currentDeviceId = getStoredDeviceId();
         const currentCustomId = getStoredCustomId();
-        const currentName = localStorage.getItem('sgs_user_name') || 'Anonymous User';
+        const currentName = localStorage.getItem('sgs_user_name') || userName || 'Anonymous User';
 
         const applicationData = {
           id: appId,
@@ -383,9 +384,11 @@
         };
 
         try {
-          const appRef = window.firebaseRef(window.firebaseDb, 'applications/' + appId);
-          await window.firebaseSet(appRef, applicationData);
-          showNotification('Form Apply Record Saved! Status Tracker Me Add Ho Gaya.');
+          if (window.firebaseDb) {
+            const appRef = window.firebaseRef(window.firebaseDb, 'applications/' + appId);
+            await window.firebaseSet(appRef, applicationData);
+            showNotification('Status Added To Your Device History!');
+          }
         } catch (e) {
           console.error("Database Record Error:", e);
         }
@@ -702,354 +705,291 @@
             </div>
           )}
 
-          {/* STICKY HEADER */}
-          <header className="sticky top-0 z-40 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 text-white shadow-sm border-b border-indigo-500/30 py-1.5 sm:py-2 px-3 transition-all">
-            <div className="max-w-6xl mx-auto flex items-center justify-between gap-2">
-              
-              <button 
-                onClick={() => setShowDrawer(true)}
-                className="p-1.5 text-white hover:bg-white/10 rounded-lg transition-colors focus:outline-none flex items-center gap-1"
-                title="Open Menu Drawer"
-              >
-                <Icons.Menu />
-              </button>
-
-              <div 
-                onClick={() => {
-                  setActiveService(null);
-                  setSelectedCat('Sabhi Services');
-                  setSearchQuery('');
-                }}
-                className="cursor-pointer text-center group flex-1"
-              >
-                <h1 className="text-base sm:text-xl font-extrabold tracking-tight text-yellow-300 group-hover:text-yellow-200 transition-colors leading-tight drop-shadow-xs">
-                  SGS ONLINE SERVICE
-                </h1>
-                <p className="text-[9px] sm:text-[11px] font-bold text-amber-200/90 uppercase tracking-wider leading-none mt-0.5">
-                  Government & College Online Form Seva Portal
-                </p>
+          {/* FULL SCREEN MODAL VIEW WHEN ANY BUTTON/SECTION IS OPEN (Hides Main Page Data) */}
+          {activeModalPage ? (
+            <div className="fixed inset-0 bg-slate-100 z-50 flex flex-col h-full w-full overflow-hidden">
+              {/* Modal Top Header */}
+              <div className="bg-gradient-to-r from-blue-800 to-indigo-900 text-white px-4 py-3 shadow-md flex items-center justify-between shrink-0">
+                <h3 className="font-extrabold text-white text-base sm:text-lg flex items-center gap-2">
+                  <Icons.ShieldCheck />
+                  <span>
+                    {activeModalPage === 'userStatus' && 'Aapke Dwara Apply Kiye Gaye Forms Ka Realtime Status'}
+                    {activeModalPage === 'privacy' && 'Privacy Policy'}
+                    {activeModalPage === 'terms' && 'Terms & Conditions'}
+                    {activeModalPage === 'adminStatus' && 'Admin Application Status Management'}
+                    {activeModalPage === 'adminUserDetail' && 'User Specific Complete Application Details'}
+                    {activeModalPage === 'allUsers' && 'Admin Active Users Inspector'}
+                  </span>
+                </h3>
+                <button 
+                  onClick={() => setActiveModalPage(null)} 
+                  className="bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1 transition-all"
+                >
+                  <Icons.X /> Close
+                </button>
               </div>
 
-            </div>
-          </header>
-
-          {/* SIDE DRAWER MENU */}
-          {showDrawer && (
-            <div className="fixed inset-0 z-50 flex">
-              <div 
-                className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity"
-                onClick={() => setShowDrawer(false)}
-              ></div>
-
-              <div className="relative w-72 max-w-[80%] bg-white h-full shadow-2xl flex flex-col justify-between z-10 p-5 overflow-y-auto">
-                <div>
-                  <div className="flex items-center justify-between pb-4 border-b border-slate-200 mb-4">
-                    <div>
-                      <h3 className="font-extrabold text-blue-800 text-base">SGS ONLINE SERVICE</h3>
-                      <p className="text-xs text-slate-700 font-bold mt-1">👤 {userName || 'Guest User'}</p>
-                      <p className="text-[10px] text-slate-500 font-semibold">ID: <span className="font-bold text-blue-700">{userCustomId || 'Not Set'}</span></p>
+              {/* Modal Body Content (Full Page View) */}
+              <div className="flex-1 overflow-y-auto p-4 sm:p-6 max-w-4xl w-full mx-auto text-xs text-slate-700 space-y-4">
+                
+                {/* USER MY STATUS VIEW */}
+                {activeModalPage === 'userStatus' && (
+                  <div className="space-y-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <div className="bg-blue-50 border border-blue-200 p-4 rounded-xl flex items-center justify-between">
+                      <div>
+                        <p className="text-[10px] text-slate-500 font-bold uppercase">Name & Unique ID:</p>
+                        <p className="text-base font-black text-slate-900">👤 {userName || 'Guest User'}</p>
+                        <p className="text-xs font-bold text-blue-800">{userCustomId}</p>
+                      </div>
+                      <span className="text-[10px] bg-blue-200 text-blue-900 font-bold px-2.5 py-1 rounded-full">Live Firebase Sync</span>
                     </div>
-                    <button onClick={() => setShowDrawer(false)} className="text-slate-400 hover:text-slate-600 p-1">
-                      <Icons.X />
-                    </button>
-                  </div>
 
-                  <nav className="space-y-2 text-xs font-bold text-slate-700">
-                    <button
-                      onClick={() => { 
-                        setSelectedCat('Sabhi Services'); 
-                        setActiveService(null); 
-                        setShowDrawer(false); 
-                      }}
-                      className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-blue-700"
-                    >
-                      <span>🏠 Home Page / Sabhi Services</span>
-                      <Icons.ChevronRight />
-                    </button>
+                    <h4 className="font-bold text-slate-900 text-sm border-b pb-2">Applied Forms History ({myDeviceApplications.length}):</h4>
 
-                    <button
-                      onClick={() => { 
-                        setActiveModalPage('userStatus'); 
-                        setShowDrawer(false); 
-                      }}
-                      className="w-full text-left p-2.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-800 flex items-center justify-between border border-blue-200 mt-2"
-                    >
-                      <span className="flex items-center gap-1.5">
-                        <Icons.Clock />
-                        <span>My Application Status (Sthiti)</span>
-                      </span>
-                      <Icons.ChevronRight />
-                    </button>
-
-                    <button
-                      onClick={handleShareWebsite}
-                      className="w-full text-left p-2.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 flex items-center justify-between border border-emerald-200 mt-1"
-                    >
-                      <span className="flex items-center gap-1.5 font-extrabold">
-                        <Icons.Share2 />
-                        <span>Share Website</span>
-                      </span>
-                      <Icons.ChevronRight />
-                    </button>
-
-                    <button
-                      onClick={() => { setActiveModalPage('privacy'); setShowDrawer(false); }}
-                      className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-slate-800 mt-1"
-                    >
-                      <span>🔒 Privacy Policy</span>
-                      <Icons.ChevronRight />
-                    </button>
-
-                    <button
-                      onClick={() => { setActiveModalPage('terms'); setShowDrawer(false); }}
-                      className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-slate-800"
-                    >
-                      <span>📜 Terms & Conditions</span>
-                      <Icons.ChevronRight />
-                    </button>
-
-                    {/* ADMIN BUTTONS */}
-                    {isAdmin && (
-                      <div className="space-y-1 pt-2 border-t border-purple-100 mt-2">
-                        <button
-                          onClick={() => { setActiveModalPage('adminStatus'); setShowDrawer(false); }}
-                          className="w-full text-left p-2.5 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-900 flex items-center justify-between border border-purple-200"
-                        >
-                          <span className="flex items-center gap-1.5 font-extrabold">
-                            <Icons.ShieldCheck />
-                            <span>Admin All Applications ({applications.length})</span>
-                          </span>
-                          <Icons.ChevronRight />
-                        </button>
-
-                        <button
-                          onClick={() => { setActiveModalPage('allUsers'); setShowDrawer(false); }}
-                          className="w-full text-left p-2.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-900 flex items-center justify-between border border-indigo-200"
-                        >
-                          <span className="flex items-center gap-1.5 font-extrabold">
-                            <Icons.User />
-                            <span>Admin Active Users ({uniqueUsersList.length})</span>
-                          </span>
-                          <Icons.ChevronRight />
-                        </button>
+                    {myDeviceApplications.length === 0 ? (
+                      <div className="text-center py-10">
+                        <p className="text-sm text-slate-500 font-bold">Aapne abhi tak kisi bhi form par apply nahi kiya hai.</p>
+                        <p className="text-xs text-slate-400 mt-1">Kisi bhi service par 'ONLINE APPLY KAREIN' click karne par aapka status yahan jud jayega.</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {myDeviceApplications.map(appItem => (
+                          <div key={appItem.id} className="p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between gap-3 shadow-2xs">
+                            <div>
+                              <h5 className="font-extrabold text-slate-900 text-sm">{appItem.serviceTitle}</h5>
+                              <p className="text-[11px] text-slate-500 mt-1">Applied Date: {appItem.applyDate}</p>
+                            </div>
+                            <div className="shrink-0">
+                              {appItem.status === 'Pending' && (
+                                <span className="bg-amber-100 text-amber-800 border border-amber-300 px-3 py-1 rounded-full text-xs font-extrabold animate-pulse">
+                                  ⏳ Pending
+                                </span>
+                              )}
+                              {appItem.status === 'In Process' && (
+                                <span className="bg-blue-100 text-blue-800 border border-blue-300 px-3 py-1 rounded-full text-xs font-extrabold">
+                                  ⚙️ In Process
+                                </span>
+                              )}
+                              {appItem.status === 'Approved' && (
+                                <span className="bg-emerald-100 text-emerald-800 border border-emerald-300 px-3 py-1 rounded-full text-xs font-extrabold">
+                                  ✅ Approved
+                                </span>
+                              )}
+                              {appItem.status === 'Rejected' && (
+                                <span className="bg-rose-100 text-rose-800 border border-rose-300 px-3 py-1 rounded-full text-xs font-extrabold">
+                                  ❌ Rejected
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     )}
-                  </nav>
-                </div>
+                  </div>
+                )}
 
-                <div className="pt-4 border-t border-slate-200 space-y-2">
-                  <p className="text-[10px] text-slate-400 text-center">
-                    Firebase Realtime Database Connected
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
+                {/* PRIVACY POLICY */}
+                {activeModalPage === 'privacy' && (
+                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700">
+                    <div className="bg-blue-50 border-l-4 border-blue-600 p-4 rounded-r-xl text-slate-900 font-medium">
+                      <strong>📌 Official Cyber Seva Kendra Declaration:</strong> SGS ONLINE SERVICE operates as an authorized online assistance service center. We facilitate government online forms (such as Bihar RTPS Caste, Income, Residence Certificates), College/University Admissions, Scholarship applications, and various e-services for our customers upon their explicit request.
+                    </div>
 
-          {/* STATUS, PRIVACY, TERMS & ADMIN MODAL PAGES */}
-          {activeModalPage && (
-            <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 overflow-y-auto">
-              <div className="bg-white rounded-xl max-w-2xl w-full p-6 shadow-2xl my-8 border border-slate-200 max-h-[85vh] flex flex-col">
-                <div className="flex items-center justify-between border-b pb-3 mb-4">
-                  <h3 className="font-extrabold text-slate-900 text-lg flex items-center gap-2">
-                    <Icons.ShieldCheck />
-                    <span>
-                      {activeModalPage === 'userStatus' && 'Aapke Dwara Apply Kiye Gaye Forms Ka Realtime Status'}
-                      {activeModalPage === 'privacy' && 'Privacy Policy'}
-                      {activeModalPage === 'terms' && 'Terms & Conditions'}
-                      {activeModalPage === 'adminStatus' && 'Admin Application Status Management'}
-                      {activeModalPage === 'adminUserDetail' && 'User Specific Complete Application Details'}
-                      {activeModalPage === 'allUsers' && 'Admin Active Users Inspector'}
-                    </span>
-                  </h3>
-                  <button onClick={() => setActiveModalPage(null)} className="text-slate-400 hover:text-slate-600">
-                    <Icons.X />
-                  </button>
-                </div>
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">1. Personal Data & Identifiers We Collect:</h4>
+                      <p className="mb-2 font-semibold">To process online applications accurately on official government and university portals, we collect necessary user information including:</p>
+                      <ul className="list-disc pl-5 space-y-1 text-slate-700 font-medium">
+                        <li><strong>Full Name, Father's Name, & Mother's Name</strong></li>
+                        <li><strong>Date of Birth, Gender, & Full Residential Address</strong></li>
+                        <li><strong>Educational Documents & Academic Marksheets</strong> (10th/12th/Graduation)</li>
+                        <li><strong>Identity Identification Copies & Passport Photographs</strong></li>
+                      </ul>
+                    </div>
 
-                <div className="flex-1 overflow-y-auto text-xs text-slate-700 space-y-4 pr-1 leading-relaxed">
-                  
-                  {/* USER MY STATUS VIEW */}
-                  {activeModalPage === 'userStatus' && (
-                    <div className="space-y-3">
-                      <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg flex items-center justify-between">
-                        <div>
-                          <p className="text-[10px] text-slate-500 font-bold uppercase">Name & ID:</p>
-                          <p className="text-sm font-black text-slate-900">{userName || 'Guest User'}</p>
-                          <p className="text-xs font-bold text-blue-800">{userCustomId}</p>
-                        </div>
-                        <span className="text-[10px] bg-blue-200 text-blue-900 font-bold px-2 py-1 rounded">Live Firebase Sync</span>
-                      </div>
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Data Security & Confidentiality Assurance:</h4>
+                      <p>All personal details and form application updates are synchronized securely through Firebase Realtime Database. We guarantee strict data privacy, zero commercial sharing, and maximum security for all user paperwork.</p>
+                    </div>
+                  </div>
+                )}
 
-                      <h4 className="font-bold text-slate-900 text-sm border-b pb-1">Applied Forms History:</h4>
+                {/* TERMS & CONDITIONS */}
+                {activeModalPage === 'terms' && (
+                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700">
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Online Facilitation Service Overview:</h4>
+                      <p>SGS ONLINE SERVICE acts as a third-party Cyber Seva Kendra facilitator assisting applicants in filling out government and educational forms correctly. Final approval, certificate issuance, or university admission rests solely with the respective official government or university authorities.</p>
+                    </div>
 
-                      {myDeviceApplications.length === 0 ? (
-                        <p className="text-xs text-slate-400 italic text-center py-6">Aapne abhi tak kisi bhi form par apply nahi kiya hai.</p>
-                      ) : (
-                        <div className="space-y-2">
-                          {myDeviceApplications.map(appItem => (
-                            <div key={appItem.id} className="p-3 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between gap-3">
-                              <div>
-                                <h5 className="font-bold text-slate-900 text-xs">{appItem.serviceTitle}</h5>
-                                <p className="text-[10px] text-slate-400 mt-0.5">Applied Date: {appItem.applyDate}</p>
-                              </div>
-                              <div className="shrink-0">
-                                {appItem.status === 'Pending' && (
-                                  <span className="bg-amber-100 text-amber-800 border border-amber-300 px-2.5 py-1 rounded-full text-[10px] font-extrabold animate-pulse">
-                                    ⏳ Pending
-                                  </span>
-                                )}
-                                {appItem.status === 'In Process' && (
-                                  <span className="bg-blue-100 text-blue-800 border border-blue-300 px-2.5 py-1 rounded-full text-[10px] font-extrabold">
-                                    ⚙️ In Process
-                                  </span>
-                                )}
-                                {appItem.status === 'Approved' && (
-                                  <span className="bg-emerald-100 text-emerald-800 border border-emerald-300 px-2.5 py-1 rounded-full text-[10px] font-extrabold">
-                                    ✅ Approved
-                                  </span>
-                                )}
-                                {appItem.status === 'Rejected' && (
-                                  <span className="bg-rose-100 text-rose-800 border border-rose-300 px-2.5 py-1 rounded-full text-[10px] font-extrabold">
-                                    ❌ Rejected
-                                  </span>
-                                )}
-                              </div>
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Applicant Responsibility:</h4>
+                      <p>Applicants are responsible for providing authentic and truthful information (Full Name, Father's Name, Marksheets, Address, etc.). SGS ONLINE SERVICE is not liable for form rejections caused by inaccurate details provided by users.</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* ADMIN ALL ACTIVE USERS */}
+                {activeModalPage === 'allUsers' && isAdmin && (
+                  <div className="space-y-3 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <p className="text-xs text-slate-500 font-semibold">System ke sabhi unique applicants. Click karke specific user ka poora status dekhein:</p>
+
+                    {uniqueUsersList.length === 0 ? (
+                      <p className="text-xs text-slate-400 italic text-center py-6">Koi active user entry nahi milii.</p>
+                    ) : (
+                      <div className="space-y-2">
+                        {uniqueUsersList.map(u => (
+                          <div key={u.uid} className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
+                            <div>
+                              <span className="bg-blue-100 text-blue-800 text-[10px] font-extrabold px-2 py-0.5 rounded">
+                                {u.customId}
+                              </span>
+                              <p className="font-bold text-slate-900 text-sm mt-1">👤 {u.userName}</p>
+                              <p className="text-[10px] text-slate-400">Total Applied Forms: {u.count}</p>
                             </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )}
 
-                  {/* PRIVACY POLICY */}
-                  {activeModalPage === 'privacy' && (
-                    <div className="space-y-4 text-slate-700">
-                      <div className="bg-blue-50 border-l-4 border-blue-600 p-3.5 rounded text-slate-900 font-medium">
-                        <strong>📌 Official Cyber Seva Kendra Declaration:</strong> SGS ONLINE SERVICE operates as an authorized online assistance service center. We facilitate government online forms (such as Bihar RTPS Caste, Income, Residence Certificates), College/University Admissions, Scholarship applications, and various e-services for our customers upon their explicit request.
+                            <button
+                              onClick={() => { setSelectedInspectorUid(u.uid); setActiveModalPage('adminUserDetail'); }}
+                              className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-3.5 py-2 rounded-xl transition-colors"
+                            >
+                              View User Forms & Data →
+                            </button>
+                          </div>
+                        ))}
                       </div>
+                    )}
+                  </div>
+                )}
 
-                      <div>
-                        <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">1. Personal Data & Identifiers We Collect:</h4>
-                        <p className="mb-2 font-semibold">To process online applications accurately on official government and university portals, we collect necessary user information including:</p>
-                        <ul className="list-disc pl-5 space-y-1 text-slate-700 font-medium">
-                          <li><strong>Full Name, Father's Name, & Mother's Name</strong></li>
-                          <li><strong>Date of Birth, Gender, & Full Residential Address</strong></li>
-                          <li><strong>Educational Documents & Academic Marksheets</strong> (10th/12th/Graduation)</li>
-                          <li><strong>Identity Identification Copies & Passport Photographs</strong></li>
-                        </ul>
-                      </div>
+                {/* ADMIN ALL APPLICATIONS STATUS MANAGER */}
+                {activeModalPage === 'adminStatus' && isAdmin && (
+                  <div className="space-y-3 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <p className="text-xs text-slate-500 font-semibold">Sabhi applicants ki real-time forms list. Direct status badlein (User App Par Turant Update Hoga):</p>
 
-                      <div>
-                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Data Security & Confidentially Assurance:</h4>
-                        <p>All personal details and form application updates are synchronized securely through Firebase Realtime Database. We guarantee strict data privacy, zero commercial sharing, and maximum security for all user paperwork.</p>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* TERMS & CONDITIONS */}
-                  {activeModalPage === 'terms' && (
-                    <div className="space-y-4 text-slate-700">
-                      <div>
-                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Online Facilitation Service Overview:</h4>
-                        <p>SGS ONLINE SERVICE acts as a third-party Cyber Seva Kendra facilitator assisting applicants in filling out government and educational forms correctly. Final approval, certificate issuance, or university admission rests solely with the respective official government or university authorities.</p>
-                      </div>
-
-                      <div>
-                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Applicant Responsibility:</h4>
-                        <p>Applicants are responsible for providing authentic and truthful information (Full Name, Father's Name, Marksheets, Address, etc.). SGS ONLINE SERVICE is not liable for form rejections caused by inaccurate details provided by users.</p>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* ADMIN ALL ACTIVE USERS */}
-                  {activeModalPage === 'allUsers' && isAdmin && (
-                    <div className="space-y-3">
-                      <p className="text-xs text-slate-500">System ke sabhi unique applicants. Click karke specific user ka poora status dekhein:</p>
-
-                      {uniqueUsersList.length === 0 ? (
-                        <p className="text-xs text-slate-400 italic text-center py-6">Koi active user entry nahi milii.</p>
-                      ) : (
-                        <div className="space-y-2">
-                          {uniqueUsersList.map(u => (
-                            <div key={u.uid} className="p-3 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
+                    {applications.length === 0 ? (
+                      <p className="text-xs text-slate-400 italic text-center py-6">Abhi tak kisi form me entry nahi hui hai.</p>
+                    ) : (
+                      <div className="space-y-3">
+                        {applications.map(appItem => (
+                          <div key={appItem.id} className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
+                            <div className="flex items-start justify-between gap-2">
                               <div>
-                                <span className="bg-blue-100 text-blue-800 text-[10px] font-extrabold px-2 py-0.5 rounded">
-                                  {u.customId}
-                                </span>
-                                <p className="font-bold text-slate-900 text-xs mt-1">👤 {u.userName}</p>
-                                <p className="text-[10px] text-slate-400">Applied Forms: {u.count}</p>
+                                <button 
+                                  onClick={() => { setSelectedInspectorUid(appItem.uid); setActiveModalPage('adminUserDetail'); }}
+                                  className="bg-blue-100 hover:bg-blue-200 text-blue-800 text-[11px] font-extrabold px-2.5 py-0.5 rounded-lg underline"
+                                >
+                                  User ID: {appItem.customId || 'SGS-USER'} ({appItem.userName || 'Guest'})
+                                </button>
+                                <h5 className="font-extrabold text-slate-900 text-sm mt-1.5">{appItem.serviceTitle}</h5>
+                                <p className="text-[10px] text-slate-400 mt-0.5">Apply Date: {appItem.applyDate}</p>
                               </div>
 
                               <button
-                                onClick={() => { setSelectedInspectorUid(u.uid); setActiveModalPage('adminUserDetail'); }}
-                                className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[10px] px-3 py-1.5 rounded transition-colors"
+                                onClick={() => { setSelectedInspectorUid(appItem.uid); setActiveModalPage('adminUserDetail'); }}
+                                className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[10px] px-2.5 py-1.5 rounded-lg transition-colors shrink-0"
                               >
-                                View User Forms & Data →
+                                View User History
                               </button>
                             </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )}
 
-                  {/* ADMIN ALL APPLICATIONS STATUS MANAGER */}
-                  {activeModalPage === 'adminStatus' && isAdmin && (
-                    <div className="space-y-3">
-                      <p className="text-xs text-slate-500">Sabhi applicants ki real-time forms list. Direct status badlein (User App Par Turant Update Hoga):</p>
-
-                      {applications.length === 0 ? (
-                        <p className="text-xs text-slate-400 italic text-center py-6">Abhi tak kisi form me entry nahi hui hai.</p>
-                      ) : (
-                        <div className="space-y-3">
-                          {applications.map(appItem => (
-                            <div key={appItem.id} className="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
-                              <div className="flex items-start justify-between gap-2">
-                                <div>
-                                  <button 
-                                    onClick={() => { setSelectedInspectorUid(appItem.uid); setActiveModalPage('adminUserDetail'); }}
-                                    className="bg-blue-100 hover:bg-blue-200 text-blue-800 text-[10px] font-extrabold px-2 py-0.5 rounded underline"
-                                  >
-                                    User ID: {appItem.customId || 'SGS-USER'} ({appItem.userName || 'Guest'})
-                                  </button>
-                                  <h5 className="font-bold text-slate-900 text-xs mt-1">{appItem.serviceTitle}</h5>
-                                  <p className="text-[10px] text-slate-400">Apply Date: {appItem.applyDate}</p>
-                                </div>
-
+                            <div className="flex items-center justify-between border-t pt-2.5">
+                              <span className="text-xs font-bold text-slate-700">Status: <strong className="text-blue-700">{appItem.status}</strong></span>
+                              
+                              <div className="flex items-center gap-1">
                                 <button
-                                  onClick={() => { setSelectedInspectorUid(appItem.uid); setActiveModalPage('adminUserDetail'); }}
-                                  className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[10px] px-2.5 py-1 rounded transition-colors shrink-0"
+                                  onClick={() => handleUpdateAppStatus(appItem.id, 'Pending')}
+                                  className={`px-2.5 py-1 rounded-lg text-[10px] font-bold ${appItem.status === 'Pending' ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-700'}`}
                                 >
-                                  View User History
+                                  Pending
+                                </button>
+                                <button
+                                  onClick={() => handleUpdateAppStatus(appItem.id, 'In Process')}
+                                  className={`px-2.5 py-1 rounded-lg text-[10px] font-bold ${appItem.status === 'In Process' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-700'}`}
+                                >
+                                  In Process
+                                </button>
+                                <button
+                                  onClick={() => handleUpdateAppStatus(appItem.id, 'Approved')}
+                                  className={`px-2.5 py-1 rounded-lg text-[10px] font-bold ${appItem.status === 'Approved' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700'}`}
+                                >
+                                  Approve
+                                </button>
+                                <button
+                                  onClick={() => handleUpdateAppStatus(appItem.id, 'Rejected')}
+                                  className={`px-2.5 py-1 rounded-lg text-[10px] font-bold ${appItem.status === 'Rejected' ? 'bg-rose-600 text-white' : 'bg-slate-200 text-slate-700'}`}
+                                >
+                                  Reject
                                 </button>
                               </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
 
-                              <div className="flex items-center justify-between border-t pt-2 mt-2">
+                {/* ADMIN SPECIFIC USER DETAIL INSPECTOR */}
+                {activeModalPage === 'adminUserDetail' && isAdmin && (() => {
+                  const targetUserApps = applications.filter(app => app.uid === selectedInspectorUid);
+                  const sampleUser = targetUserApps[0] || {};
+                  
+                  return (
+                    <div className="space-y-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                      <button
+                        onClick={() => setActiveModalPage('allUsers')}
+                        className="inline-flex items-center gap-1 text-xs font-bold text-blue-700 hover:underline mb-2"
+                      >
+                        <Icons.ArrowLeft /> Back
+                      </button>
+
+                      <div className="bg-indigo-50 border border-indigo-200 p-4 rounded-xl space-y-1">
+                        <p className="text-[10px] text-slate-500 font-bold uppercase">Target User Overview:</p>
+                        <p className="text-base font-black text-indigo-900">Name: {sampleUser.userName || 'Guest User'}</p>
+                        <p className="text-xs text-indigo-800 font-bold">User ID: {sampleUser.customId || 'SGS-USER'}</p>
+                        <p className="text-[10px] text-slate-500">Device UID: {selectedInspectorUid}</p>
+                      </div>
+
+                      <h4 className="font-extrabold text-slate-900 text-sm border-b pb-2">
+                        Is Specific User Ke Sabhi Applied Forms ({targetUserApps.length}):
+                      </h4>
+
+                      {targetUserApps.length === 0 ? (
+                        <p className="text-xs text-slate-400 italic text-center py-6">Is user ki koi entry nahi milii.</p>
+                      ) : (
+                        <div className="space-y-3">
+                          {targetUserApps.map(appItem => (
+                            <div key={appItem.id} className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
+                              <div>
+                                <h5 className="font-extrabold text-slate-900 text-xs">{appItem.serviceTitle}</h5>
+                                <p className="text-[10px] text-slate-500 mt-0.5">Category: {appItem.category || 'N/A'}</p>
+                                <p className="text-[10px] text-slate-400">Applied Date: {appItem.applyDate}</p>
+                              </div>
+
+                              <div className="flex items-center justify-between border-t pt-2.5">
                                 <span className="text-xs font-bold text-slate-700">Status: <strong className="text-blue-700">{appItem.status}</strong></span>
                                 
                                 <div className="flex items-center gap-1">
                                   <button
                                     onClick={() => handleUpdateAppStatus(appItem.id, 'Pending')}
-                                    className={`px-2 py-1 rounded text-[10px] font-bold ${appItem.status === 'Pending' ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-700'}`}
+                                    className={`px-2.5 py-1 rounded-lg text-[10px] font-bold ${appItem.status === 'Pending' ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-700'}`}
                                   >
                                     Pending
                                   </button>
                                   <button
                                     onClick={() => handleUpdateAppStatus(appItem.id, 'In Process')}
-                                    className={`px-2 py-1 rounded text-[10px] font-bold ${appItem.status === 'In Process' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-700'}`}
+                                    className={`px-2.5 py-1 rounded-lg text-[10px] font-bold ${appItem.status === 'In Process' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-700'}`}
                                   >
                                     In Process
                                   </button>
                                   <button
                                     onClick={() => handleUpdateAppStatus(appItem.id, 'Approved')}
-                                    className={`px-2 py-1 rounded text-[10px] font-bold ${appItem.status === 'Approved' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700'}`}
+                                    className={`px-2.5 py-1 rounded-lg text-[10px] font-bold ${appItem.status === 'Approved' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700'}`}
                                   >
                                     Approve
                                   </button>
                                   <button
                                     onClick={() => handleUpdateAppStatus(appItem.id, 'Rejected')}
-                                    className={`px-2 py-1 rounded text-[10px] font-bold ${appItem.status === 'Rejected' ? 'bg-rose-600 text-white' : 'bg-slate-200 text-slate-700'}`}
+                                    className={`px-2.5 py-1 rounded-lg text-[10px] font-bold ${appItem.status === 'Rejected' ? 'bg-rose-600 text-white' : 'bg-slate-200 text-slate-700'}`}
                                   >
                                     Reject
                                   </button>
@@ -1060,409 +1000,415 @@
                         </div>
                       )}
                     </div>
-                  )}
+                  );
+                })()}
 
-                  {/* ADMIN SPECIFIC USER DETAIL INSPECTOR */}
-                  {activeModalPage === 'adminUserDetail' && isAdmin && (() => {
-                    const targetUserApps = applications.filter(app => app.uid === selectedInspectorUid);
-                    const sampleUser = targetUserApps[0] || {};
-                    
-                    return (
-                      <div className="space-y-4">
-                        <button
-                          onClick={() => setActiveModalPage('allUsers')}
-                          className="inline-flex items-center gap-1 text-xs font-bold text-blue-700 hover:underline mb-2"
-                        >
-                          <Icons.ArrowLeft /> Back
-                        </button>
+              </div>
 
-                        <div className="bg-indigo-50 border border-indigo-200 p-3.5 rounded-xl space-y-1">
-                          <p className="text-[10px] text-slate-500 font-bold uppercase">Target User Overview:</p>
-                          <p className="text-sm font-black text-indigo-900">Name: {sampleUser.userName || 'Guest User'}</p>
-                          <p className="text-xs text-indigo-800 font-bold">User ID: {sampleUser.customId || 'SGS-USER'}</p>
-                          <p className="text-[10px] text-slate-500">Device UID: {selectedInspectorUid}</p>
-                        </div>
-
-                        <h4 className="font-extrabold text-slate-900 text-sm border-b pb-1">
-                          Is Specific User Ke Sabhi Applied Forms ({targetUserApps.length}):
-                        </h4>
-
-                        {targetUserApps.length === 0 ? (
-                          <p className="text-xs text-slate-400 italic text-center py-6">Is user ki koi entry nahi milii.</p>
-                        ) : (
-                          <div className="space-y-3">
-                            {targetUserApps.map(appItem => (
-                              <div key={appItem.id} className="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
-                                <div>
-                                  <h5 className="font-bold text-slate-900 text-xs">{appItem.serviceTitle}</h5>
-                                  <p className="text-[10px] text-slate-500 mt-0.5">Category: {appItem.category || 'N/A'}</p>
-                                  <p className="text-[10px] text-slate-400">Applied Date: {appItem.applyDate}</p>
-                                </div>
-
-                                <div className="flex items-center justify-between border-t pt-2 mt-2">
-                                  <span className="text-xs font-bold text-slate-700">Status: <strong className="text-blue-700">{appItem.status}</strong></span>
-                                  
-                                  <div className="flex items-center gap-1">
-                                    <button
-                                      onClick={() => handleUpdateAppStatus(appItem.id, 'Pending')}
-                                      className={`px-2 py-1 rounded text-[10px] font-bold ${appItem.status === 'Pending' ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-700'}`}
-                                    >
-                                      Pending
-                                    </button>
-                                    <button
-                                      onClick={() => handleUpdateAppStatus(appItem.id, 'In Process')}
-                                      className={`px-2 py-1 rounded text-[10px] font-bold ${appItem.status === 'In Process' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-700'}`}
-                                    >
-                                      In Process
-                                    </button>
-                                    <button
-                                      onClick={() => handleUpdateAppStatus(appItem.id, 'Approved')}
-                                      className={`px-2 py-1 rounded text-[10px] font-bold ${appItem.status === 'Approved' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700'}`}
-                                    >
-                                      Approve
-                                    </button>
-                                    <button
-                                      onClick={() => handleUpdateAppStatus(appItem.id, 'Rejected')}
-                                      className={`px-2 py-1 rounded text-[10px] font-bold ${appItem.status === 'Rejected' ? 'bg-rose-600 text-white' : 'bg-slate-200 text-slate-700'}`}
-                                    >
-                                      Reject
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })()}
-                </div>
-
-                <div className="pt-4 border-t mt-4 flex justify-end">
-                  <button onClick={() => setActiveModalPage(null)} className="bg-slate-800 text-white font-bold px-4 py-2 rounded-lg text-xs">
-                    Close Window
-                  </button>
-                </div>
+              {/* Modal Bottom Fixed Close Bar */}
+              <div className="p-3 bg-white border-t border-slate-200 flex justify-end shrink-0">
+                <button 
+                  onClick={() => setActiveModalPage(null)} 
+                  className="bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-2 rounded-xl text-xs shadow-md transition-all"
+                >
+                  Close Window
+                </button>
               </div>
             </div>
-          )}
-
-          {/* MAIN SERVICES CONTENT */}
-          {activeService ? (
-            <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6">
-              <button
-                onClick={handleBackToServices}
-                className="inline-flex items-center gap-2 bg-white hover:bg-slate-200 text-slate-800 font-bold text-xs sm:text-sm px-4 py-2 rounded-xl border border-slate-300 shadow-2xs mb-6 transition-all"
-              >
-                <Icons.ArrowLeft /> Back
-              </button>
-
-              <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
-                {activeService.bannerUrl ? (
-                  <div className="w-full h-48 sm:h-64 overflow-hidden bg-slate-900 relative">
-                    <img src={activeService.bannerUrl} alt={activeService.title} className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent p-6 flex flex-col justify-end">
-                      <span className="bg-blue-600 text-white text-[11px] font-bold px-2.5 py-1 rounded uppercase tracking-wider w-fit">
-                        {activeService.category}
-                      </span>
-                      <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2 leading-snug drop-shadow-md">
-                        {activeService.title}
-                      </h2>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="bg-slate-900 text-white p-6 sm:p-8">
-                    <span className="bg-blue-600 text-white text-[11px] font-bold px-2.5 py-1 rounded uppercase tracking-wider">
-                      {activeService.category}
-                    </span>
-                    <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-3 leading-snug">
-                      {activeService.title}
-                    </h2>
-                  </div>
-                )}
-
-                <div className="p-6 sm:p-8 space-y-6">
-                  {activeService.requiredDocs && activeService.requiredDocs.length > 0 && (
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
-                      <h3 className="text-base font-bold text-slate-900 flex items-center gap-2 mb-3">
-                        <Icons.FileText />
-                        <span>Kya-Kya Dastavez (Documents) Lagega:</span>
-                      </h3>
-                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        {activeService.requiredDocs.map((doc, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm text-slate-700 bg-white p-2.5 rounded border border-slate-200">
-                            <span className="text-emerald-600"><Icons.CheckCircle2 /></span>
-                            <span>{doc}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  <div>
-                    <h3 className="text-base font-bold text-slate-900 mb-2 border-b border-slate-200 pb-2">
-                      Poori Jaankari / Description:
-                    </h3>
-                    {activeService.descType === 'html' ? (
-                      <div 
-                        className="text-sm text-slate-700 leading-relaxed font-sans"
-                        dangerouslySetInnerHTML={{ __html: activeService.description }}
-                      />
-                    ) : (
-                      <div className="whitespace-pre-line text-sm text-slate-700 leading-relaxed bg-slate-50/50 p-4 rounded-lg border border-slate-200">
-                        {activeService.description || "Apply Button par click karke form bharein."}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="pt-6 border-t border-slate-200 text-center">
-                    <button
-                      onClick={() => openEmbeddedForm(activeService)}
-                      className="w-full sm:w-auto min-w-[260px] bg-blue-700 hover:bg-blue-800 text-white font-extrabold text-lg px-8 py-3.5 rounded-xl shadow-lg transition-all"
-                    >
-                      ONLINE APPLY KAREIN
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </main>
           ) : (
-            <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
-              
-              {selectedCat !== 'Sabhi Services' && (
-                <div className="bg-gradient-to-r from-blue-900 to-indigo-900 text-white rounded-xl p-5 shadow-md flex items-center justify-between gap-3">
-                  <div>
-                    <span className="text-[10px] bg-amber-400 text-slate-900 font-extrabold px-2 py-0.5 rounded uppercase">
-                      Focused Category View
-                    </span>
-                    <h2 className="text-xl sm:text-2xl font-black text-white mt-1">
-                      📂 {selectedCat}
-                    </h2>
-                    <p className="text-xs text-blue-200 mt-0.5">
-                      Is section me kul {filteredServices.length} active service buttons hain.
+            /* MAIN WEBSITE CONTENT (Visible only when no Modal Page is active) */
+            <>
+              {/* STICKY HEADER */}
+              <header className="sticky top-0 z-40 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 text-white shadow-sm border-b border-indigo-500/30 py-1.5 sm:py-2 px-3 transition-all">
+                <div className="max-w-6xl mx-auto flex items-center justify-between gap-2">
+                  
+                  <button 
+                    onClick={() => setShowDrawer(true)}
+                    className="p-1.5 text-white hover:bg-white/10 rounded-lg transition-colors focus:outline-none flex items-center gap-1"
+                    title="Open Menu Drawer"
+                  >
+                    <Icons.Menu />
+                  </button>
+
+                  <div 
+                    onClick={() => {
+                      setActiveService(null);
+                      setSelectedCat('Sabhi Services');
+                      setSearchQuery('');
+                    }}
+                    className="cursor-pointer text-center group flex-1"
+                  >
+                    <h1 className="text-base sm:text-xl font-extrabold tracking-tight text-yellow-300 group-hover:text-yellow-200 transition-colors leading-tight drop-shadow-xs">
+                      SGS ONLINE SERVICE
+                    </h1>
+                    <p className="text-[9px] sm:text-[11px] font-bold text-amber-200/90 uppercase tracking-wider leading-none mt-0.5">
+                      Government & College Online Form Seva Portal
                     </p>
                   </div>
 
+                </div>
+              </header>
+
+              {/* MAIN SERVICES CONTENT */}
+              {activeService ? (
+                <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6">
                   <button
-                    onClick={() => { setSelectedCat('Sabhi Services'); setSearchQuery(''); }}
-                    className="bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-extrabold text-xs px-4 py-2 rounded-lg shadow transition-colors shrink-0 flex items-center gap-1"
+                    onClick={handleBackToServices}
+                    className="inline-flex items-center gap-2 bg-white hover:bg-slate-200 text-slate-800 font-bold text-xs sm:text-sm px-4 py-2 rounded-xl border border-slate-300 shadow-2xs mb-6 transition-all"
                   >
                     <Icons.ArrowLeft /> Back
                   </button>
-                </div>
-              )}
 
-              {/* NOTICE BOARD */}
-              <div className="bg-white border border-slate-300 rounded-xl p-4 shadow-2xs">
-                <div className="flex items-center justify-between border-b border-slate-200 pb-2 mb-3">
-                  <div className="flex items-center gap-2">
-                    <span className="text-blue-700"><Icons.Bell /></span>
-                    <h2 className="font-extrabold text-slate-900 text-sm sm:text-base uppercase tracking-wider">
-                      Notice Board / Taaza Updates
-                    </h2>
-                  </div>
-                  {isAdmin && (
-                    <button
-                      onClick={() => openNoticeModal(null)}
-                      className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1 rounded transition-colors"
-                    >
-                      + Add Notice
-                    </button>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  {notices.length > 0 ? (
-                    notices.map((n) => (
-                      <div key={n.id} className="flex items-start justify-between gap-3 p-2 rounded hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-0">
-                        <div className="flex items-start gap-2 text-xs sm:text-sm font-medium text-slate-800">
-                          <span className="text-blue-600 font-bold shrink-0 mt-0.5">•</span>
-                          <span>{n.text}</span>
-                        </div>
-                        <div className="flex items-center gap-1.5 shrink-0">
-                          {n.date && <span className="text-[11px] text-slate-400 font-normal mr-1">{n.date}</span>}
-                          {isAdmin && (
-                            <>
-                              <button 
-                                onClick={() => openNoticeModal(n)} 
-                                className="text-blue-600 hover:bg-blue-50 p-1 rounded"
-                                title="Edit Notice"
-                              >
-                                <Icons.Edit3 />
-                              </button>
-                              <button 
-                                onClick={() => handleDeleteNotice(n.id)} 
-                                className="text-rose-600 hover:bg-rose-50 p-1 rounded"
-                                title="Delete Notice"
-                              >
-                                <Icons.Trash2 />
-                              </button>
-                            </>
-                          )}
+                  <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
+                    {activeService.bannerUrl ? (
+                      <div className="w-full h-48 sm:h-64 overflow-hidden bg-slate-900 relative">
+                        <img src={activeService.bannerUrl} alt={activeService.title} className="w-full h-full object-cover" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent p-6 flex flex-col justify-end">
+                          <span className="bg-blue-600 text-white text-[11px] font-bold px-2.5 py-1 rounded uppercase tracking-wider w-fit">
+                            {activeService.category}
+                          </span>
+                          <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2 leading-snug drop-shadow-md">
+                            {activeService.title}
+                          </h2>
                         </div>
                       </div>
-                    ))
-                  ) : (
-                    <p className="text-xs text-slate-400 italic">Abhi koi naya notice nahi hai.</p>
-                  )}
-                </div>
-              </div>
+                    ) : (
+                      <div className="bg-slate-900 text-white p-6 sm:p-8">
+                        <span className="bg-blue-600 text-white text-[11px] font-bold px-2.5 py-1 rounded uppercase tracking-wider">
+                          {activeService.category}
+                        </span>
+                        <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-3 leading-snug">
+                          {activeService.title}
+                        </h2>
+                      </div>
+                    )}
 
-              {/* SEARCH & CATEGORIES TABS */}
-              <div className="space-y-3">
-                <div className="relative">
-                  <div className="absolute left-3.5 top-3 text-slate-400"><Icons.Search /></div>
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="College Admission, Jati, Scholarship Form search karein..."
-                    className="w-full bg-white border border-slate-300 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm font-medium focus:outline-none focus:border-blue-600 shadow-2xs"
-                  />
-                </div>
+                    <div className="p-6 sm:p-8 space-y-6">
+                      {activeService.requiredDocs && activeService.requiredDocs.length > 0 && (
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
+                          <h3 className="text-base font-bold text-slate-900 flex items-center gap-2 mb-3">
+                            <Icons.FileText />
+                            <span>Kya-Kya Dastavez (Documents) Lagega:</span>
+                          </h3>
+                          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            {activeService.requiredDocs.map((doc, idx) => (
+                              <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm text-slate-700 bg-white p-2.5 rounded border border-slate-200">
+                                <span className="text-emerald-600"><Icons.CheckCircle2 /></span>
+                                <span>{doc}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
 
-                <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-                  {categories.map((cat) => (
-                    <div key={cat} className="flex items-center shrink-0">
-                      <button
-                        onClick={() => setSelectedCat(cat)}
-                        className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border ${
-                          selectedCat === cat
-                            ? 'bg-blue-700 text-white border-blue-700'
-                            : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-200'
-                        }`}
-                      >
-                        {cat}
-                      </button>
-                      {isAdmin && cat !== 'Sabhi Services' && (
-                        <button 
-                          onClick={() => handleDeleteCategory(cat)}
-                          className="ml-1 text-slate-400 hover:text-rose-600 p-1"
-                          title="Delete Category"
+                      <div>
+                        <h3 className="text-base font-bold text-slate-900 mb-2 border-b border-slate-200 pb-2">
+                          Poori Jaankari / Description:
+                        </h3>
+                        {activeService.descType === 'html' ? (
+                          <div 
+                            className="text-sm text-slate-700 leading-relaxed font-sans"
+                            dangerouslySetInnerHTML={{ __html: activeService.description }}
+                          />
+                        ) : (
+                          <div className="whitespace-pre-line text-sm text-slate-700 leading-relaxed bg-slate-50/50 p-4 rounded-lg border border-slate-200">
+                            {activeService.description || "Apply Button par click karke form bharein."}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="pt-6 border-t border-slate-200 text-center">
+                        <button
+                          onClick={() => openEmbeddedForm(activeService)}
+                          className="w-full sm:w-auto min-w-[260px] bg-blue-700 hover:bg-blue-800 text-white font-extrabold text-lg px-8 py-3.5 rounded-xl shadow-lg transition-all"
                         >
-                          <Icons.X />
+                          ONLINE APPLY KAREIN
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </main>
+              ) : (
+                <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
+                  
+                  {selectedCat !== 'Sabhi Services' && (
+                    <div className="bg-gradient-to-r from-blue-900 to-indigo-900 text-white rounded-xl p-5 shadow-md flex items-center justify-between gap-3">
+                      <div>
+                        <span className="text-[10px] bg-amber-400 text-slate-900 font-extrabold px-2 py-0.5 rounded uppercase">
+                          Focused Category View
+                        </span>
+                        <h2 className="text-xl sm:text-2xl font-black text-white mt-1">
+                          📂 {selectedCat}
+                        </h2>
+                        <p className="text-xs text-blue-200 mt-0.5">
+                          Is section me kul {filteredServices.length} active service buttons hain.
+                        </p>
+                      </div>
+
+                      <button
+                        onClick={() => { setSelectedCat('Sabhi Services'); setSearchQuery(''); }}
+                        className="bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-extrabold text-xs px-4 py-2 rounded-lg shadow transition-colors shrink-0 flex items-center gap-1"
+                      >
+                        <Icons.ArrowLeft /> Back
+                      </button>
+                    </div>
+                  )}
+
+                  {/* NOTICE BOARD */}
+                  <div className="bg-white border border-slate-300 rounded-xl p-4 shadow-2xs">
+                    <div className="flex items-center justify-between border-b border-slate-200 pb-2 mb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-blue-700"><Icons.Bell /></span>
+                        <h2 className="font-extrabold text-slate-900 text-sm sm:text-base uppercase tracking-wider">
+                          Notice Board / Taaza Updates
+                        </h2>
+                      </div>
+                      {isAdmin && (
+                        <button
+                          onClick={() => openNoticeModal(null)}
+                          className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1 rounded transition-colors"
+                        >
+                          + Add Notice
                         </button>
                       )}
                     </div>
-                  ))}
 
-                  {isAdmin && (
-                    <button
-                      onClick={() => setShowCategoryModal(true)}
-                      className="bg-slate-800 text-white text-xs font-bold px-3 py-1.5 rounded-lg shrink-0"
-                    >
-                      + Add Category
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              {/* SERVICE CARDS GRID */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-extrabold text-slate-900 text-sm sm:text-base">
-                    {selectedCat} ({filteredServices.length})
-                  </h3>
-                  {isAdmin && (
-                    <button
-                      onClick={() => openServiceModal(null)}
-                      className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3.5 py-2 rounded-lg shadow-2xs flex items-center gap-1.5"
-                    >
-                      <Icons.Plus /> Naya Service Button Add Karein
-                    </button>
-                  )}
-                </div>
-
-                {filteredServices.length === 0 ? (
-                  <div className="bg-white p-8 rounded-xl border border-slate-200 text-center">
-                    <p className="text-slate-500 font-bold text-sm">Is category me abhi koi service nahi hai!</p>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {filteredServices.map((srv, idx) => (
-                      <div
-                        key={srv.id}
-                        onClick={() => openServiceDetail(srv)}
-                        className="bg-white rounded-xl border border-slate-300 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group overflow-hidden relative"
-                      >
-                        <div>
-                          {srv.bannerUrl && (
-                            <div className="h-28 w-full overflow-hidden bg-slate-100">
-                              <img src={srv.bannerUrl} alt={srv.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <div className="space-y-2">
+                      {notices.length > 0 ? (
+                        notices.map((n) => (
+                          <div key={n.id} className="flex items-start justify-between gap-3 p-2 rounded hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-0">
+                            <div className="flex items-start gap-2 text-xs sm:text-sm font-medium text-slate-800">
+                              <span className="text-blue-600 font-bold shrink-0 mt-0.5">•</span>
+                              <span>{n.text}</span>
                             </div>
-                          )}
-
-                          <div className="p-4">
-                            <div className="flex items-center justify-between mb-2">
-                              <span className="bg-slate-100 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded border border-slate-200">
-                                {srv.category}
-                              </span>
-
+                            <div className="flex items-center gap-1.5 shrink-0">
+                              {n.date && <span className="text-[11px] text-slate-400 font-normal mr-1">{n.date}</span>}
                               {isAdmin && (
-                                <div className="flex items-center gap-1 z-10" onClick={(e) => e.stopPropagation()}>
-                                  {idx > 0 && (
-                                    <button
-                                      onClick={(e) => handleMoveService(idx, 'left', e)}
-                                      className="px-1.5 py-0.5 text-[10px] bg-amber-100 text-amber-800 font-bold rounded border border-amber-300"
-                                      title="Move Left / Up"
-                                    >
-                                      ⬅️
-                                    </button>
-                                  )}
-                                  {idx < filteredServices.length - 1 && (
-                                    <button
-                                      onClick={(e) => handleMoveService(idx, 'right', e)}
-                                      className="px-1.5 py-0.5 text-[10px] bg-amber-100 text-amber-800 font-bold rounded border border-amber-300"
-                                      title="Move Right / Down"
-                                    >
-                                      ➡️
-                                    </button>
-                                  )}
-                                  <button
-                                    onClick={(e) => openServiceModal(srv, e)}
-                                    className="p-1.5 text-blue-600 hover:bg-blue-50 rounded bg-blue-50/50 border border-blue-200"
-                                    title="Edit & Rename Service"
+                                <>
+                                  <button 
+                                    onClick={() => openNoticeModal(n)} 
+                                    className="text-blue-600 hover:bg-blue-50 p-1 rounded"
+                                    title="Edit Notice"
                                   >
                                     <Icons.Edit3 />
                                   </button>
-                                  <button
-                                    onClick={(e) => handleDeleteService(srv.id, e)}
-                                    className="p-1.5 text-rose-600 hover:bg-rose-50 rounded bg-rose-50/50 border border-rose-200"
-                                    title="Delete Service"
+                                  <button 
+                                    onClick={() => handleDeleteNotice(n.id)} 
+                                    className="text-rose-600 hover:bg-rose-50 p-1 rounded"
+                                    title="Delete Notice"
                                   >
                                     <Icons.Trash2 />
                                   </button>
-                                </div>
+                                </>
                               )}
                             </div>
-
-                            <h4 className="font-bold text-slate-900 text-sm group-hover:text-blue-700 leading-snug">
-                              {srv.title}
-                            </h4>
-
-                            {srv.shortDesc && (
-                              <p className="text-xs text-slate-500 mt-1.5 line-clamp-2">
-                                {srv.shortDesc}
-                              </p>
-                            )}
                           </div>
-                        </div>
-
-                        <div className="p-4 pt-2 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-700">
-                          <span>Full Detail & Apply</span>
-                          <span className="group-hover:translate-x-1 transition-transform"><Icons.ChevronRight /></span>
-                        </div>
-                      </div>
-                    ))}
+                        ))
+                      ) : (
+                        <p className="text-xs text-slate-400 italic">Abhi koi naya notice nahi hai.</p>
+                      )}
+                    </div>
                   </div>
-                )}
-              </div>
-            </main>
+
+                  {/* SEARCH & CATEGORIES TABS */}
+                  <div className="space-y-3">
+                    <div className="relative">
+                      <div className="absolute left-3.5 top-3 text-slate-400"><Icons.Search /></div>
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="College Admission, Jati, Scholarship Form search karein..."
+                        className="w-full bg-white border border-slate-300 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm font-medium focus:outline-none focus:border-blue-600 shadow-2xs"
+                      />
+                    </div>
+
+                    <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+                      {categories.map((cat) => (
+                        <div key={cat} className="flex items-center shrink-0">
+                          <button
+                            onClick={() => setSelectedCat(cat)}
+                            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border ${
+                              selectedCat === cat
+                                ? 'bg-blue-700 text-white border-blue-700'
+                                : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-200'
+                            }`}
+                          >
+                            {cat}
+                          </button>
+                          {isAdmin && cat !== 'Sabhi Services' && (
+                            <button 
+                              onClick={() => handleDeleteCategory(cat)}
+                              className="ml-1 text-slate-400 hover:text-rose-600 p-1"
+                              title="Delete Category"
+                            >
+                              <Icons.X />
+                            </button>
+                          )}
+                        </div>
+                      ))}
+
+                      {isAdmin && (
+                        <button
+                          onClick={() => setShowCategoryModal(true)}
+                          className="bg-slate-800 text-white text-xs font-bold px-3 py-1.5 rounded-lg shrink-0"
+                        >
+                          + Add Category
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* SERVICE CARDS GRID */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-extrabold text-slate-900 text-sm sm:text-base">
+                        {selectedCat} ({filteredServices.length})
+                      </h3>
+                      {isAdmin && (
+                        <button
+                          onClick={() => openServiceModal(null)}
+                          className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3.5 py-2 rounded-lg shadow-2xs flex items-center gap-1.5"
+                        >
+                          <Icons.Plus /> Naya Service Button Add Karein
+                        </button>
+                      )}
+                    </div>
+
+                    {filteredServices.length === 0 ? (
+                      <div className="bg-white p-8 rounded-xl border border-slate-200 text-center">
+                        <p className="text-slate-500 font-bold text-sm">Is category me abhi koi service nahi hai!</p>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {filteredServices.map((srv, idx) => (
+                          <div
+                            key={srv.id}
+                            onClick={() => openServiceDetail(srv)}
+                            className="bg-white rounded-xl border border-slate-300 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group overflow-hidden relative"
+                          >
+                            <div>
+                              {srv.bannerUrl && (
+                                <div className="h-28 w-full overflow-hidden bg-slate-100">
+                                  <img src={srv.bannerUrl} alt={srv.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                                </div>
+                              )}
+
+                              <div className="p-4">
+                                <div className="flex items-center justify-between mb-2">
+                                  <span className="bg-slate-100 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded border border-slate-200">
+                                    {srv.category}
+                                  </span>
+
+                                  {isAdmin && (
+                                    <div className="flex items-center gap-1 z-10" onClick={(e) => e.stopPropagation()}>
+                                      {idx > 0 && (
+                                        <button
+                                          onClick={(e) => handleMoveService(idx, 'left', e)}
+                                          className="px-1.5 py-0.5 text-[10px] bg-amber-100 text-amber-800 font-bold rounded border border-amber-300"
+                                          title="Move Left / Up"
+                                        >
+                                          ⬅️
+                                        </button>
+                                      )}
+                                      {idx < filteredServices.length - 1 && (
+                                        <button
+                                          onClick={(e) => handleMoveService(idx, 'right', e)}
+                                          className="px-1.5 py-0.5 text-[10px] bg-amber-100 text-amber-800 font-bold rounded border border-amber-300"
+                                          title="Move Right / Down"
+                                        >
+                                          ➡️
+                                        </button>
+                                      )}
+                                      <button
+                                        onClick={(e) => openServiceModal(srv, e)}
+                                        className="p-1.5 text-blue-600 hover:bg-blue-50 rounded bg-blue-50/50 border border-blue-200"
+                                        title="Edit & Rename Service"
+                                      >
+                                        <Icons.Edit3 />
+                                      </button>
+                                      <button
+                                        onClick={(e) => handleDeleteService(srv.id, e)}
+                                        className="p-1.5 text-rose-600 hover:bg-rose-50 rounded bg-rose-50/50 border border-rose-200"
+                                        title="Delete Service"
+                                      >
+                                        <Icons.Trash2 />
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+
+                                <h4 className="font-bold text-slate-900 text-sm group-hover:text-blue-700 leading-snug">
+                                  {srv.title}
+                                </h4>
+
+                                {srv.shortDesc && (
+                                  <p className="text-xs text-slate-500 mt-1.5 line-clamp-2">
+                                    {srv.shortDesc}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+
+                            <div className="p-4 pt-2 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-700">
+                              <span>Full Detail & Apply</span>
+                              <span className="group-hover:translate-x-1 transition-transform"><Icons.ChevronRight /></span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </main>
+              )}
+
+              {/* FOOTER */}
+              <footer className="bg-slate-900 text-slate-400 text-xs py-6 mt-12 border-t border-slate-800">
+                <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+                  <div>
+                    <p className="font-bold text-white">SGS ONLINE SERVICE © 2026</p>
+                    <p className="text-slate-500 text-[11px] mt-0.5">All Governmental & College Online Works Portal</p>
+                  </div>
+
+                  <div className="flex items-center gap-4 text-xs">
+                    <button
+                      onClick={() => setActiveModalPage('privacy')}
+                      className="text-slate-400 hover:text-white underline underline-offset-2"
+                    >
+                      Privacy Policy
+                    </button>
+
+                    <button
+                      onClick={() => setActiveModalPage('terms')}
+                      className="text-slate-400 hover:text-white underline underline-offset-2"
+                    >
+                      Terms & Conditions
+                    </button>
+
+                    {isAdmin ? (
+                      <button
+                        onClick={handleAdminLogout}
+                        className="text-emerald-400 hover:text-emerald-300 text-xs font-semibold underline underline-offset-2 transition-colors cursor-pointer"
+                      >
+                        ✓ Admin Active (Logout)
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => setShowLoginModal(true)}
+                        className="text-slate-500 hover:text-slate-300 text-xs font-medium underline underline-offset-2 transition-colors cursor-pointer"
+                      >
+                        Admin Login
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </footer>
+            </>
           )}
 
           {/* ADMIN LOGIN MODAL */}
           {showLoginModal && (
-            <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4">
+            <div className="fixed inset-0 bg-slate-900/60 z-[70] flex items-center justify-center p-4">
               <div className="bg-white rounded-xl max-w-sm w-full p-5 shadow-xl border border-slate-200">
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="font-bold text-slate-900 text-base">Firebase Admin Login</h3>
@@ -1512,7 +1458,7 @@
 
           {/* ADD / EDIT & RENAME SERVICE MODAL */}
           {showServiceFormModal && (
-            <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-3 overflow-y-auto">
+            <div className="fixed inset-0 bg-slate-900/60 z-[70] flex items-center justify-center p-3 overflow-y-auto">
               <div className="bg-white rounded-xl max-w-xl w-full p-5 shadow-2xl my-6 border border-slate-200">
                 <div className="flex items-center justify-between mb-4 border-b pb-2">
                   <h3 className="font-bold text-slate-900 text-sm">
@@ -1649,7 +1595,7 @@
 
           {/* ADD / EDIT NOTICE MODAL */}
           {showNoticeModal && (
-            <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-3">
+            <div className="fixed inset-0 bg-slate-900/60 z-[70] flex items-center justify-center p-3">
               <div className="bg-white rounded-xl max-w-sm w-full p-5 shadow-xl border border-slate-200">
                 <h3 className="font-bold text-slate-900 text-sm mb-3">
                   {editingNoticeId ? 'Notice Board Edit Karein' : 'Notice Board Me Naya Notice Add Karein'}
@@ -1678,7 +1624,7 @@
 
           {/* ADD CATEGORY MODAL */}
           {showCategoryModal && (
-            <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-3">
+            <div className="fixed inset-0 bg-slate-900/60 z-[70] flex items-center justify-center p-3">
               <div className="bg-white rounded-xl max-w-sm w-full p-5 shadow-xl border border-slate-200">
                 <h3 className="font-bold text-slate-900 text-sm mb-3">Nayi Sub-Category Add Karein</h3>
                 <form onSubmit={handleAddCategory} className="space-y-3 text-xs">
@@ -1702,48 +1648,6 @@
               </div>
             </div>
           )}
-
-          {/* FOOTER */}
-          <footer className="bg-slate-900 text-slate-400 text-xs py-6 mt-12 border-t border-slate-800">
-            <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-              <div>
-                <p className="font-bold text-white">SGS ONLINE SERVICE © 2026</p>
-                <p className="text-slate-500 text-[11px] mt-0.5">All Governmental & College Online Works Portal</p>
-              </div>
-
-              <div className="flex items-center gap-4 text-xs">
-                <button
-                  onClick={() => setActiveModalPage('privacy')}
-                  className="text-slate-400 hover:text-white underline underline-offset-2"
-                >
-                  Privacy Policy
-                </button>
-
-                <button
-                  onClick={() => setActiveModalPage('terms')}
-                  className="text-slate-400 hover:text-white underline underline-offset-2"
-                >
-                  Terms & Conditions
-                </button>
-
-                {isAdmin ? (
-                  <button
-                    onClick={handleAdminLogout}
-                    className="text-emerald-400 hover:text-emerald-300 text-xs font-semibold underline underline-offset-2 transition-colors cursor-pointer"
-                  >
-                    ✓ Admin Active (Logout)
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => setShowLoginModal(true)}
-                    className="text-slate-500 hover:text-slate-300 text-xs font-medium underline underline-offset-2 transition-colors cursor-pointer"
-                  >
-                    Admin Login
-                  </button>
-                )}
-              </div>
-            </div>
-          </footer>
 
         </div>
       );
