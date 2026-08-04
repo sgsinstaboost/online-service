@@ -686,9 +686,9 @@
                 <div className="w-14 h-14 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-xl font-black mx-auto mb-3 shadow-md">
                   SGS
                 </div>
-                <h3 className="font-extrabold text-slate-900 text-lg">Aapka Naam Kya Hai?</h3>
+                <h3 className="font-extrabold text-slate-900 text-lg">What is your name?</h3>
                 <p className="text-xs text-slate-500 mt-1 mb-4">
-                  SGS Portal use karne aur forms apply karne ke liye apna naam likhein. Aapka unique ID automatically ban jayega.
+                 Enter your name to use the SGS Portal and apply for online services.
                 </p>
 
                 <form onSubmit={handleSaveUserName} className="space-y-3">
@@ -696,7 +696,7 @@
                     type="text"
                     value={inputName}
                     onChange={(e) => setInputName(e.target.value)}
-                    placeholder="Apna poora naam daalein..."
+                    placeholder="Enter your full name..."
                     className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm font-bold text-slate-900 focus:outline-none focus:border-blue-600 focus:bg-white text-center"
                     required
                     autoFocus
@@ -1051,7 +1051,7 @@
                           onClick={() => openEmbeddedForm(activeService)}
                           className="w-full sm:w-auto min-w-[260px] bg-blue-700 hover:bg-blue-800 text-white font-extrabold text-lg px-8 py-3.5 rounded-xl shadow-lg transition-all active:scale-95"
                         >
-                          ONLINE APPLY KAREIN
+                          Apply Now
                         </button>
                       </div>
                     </div>
@@ -1090,7 +1090,7 @@
                         <div className="flex items-center gap-2">
                           <span className="text-blue-700"><Icons.Bell /></span>
                           <h2 className="font-extrabold text-slate-900 text-sm sm:text-base uppercase tracking-wider">
-                            Notice Board / Taaza Updates
+                            Notice Board
                           </h2>
                         </div>
                         {isAdmin && (
@@ -1135,7 +1135,7 @@
                             </div>
                           ))
                         ) : (
-                          <p className="text-xs text-slate-400 italic">Abhi koi naya notice nahi hai.</p>
+                          <p className="text-xs text-slate-400 italic">No new notices available.</p>
                         )}
                       </div>
                     </div>
@@ -1208,7 +1208,7 @@
 
                     {filteredServices.length === 0 ? (
                       <div className="bg-white p-8 rounded-xl border border-slate-200 text-center">
-                        <p className="text-slate-500 font-bold text-sm">Is category me abhi koi service nahi hai!</p>
+                        <p className="text-slate-500 font-bold text-sm">No services are available in this category yet.</p>
                       </div>
                     ) : (
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -1454,7 +1454,7 @@
                       rows={3}
                       value={formDocs}
                       onChange={(e) => setFormDocs(e.target.value)}
-                      placeholder="10th Marksheet&#10;Aadhaar Card&#10;Photo"
+                      placeholder="10th Marksheet&#10;Identity Document&#10;Photo"
                       className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs font-mono"
                     />
                   </div>
