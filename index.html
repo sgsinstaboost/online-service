@@ -373,7 +373,8 @@
             link = 'https://' + link;
           }
           
-          await recordApplication(srv);
+          // Background me application record save karo aur turant window redirect karo
+          recordApplication(srv);
           window.open(link, '_blank', 'noopener,noreferrer');
         } else {
           showNotification('Apply link uplabdh nahi hai!');
@@ -1454,7 +1455,7 @@
                       rows={3}
                       value={formDocs}
                       onChange={(e) => setFormDocs(e.target.value)}
-                      placeholder="10th Marksheet&#10;Identity Document&#10;Photo"
+                      placeholder="10th Marksheet&#10;Aadhaar Card&#10;Photo"
                       className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs font-mono"
                     />
                   </div>
