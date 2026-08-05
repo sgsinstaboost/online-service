@@ -431,30 +431,65 @@
 
               <div className="flex-1 overflow-y-auto p-4 sm:p-6 max-w-4xl w-full mx-auto text-xs text-slate-700 space-y-4">
                 {activeModalPage === 'privacy' && (
-                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700">
+                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
                     <div className="bg-blue-50 border-l-4 border-blue-600 p-4 rounded-r-xl text-slate-900 font-medium">
-                      <strong>📌 Cyber Seva Kendra Privacy Policy:</strong> SGS ONLINE SERVICE operates as an online assistance service center for government and educational applications.
+                      <strong>📌 Cyber Seva Kendra Privacy Policy:</strong> SGS ONLINE SERVICE operates as an online digital facilitation center assisting users with government, college, and administrative online applications.
                     </div>
+
                     <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">1. Personal Data We Collect:</h4>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">1. Comprehensive Data Collection Notice</h4>
+                      <p className="mb-2">To process online application forms, process service payments, and provide customer support, we collect full personal data directly submitted by users during form filling:</p>
                       <ul className="list-disc pl-5 space-y-1 text-slate-700 font-medium">
-                        <li><strong>Full Name, Father's Name, & Mobile Number</strong></li>
-                        <li><strong>Uploaded Images or PDF Documents (Marksheet / Photos)</strong></li>
-                        <li><strong>Payment UTR / Ref Transaction Number</strong></li>
+                        <li><strong>Personal Identification Details:</strong> Full Name, Father's Name, Mother's Name, Date of Birth, Gender, Category/Caste, and Religion.</li>
+                        <li><strong>Contact Information:</strong> Mobile Number, Email Address, Full Postal Address, District, Pin Code, and State.</li>
+                        <li><strong>Academic & Identity Records:</strong> Educational Qualification details, Roll Numbers, Registration Numbers, Marksheets, and Certificates.</li>
+                        <li><strong>Uploaded Documents & Media:</strong> Applicant Photograph, Digital Signature Scans, PDF Documents, and Identity Proof files uploaded by the user.</li>
+                        <li><strong>Payment Verification Data:</strong> Payment UTR / Transaction Reference Numbers, UPI Transaction IDs, Fee Receipts, and Date of Payment.</li>
                       </ul>
                     </div>
+
                     <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Secure Telegram Storage:</h4>
-                      <p>User ka data aur uploaded Files/PDF 100% end-to-end encrypted tarike se direct Admin ke Telegram Bot Portal par send hota hai.</p>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Purpose of Data Collection & Usage</h4>
+                      <p>All data collected from users is strictly used to perform digital facilitation services, complete official online application form submissions on external government/college portals, verify registration details, generate application tracking IDs, and deliver customer support updates.</p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. End-to-End Secure Telegram Storage</h4>
+                      <p>User-submitted form data, compressed high-resolution images, and uploaded PDF files are transmitted through encrypted connections directly to our secure Admin Telegram Bot Portal. We do not sell, lease, trade, or share user personal records with unauthorized third parties.</p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">4. User Rights & Data Protection</h4>
+                      <p>Users maintain full rights to verify, review, or request corrections to their application status by contacting our designated support team via WhatsApp or Email along with their unique Support Ticket ID.</p>
                     </div>
                   </div>
                 )}
 
                 {activeModalPage === 'terms' && (
-                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700">
+                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
                     <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Facilitation Service Overview:</h4>
-                      <p>SGS ONLINE SERVICE assists applicants in filling out government and educational forms correctly.</p>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Facilitation Service Overview</h4>
+                      <p>SGS ONLINE SERVICE operates independently as an online assistance service center. We help applicants fill out government, university, college, and competitive examination forms accurately based entirely on information provided by the user.</p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. User Responsibility & Accuracy of Data</h4>
+                      <p>The applicant is solely responsible for ensuring that all information, personal details, contact numbers, and uploaded documents provided on this portal are 100% accurate, genuine, and legitimate. SGS ONLINE SERVICE shall not be held liable for form rejections resulting from incorrect user input.</p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. Payment Verification & Fee Policy</h4>
+                      <p>Application submission processing requires valid payment confirmation. Users must provide a genuine UTR or Transaction Reference Number after scanning the payment QR code. Fake or misleading transaction entries will lead to immediate cancellation of application processing.</p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">4. Non-Affiliation Disclaimer</h4>
+                      <p>SGS ONLINE SERVICE is a private assistance portal and does not claim to be an official government entity or official government website unless explicitly stated. All official application fees are remitted according to respective official guidelines.</p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">5. Support & Query Resolution</h4>
+                      <p>For any queries, submission verification, or support regarding online forms, users can access our WhatsApp or Email support channels available in the side drawer menu to receive automated Ticket tracking support.</p>
                     </div>
                   </div>
                 )}
