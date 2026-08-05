@@ -18,7 +18,7 @@ const ALL_POSTS = [
     title: "Bihar RTPS Caste Certificate (जाति प्रमाण पत्र)",
     category: "Certificates (Jati/Aaya/Niwas)",
     description: "Caste Certificate apply karne ke liye niche details bharein, documents upload karein aur QR par pay karein.",
-    qrImageUrl: "https://i.ibb.co/3s4G12Z/qr-placeholder.png", // ⚠️ Tumhara custom QR link
+    qrImageUrl: "https://i.ibb.co/3s4G12Z/qr-placeholder.png",
     fields: [
       { name: "full_name", label: "Full Name (पूरा नाम)", type: "text", required: true, placeholder: "Apna name likhein" },
       { name: "father_name", label: "Father Name (पिता का नाम)", type: "text", required: true, placeholder: "Father name likhein" },
