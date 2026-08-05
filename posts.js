@@ -1,10 +1,10 @@
 // posts.js
 const STATIC_CATEGORIES = [
-  'All Services',
-  'Certificates (Jati/Aaya/Niwas)',
-  'College Admission',
-  'Scholarship',
-  'Government Forms'
+  { name: 'All Services', color: 'blue' },
+  { name: 'Certificates (Jati/Aaya/Niwas)', color: 'emerald' },
+  { name: 'College Admission', color: 'purple' },
+  { name: 'Scholarship', color: 'amber' },
+  { name: 'Government Forms', color: 'rose' }
 ];
 
 const STATIC_NOTICES = [
@@ -18,14 +18,14 @@ const ALL_POSTS = [
     title: "Bihar RTPS Caste Certificate (जाति प्रमाण पत्र)",
     category: "Certificates (Jati/Aaya/Niwas)",
     description: "Caste Certificate apply karne ke liye niche details bharein, documents upload karein aur QR par pay karein.",
-    qrImageUrl: "https://i.ibb.co/3s4G12Z/qr-placeholder.png", // ⚠️ Tera QR Code Image URL
+    qrImageUrl: "https://i.ibb.co/3s4G12Z/qr-placeholder.png", // ⚠️ Tumhara custom QR link
     fields: [
       { name: "full_name", label: "Full Name (पूरा नाम)", type: "text", required: true, placeholder: "Apna name likhein" },
       { name: "father_name", label: "Father Name (पिता का नाम)", type: "text", required: true, placeholder: "Father name likhein" },
       { name: "mobile_no", label: "Mobile Number", type: "tel", required: true, placeholder: "Mobile number" },
       { name: "caste_name", label: "Caste Category (जाति)", type: "text", required: true, placeholder: "e.g. OBC / EBC / SC / ST" },
-      { name: "applicant_photo", label: "Upload Passport Photo", type: "file", accept: "image/*", required: true },
-      { name: "identity_proof", label: "Upload Identity Document Proof", type: "file", accept: "image/*", required: true }
+      { name: "applicant_photo", label: "Upload Passport Photo (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
+      { name: "identity_proof", label: "Upload Identity Document Proof (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true }
     ]
   },
   {
@@ -38,8 +38,8 @@ const ALL_POSTS = [
       { name: "full_name", label: "Full Name", type: "text", required: true },
       { name: "mobile_no", label: "Mobile Number", type: "tel", required: true },
       { name: "annual_income", label: "Annual Family Income Amount", type: "text", required: true, placeholder: "e.g. 90,000" },
-      { name: "applicant_photo", label: "Passport Photo", type: "file", accept: "image/*", required: true },
-      { name: "identity_proof", label: "Identity Proof Document", type: "file", accept: "image/*", required: true }
+      { name: "applicant_photo", label: "Passport Photo (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
+      { name: "identity_proof", label: "Identity Proof Document (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true }
     ]
   },
   {
@@ -52,8 +52,8 @@ const ALL_POSTS = [
       { name: "full_name", label: "Applicant Name", type: "text", required: true },
       { name: "village_address", label: "Full Village & Ward Address", type: "text", required: true },
       { name: "mobile_no", label: "Mobile Number", type: "tel", required: true },
-      { name: "applicant_photo", label: "Passport Photo", type: "file", accept: "image/*", required: true },
-      { name: "id_proof", label: "Identity Proof", type: "file", accept: "image/*", required: true }
+      { name: "applicant_photo", label: "Passport Photo (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
+      { name: "id_proof", label: "Identity Proof (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true }
     ]
   },
   {
@@ -66,8 +66,8 @@ const ALL_POSTS = [
       { name: "full_name", label: "Name as per Identity Document", type: "text", required: true },
       { name: "dob", label: "Date of Birth (DD/MM/YYYY)", type: "text", required: true },
       { name: "mobile_no", label: "Mobile Number", type: "tel", required: true },
-      { name: "passport_photo", label: "Passport Size Photo", type: "file", accept: "image/*", required: true },
-      { name: "id_proof", label: "Identity Proof Document", type: "file", accept: "image/*", required: true }
+      { name: "passport_photo", label: "Passport Size Photo (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
+      { name: "id_proof", label: "Identity Proof Document (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true }
     ]
   },
   {
@@ -80,8 +80,8 @@ const ALL_POSTS = [
       { name: "full_name", label: "Student Full Name", type: "text", required: true },
       { name: "course_stream", label: "Course / Stream Name", type: "text", required: true, placeholder: "e.g. B.A / B.Sc / Commerce" },
       { name: "mobile_no", label: "Mobile Number", type: "tel", required: true },
-      { name: "student_photo", label: "Student Photo", type: "file", accept: "image/*", required: true },
-      { name: "marksheet_photo", label: "Marksheet Document Photo", type: "file", accept: "image/*", required: true }
+      { name: "student_photo", label: "Student Photo (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
+      { name: "marksheet_photo", label: "Marksheet Document (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true }
     ]
   },
   {
@@ -94,8 +94,8 @@ const ALL_POSTS = [
       { name: "full_name", label: "Student Name", type: "text", required: true },
       { name: "college_name", label: "College Name", type: "text", required: true },
       { name: "mobile_no", label: "Mobile Number", type: "tel", required: true },
-      { name: "bonafide_receipt", label: "Bonafide / Fee Receipt Photo", type: "file", accept: "image/*", required: true },
-      { name: "student_photo", label: "Student Photo", type: "file", accept: "image/*", required: true }
+      { name: "bonafide_receipt", label: "Bonafide / Fee Receipt (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
+      { name: "student_photo", label: "Student Photo (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true }
     ]
   },
   {
@@ -108,8 +108,8 @@ const ALL_POSTS = [
       { name: "full_name", label: "Applicant Name", type: "text", required: true },
       { name: "father_name", label: "Father Name", type: "text", required: true },
       { name: "mobile_no", label: "Mobile Number", type: "tel", required: true },
-      { name: "applicant_photo", label: "Passport Photo", type: "file", accept: "image/*", required: true },
-      { name: "id_proof", label: "Age & Address Proof Photo", type: "file", accept: "image/*", required: true }
+      { name: "applicant_photo", label: "Passport Photo (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
+      { name: "id_proof", label: "Age & Address Proof (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true }
     ]
   },
   {
@@ -121,8 +121,8 @@ const ALL_POSTS = [
     fields: [
       { name: "head_name", label: "Head of Family Name", type: "text", required: true },
       { name: "mobile_no", label: "Mobile Number", type: "tel", required: true },
-      { name: "family_photo", label: "Group Family Photo", type: "file", accept: "image/*", required: true },
-      { name: "id_proof", label: "Family Identity Document", type: "file", accept: "image/*", required: true }
+      { name: "family_photo", label: "Group Family Photo (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
+      { name: "id_proof", label: "Family Identity Document (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true }
     ]
   },
   {
@@ -135,8 +135,8 @@ const ALL_POSTS = [
       { name: "full_name", label: "Full Name", type: "text", required: true },
       { name: "blood_group", label: "Blood Group", type: "text", required: true },
       { name: "mobile_no", label: "Mobile Number", type: "tel", required: true },
-      { name: "applicant_photo", label: "Passport Photo", type: "file", accept: "image/*", required: true },
-      { name: "id_proof", label: "Identity Document Proof", type: "file", accept: "image/*", required: true }
+      { name: "applicant_photo", label: "Passport Photo (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
+      { name: "id_proof", label: "Identity Document Proof (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true }
     ]
   }
 ];
