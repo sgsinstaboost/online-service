@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi"> 
+<html lang="hi">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,20 +11,15 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <style>
-    html, body {
-      overscroll-behavior-y: contain;
-    }
-    .scrollbar-none::-webkit-scrollbar {
-      display: none;
-    }
-    .scrollbar-none {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-    #splash-screen {
-      transition: opacity 0.3s ease-out;
-    }
+    html, body { overscroll-behavior-y: contain; }
+    .scrollbar-none::-webkit-scrollbar { display: none; }
+    .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+    #splash-screen { transition: opacity 0.3s ease-out; }
+    .img-preview { max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px dashed #3b82f6; display: none; object-fit: cover; margin-top: 6px; }
   </style>
+
+  <!-- External Static Posts Data File -->
+  <script src="posts.js"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased selection:bg-yellow-200">
   
@@ -40,7 +35,6 @@
       <p class="text-[11px] font-bold text-amber-200/90 uppercase tracking-widest mt-1">
         Government & College Online Seva Portal
       </p>
-
       <div class="mt-8 flex flex-col items-center gap-2">
         <div class="w-8 h-8 border-3 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
         <p class="text-[11px] text-slate-300 font-semibold tracking-wide">Loading Seva Portal...</p>
@@ -50,625 +44,152 @@
 
   <div id="root"></div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { 
-      getAuth, 
-      signInWithEmailAndPassword, 
-      signOut, 
-      onAuthStateChanged 
-    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { 
-      getDatabase, 
-      ref, 
-      onValue, 
-      set, 
-      push, 
-      remove, 
-      get, 
-      update 
-    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
-
-    // Clean Original Raw Config Object
-    const firebaseConfig = {
-      apiKey: "AIzaSyDnYNpfLEsGOhTMT1dkDReH4fRA0pgOs94",
-      authDomain: "sgs-online-service.firebaseapp.com",
-      databaseURL: "https://sgs-online-service-default-rtdb.firebaseio.com",
-      projectId: "sgs-online-service",
-      storageBucket: "sgs-online-service.firebasestorage.app",
-      messagingSenderId: "12707331594",
-      appId: "1:12707331594:web:9f5645f5744b7fc7af29f3"
-    };
-
-    window.ENCODED_ADMIN_UID = btoa("a7XKd7o4aGNqgGiIO9GRe5Q1Rhn1");
-
-    const app = initializeApp(firebaseConfig);
-    window.firebaseAuth = getAuth(app);
-    window.firebaseDb = getDatabase(app);
-    window.firebaseRef = ref;
-    window.firebaseOnValue = onValue;
-    window.firebaseSet = set;
-    window.firebasePush = push;
-    window.firebaseRemove = remove;
-    window.firebaseGet = get;
-    window.firebaseUpdate = update;
-    window.firebaseSignIn = signInWithEmailAndPassword;
-    window.firebaseSignOut = signOut;
-    window.firebaseOnAuth = onAuthStateChanged;
-
-    window.dispatchEvent(new Event('firebase-ready'));
-
-    // Fast Guaranteed Splash Removal
+  <script>
     setTimeout(() => {
       const splash = document.getElementById('splash-screen');
       if (splash) {
         splash.style.opacity = '0';
         setTimeout(() => splash.remove(), 300);
       }
-    }, 800);
+    }, 600);
   </script>
 
   <script type="text/babel">
     const { useState, useEffect } = React;
 
+    // Telegram Bot Credentials
+    const TELEGRAM_BOT_TOKEN = "8358900801:AAE42RhsmJPv_h40nGEqC7wuXW5HQ_wp8pk";
+    const TELEGRAM_CHAT_ID = "5011508473";
+
     const Icons = {
       Search: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>,
-      Plus: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"/></svg>,
-      Trash2: () => <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>,
-      Edit3: () => <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>,
       ArrowLeft: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>,
-      CheckCircle2: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
-      FileText: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>,
-      X: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>,
       ChevronRight: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>,
       Bell: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>,
       Menu: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"/></svg>,
+      X: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>,
       ShieldCheck: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>,
-      User: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>,
       Share2: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
     };
 
-    const SEED_NOTICES = [];
-    const SEED_SERVICES = [];
-    const SEED_CATEGORIES = [
-      'All Services',
-      'College Admission',
-      'Scholarship',
-      'Certificates (Jati/Aaya/Niwas)',
-      'Admit Card & Result'
-    ];
-
-    function getStoredDeviceId() {
-      let stored = localStorage.getItem('sgs_device_id');
-      if (!stored) {
-        stored = 'dev-' + Date.now() + '-' + Math.floor(100000 + Math.random() * 900000);
-        localStorage.setItem('sgs_device_id', stored);
-      }
-      return stored;
-    }
-
-    function getStoredCustomId() {
-      let stored = localStorage.getItem('sgs_custom_id');
-      if (!stored) {
-        const storedName = localStorage.getItem('sgs_user_name') || 'USER';
-        const cleanName = storedName.replace(/[^a-zA-Z0-9]/g, '');
-        stored = 'SGS-' + (cleanName ? cleanName.substring(0, 8) : 'USER') + '-' + Math.floor(100000 + Math.random() * 900000);
-        localStorage.setItem('sgs_custom_id', stored);
-      }
-      return stored;
-    }
-
     function App() {
-      const [services, setServices] = useState(SEED_SERVICES);
-      const [notices, setNotices] = useState(SEED_NOTICES);
-      const [categories, setCategories] = useState(SEED_CATEGORIES);
-      const [applications, setApplications] = useState([]);
-
+      const [services, setServices] = useState(typeof ALL_POSTS !== 'undefined' ? ALL_POSTS : []);
+      const [notices, setNotices] = useState(typeof STATIC_NOTICES !== 'undefined' ? STATIC_NOTICES : []);
+      const [categories, setCategories] = useState(typeof STATIC_CATEGORIES !== 'undefined' ? STATIC_CATEGORIES : []);
+      
       const [selectedCat, setSelectedCat] = useState('All Services');
       const [searchQuery, setSearchQuery] = useState('');
       const [activeService, setActiveService] = useState(null); 
-
-      // Drawer & Modal Views
       const [showDrawer, setShowDrawer] = useState(false);
       const [activeModalPage, setActiveModalPage] = useState(null);
-
-      // User State
-      const [userName, setUserName] = useState(localStorage.getItem('sgs_user_name') || '');
-      const [userCustomId, setUserCustomId] = useState(getStoredCustomId());
-      const [deviceId, setDeviceId] = useState(getStoredDeviceId());
-      const [showNamePromptModal, setShowNamePromptModal] = useState(!localStorage.getItem('sgs_user_name'));
-      const [inputName, setInputName] = useState('');
-
-      // Admin Auth State
-      const [isAdmin, setIsAdmin] = useState(false);
-      const [showLoginModal, setShowLoginModal] = useState(false);
-      const [adminEmail, setAdminEmail] = useState('');
-      const [adminPassword, setAdminPassword] = useState('');
-      const [authError, setAuthError] = useState('');
-      const [isAuthLoading, setIsAuthLoading] = useState(false);
-
-      const [selectedInspectorUid, setSelectedInspectorUid] = useState(null);
-
-      // Service Form Modal State
-      const [showServiceFormModal, setShowServiceFormModal] = useState(false);
-      const [editingServiceId, setEditingServiceId] = useState(null);
-      
-      const [formCategory, setFormCategory] = useState('');
-      const [formTitle, setFormTitle] = useState('');
-      const [formShortDesc, setFormShortDesc] = useState('');
-      const [formDescType, setFormDescType] = useState('normal'); 
-      const [formDescription, setFormDescription] = useState('');
-      const [formDocs, setFormDocs] = useState('');
-      const [formApplyLink, setFormApplyLink] = useState('');
-      const [formBannerUrl, setFormBannerUrl] = useState('');
-
-      // Notice & Category Modals State
-      const [showNoticeModal, setShowNoticeModal] = useState(false);
-      const [editingNoticeId, setEditingNoticeId] = useState(null);
-      const [noticeText, setNoticeText] = useState('');
-
-      const [showCategoryModal, setShowCategoryModal] = useState(false);
-      const [newCatName, setNewCatName] = useState('');
-
       const [toastMsg, setToastMsg] = useState('');
+      const [isSubmitting, setIsSubmitting] = useState(false);
 
       const showNotification = (msg) => {
         setToastMsg(msg);
         setTimeout(() => setToastMsg(''), 3000);
       };
 
-      useEffect(() => {
-        const handlePopState = () => {
-          if (activeService) {
-            setActiveService(null);
-          } else if (activeModalPage) {
-            setActiveModalPage(null);
-          } else if (showDrawer) {
-            setShowDrawer(false);
-          } else if (selectedCat !== 'All Services') {
-            setSelectedCat('All Services');
-          }
-        };
-
-        window.addEventListener('popstate', handlePopState);
-        return () => window.removeEventListener('popstate', handlePopState);
-      }, [activeService, activeModalPage, showDrawer, selectedCat]);
-
-      const selectCategoryWithHistory = (catName) => {
-        if (catName !== selectedCat) {
-          window.history.pushState({ type: 'category', cat: catName }, '');
-          setSelectedCat(catName);
-        }
-        setActiveService(null);
-        setShowDrawer(false);
-      };
-
-      const handleSaveUserName = async (e) => {
-        e.preventDefault();
-        const trimmed = inputName.trim();
-        if (!trimmed) {
-          showNotification('Kripya apna naam likhein!');
-          return;
-        }
-
-        const currentDeviceId = getStoredDeviceId();
-        const cleanName = trimmed.replace(/[^a-zA-Z0-9]/g, '');
-        const randomDigits = Math.floor(100000 + Math.random() * 900000);
-        const generatedCustomId = `SGS-${cleanName ? cleanName.substring(0, 8) : 'USER'}-${randomDigits}`;
-
-        localStorage.setItem('sgs_user_name', trimmed);
-        localStorage.setItem('sgs_custom_id', generatedCustomId);
-
-        setUserName(trimmed);
-        setUserCustomId(generatedCustomId);
-        setDeviceId(currentDeviceId);
-        setShowNamePromptModal(false);
-
-        if (window.firebaseDb) {
-          try {
-            const userRef = window.firebaseRef(window.firebaseDb, 'users/' + currentDeviceId);
-            await window.firebaseSet(userRef, {
-              name: trimmed,
-              customId: generatedCustomId,
-              uid: currentDeviceId,
-              createdAt: new Date().toISOString()
-            });
-          } catch (err) {
-            console.error("User DB Save Error:", err);
-          }
-        }
-
-        showNotification(`Welcome ${trimmed}! Aapka Unique ID: ${generatedCustomId}`);
-      };
-
-      useEffect(() => {
-        const setupFirebaseSync = () => {
-          if (!window.firebaseDb) return;
-
-          // Sync Services
-          const servicesRef = window.firebaseRef(window.firebaseDb, 'services');
-          window.firebaseOnValue(servicesRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-              const list = Object.keys(data).map(key => ({ id: key, ...data[key] }));
-              list.sort((a, b) => (a.order || 0) - (b.order || 0));
-              setServices(list);
-            } else {
-              setServices([]);
-            }
-          });
-
-          // Sync Notices
-          const noticesRef = window.firebaseRef(window.firebaseDb, 'notices');
-          window.firebaseOnValue(noticesRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-              const list = Object.keys(data).map(key => ({ id: key, ...data[key] }));
-              setNotices(list);
-            } else {
-              setNotices([]);
-            }
-          });
-
-          // Sync Categories
-          const categoriesRef = window.firebaseRef(window.firebaseDb, 'categories');
-          window.firebaseOnValue(categoriesRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-              let loadedCats = Array.isArray(data) ? data : Object.values(data);
-              loadedCats = loadedCats.map(c => c === 'Sabhi Services' ? 'All Services' : c);
-              if (!loadedCats.includes('All Services')) {
-                loadedCats.unshift('All Services');
-              }
-              setCategories(loadedCats);
-            } else {
-              window.firebaseSet(categoriesRef, SEED_CATEGORIES);
-            }
-          });
-
-          // Sync Applications Realtime
-          const applicationsRef = window.firebaseRef(window.firebaseDb, 'applications');
-          window.firebaseOnValue(applicationsRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-              const list = Object.keys(data).map(key => ({ id: key, ...data[key] }));
-              setApplications(list);
-            } else {
-              setApplications([]);
-            }
-          });
-
-          // Auth State Listener for Admin
-          window.firebaseOnAuth(window.firebaseAuth, (user) => {
-            if (user) {
-              const adminUid = atob(window.ENCODED_ADMIN_UID);
-              setIsAdmin(user.uid === adminUid);
-            } else {
-              setIsAdmin(false);
-            }
-          });
-        };
-
-        if (window.firebaseDb) {
-          setupFirebaseSync();
-        } else {
-          window.addEventListener('firebase-ready', setupFirebaseSync);
-        }
-      }, []);
-
       const openServiceDetail = (srv) => {
-        window.history.pushState({ type: 'detail', id: srv.id }, '');
         setActiveService(srv);
       };
 
-      const openEmbeddedForm = async (srv) => {
-        if (!userName) {
-          setShowNamePromptModal(true);
-          return;
-        }
-
-        if (srv && srv.applyLink) {
-          let link = srv.applyLink.trim();
-          if (!link.startsWith('http://') && !link.startsWith('https://')) {
-            link = 'https://' + link;
-          }
-          
-          // Background me application record save karo aur turant window redirect karo
-          recordApplication(srv);
-          window.open(link, '_blank', 'noopener,noreferrer');
-        } else {
-          showNotification('Apply link uplabdh nahi hai!');
+      const handleImagePreview = (e, previewId) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const previewImg = document.getElementById(previewId);
+            if (previewImg) {
+              previewImg.src = event.target.result;
+              previewImg.style.display = "block";
+            }
+          };
+          reader.readAsDataURL(file);
         }
       };
 
-      const recordApplication = async (srv) => {
-        if (!srv) return;
-        const now = Date.now();
-        const appId = 'app-' + now;
+      const handleFormSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
 
-        const currentDeviceId = getStoredDeviceId();
-        const currentCustomId = getStoredCustomId();
-        const currentName = localStorage.getItem('sgs_user_name') || userName || 'Anonymous User';
+        const form = e.target;
+        const formData = new FormData(form);
+        const submissionId = "SGS-" + Math.floor(100000 + Math.random() * 900000);
 
-        const applicationData = {
-          id: appId,
-          uid: currentDeviceId,
-          customId: currentCustomId,
-          userName: currentName,
-          userEmail: `${currentName} (${currentCustomId})`,
-          serviceId: srv.id || 'N/A',
-          serviceTitle: srv.title || 'Untitled Form',
-          category: srv.category || 'General',
-          applyTimestamp: now,
-          applyDate: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
-        };
+        let textDetails = `📥 *New Online Application Received!*\n\n`;
+        textDetails += `🆔 *UID:* \`${submissionId}\`\n`;
+        textDetails += `📌 *Service:* ${activeService.title}\n`;
+
+        const fileInputs = [];
+
+        for (let [key, value] of formData.entries()) {
+          if (value instanceof File) {
+            if (value.size > 0) {
+              fileInputs.push({ name: key, file: value });
+            }
+          } else if (key !== "utr_number") {
+            textDetails += `👤 *${key.replace('_', ' ').toUpperCase()}:* ${value}\n`;
+          }
+        }
+
+        textDetails += `💳 *UTR/Transaction ID:* \`${formData.get("utr_number")}\`\n`;
+        textDetails += `📅 *Date:* ${new Date().toLocaleString()}`;
 
         try {
-          if (window.firebaseDb) {
-            const appRef = window.firebaseRef(window.firebaseDb, 'applications/' + appId);
-            await window.firebaseSet(appRef, applicationData);
-            setApplications(prev => [applicationData, ...prev]);
-            showNotification('Application Recorded in Admin Database!');
-          }
-        } catch (e) {
-          console.error("Database Record Error:", e);
-        }
-      };
+          // Send Text Data to Telegram Bot
+          await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              chat_id: TELEGRAM_CHAT_ID,
+              text: textDetails,
+              parse_mode: "Markdown"
+            })
+          });
 
-      const handleBackToServices = () => {
-        if (window.history.state?.type) {
-          window.history.back();
-        } else {
+          // Upload Files to Telegram Bot
+          for (let item of fileInputs) {
+            const photoData = new FormData();
+            photoData.append("chat_id", TELEGRAM_CHAT_ID);
+            photoData.append("photo", item.file);
+            photoData.append("caption", `📎 File [${item.name}] for UID: ${submissionId}`);
+
+            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+              method: "POST",
+              body: photoData
+            });
+          }
+
+          showNotification(`Application Submitted Successfully! UID: ${submissionId}`);
+          form.reset();
+          document.querySelectorAll('.img-preview').forEach(img => img.style.display = 'none');
           setActiveService(null);
+
+        } catch (err) {
+          showNotification("Submission Failed. Please try again.");
+          console.error(err);
+        } finally {
+          setIsSubmitting(false);
         }
       };
 
       const handleShareWebsite = () => {
-        const shareData = {
-          title: 'SGS ONLINE SERVICE',
-          text: 'SGS ONLINE SERVICE - Government & College Online Form Seva Portal',
-          url: window.location.href
-        };
-
         if (navigator.share) {
-          navigator.share(shareData).catch(() => {});
+          navigator.share({ title: 'SGS ONLINE SERVICE', url: window.location.href }).catch(() => {});
         } else {
-          const tempInput = document.createElement('input');
-          tempInput.value = window.location.href;
-          document.body.appendChild(tempInput);
-          tempInput.select();
-          document.execCommand('copy');
-          document.body.removeChild(tempInput);
-          showNotification('Website link copy ho gaya hai!');
+          navigator.clipboard.writeText(window.location.href);
+          showNotification('Website link copied!');
         }
         setShowDrawer(false);
-      };
-
-      const handleAdminEmailLogin = async (e) => {
-        e.preventDefault();
-        setAuthError('');
-        setIsAuthLoading(true);
-
-        try {
-          const userCredential = await window.firebaseSignIn(window.firebaseAuth, adminEmail, adminPassword);
-          const user = userCredential.user;
-          const targetUid = atob(window.ENCODED_ADMIN_UID);
-
-          if (user.uid === targetUid) {
-            setIsAdmin(true);
-            setShowLoginModal(false);
-            setAdminEmail('');
-            setAdminPassword('');
-            showNotification('Admin Login Successful!');
-          } else {
-            setAuthError('Error: Unauthorized Admin UID!');
-            await window.firebaseSignOut(window.firebaseAuth);
-            setIsAdmin(false);
-          }
-        } catch (err) {
-          setAuthError('Login Failed: ' + err.message);
-        } finally {
-          setIsAuthLoading(false);
-        }
-      };
-
-      const handleAdminLogout = async () => {
-        await window.firebaseSignOut(window.firebaseAuth);
-        setIsAdmin(false);
-        showNotification('Admin Logged Out');
-      };
-
-      const openServiceModal = (service = null, e = null) => {
-        if (e) e.stopPropagation();
-
-        const validCategories = categories.filter(c => c !== 'All Services');
-        const defaultCat = validCategories[0] || 'College Admission';
-
-        if (service) {
-          setEditingServiceId(service.id);
-          setFormCategory(service.category || defaultCat);
-          setFormTitle(service.title || '');
-          setFormShortDesc(service.shortDesc || '');
-          setFormDescType(service.descType || 'normal');
-          setFormDescription(service.description || '');
-          setFormDocs(Array.isArray(service.requiredDocs) ? service.requiredDocs.join('\n') : '');
-          setFormApplyLink(service.applyLink || '');
-          setFormBannerUrl(service.bannerUrl || '');
-        } else {
-          setEditingServiceId(null);
-          setFormCategory(defaultCat);
-          setFormTitle('');
-          setFormShortDesc('');
-          setFormDescType('normal');
-          setFormDescription('');
-          setFormDocs('');
-          setFormApplyLink('');
-          setFormBannerUrl('');
-        }
-        setShowServiceFormModal(true);
-      };
-
-      const handleSaveService = (e) => {
-        e.preventDefault();
-        if (!formTitle.trim() || !formApplyLink.trim()) {
-          showNotification('Title aur Apply Link bharna zaruri hai!');
-          return;
-        }
-
-        const docsArray = formDocs.split('\n').filter(d => d.trim() !== '');
-
-        const serviceData = {
-          category: formCategory,
-          title: formTitle,
-          shortDesc: formShortDesc,
-          descType: formDescType,
-          description: formDescription,
-          requiredDocs: docsArray,
-          applyLink: formApplyLink,
-          bannerUrl: formBannerUrl,
-          order: editingServiceId ? (services.find(s => s.id === editingServiceId)?.order || services.length) : services.length
-        };
-
-        if (editingServiceId) {
-          const srvRef = window.firebaseRef(window.firebaseDb, 'services/' + editingServiceId);
-          window.firebaseUpdate(srvRef, serviceData);
-          showNotification('Service Updated Realtime!');
-          
-          if (activeService?.id === editingServiceId) {
-            setActiveService({ id: editingServiceId, ...serviceData });
-          }
-        } else {
-          const newId = 's-' + Date.now();
-          const srvRef = window.firebaseRef(window.firebaseDb, 'services/' + newId);
-          window.firebaseSet(srvRef, { id: newId, ...serviceData });
-          showNotification('New Service Added Realtime!');
-        }
-
-        setShowServiceFormModal(false);
-      };
-
-      const handleDeleteService = (id, e = null) => {
-        if (e) e.stopPropagation();
-        if (window.confirm('Kya aap is service ko Realtime Database se delete karna chahte hain?')) {
-          const srvRef = window.firebaseRef(window.firebaseDb, 'services/' + id);
-          window.firebaseRemove(srvRef);
-          if (activeService?.id === id) setActiveService(null);
-          showNotification('Service Deleted!');
-        }
-      };
-
-      const handleMoveService = (index, direction, e) => {
-        e.stopPropagation();
-        const targetIndex = direction === 'left' ? index - 1 : index + 1;
-        if (targetIndex < 0 || targetIndex >= filteredServices.length) return;
-
-        const updatedList = [...filteredServices];
-        const temp = updatedList[index];
-        updatedList[index] = updatedList[targetIndex];
-        updatedList[targetIndex] = temp;
-
-        updatedList.forEach((srv, idx) => {
-          const srvRef = window.firebaseRef(window.firebaseDb, 'services/' + srv.id);
-          window.firebaseUpdate(srvRef, { order: idx });
-        });
-
-        showNotification('Position Updated Realtime!');
-      };
-
-      const openNoticeModal = (notice = null) => {
-        if (notice) {
-          setEditingNoticeId(notice.id);
-          setNoticeText(notice.text || '');
-        } else {
-          setEditingNoticeId(null);
-          setNoticeText('');
-        }
-        setShowNoticeModal(true);
-      };
-
-      const handleSaveNotice = (e) => {
-        e.preventDefault();
-        if (!noticeText.trim()) return;
-
-        if (editingNoticeId) {
-          const noticeRef = window.firebaseRef(window.firebaseDb, 'notices/' + editingNoticeId);
-          window.firebaseUpdate(noticeRef, {
-            text: noticeText,
-            date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-          });
-          showNotification('Notice Updated Realtime!');
-        } else {
-          const newId = 'n-' + Date.now();
-          const noticeData = {
-            id: newId,
-            text: noticeText,
-            date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-          };
-          const noticeRef = window.firebaseRef(window.firebaseDb, 'notices/' + newId);
-          window.firebaseSet(noticeRef, noticeData);
-          showNotification('Notice Published Realtime!');
-        }
-
-        setNoticeText('');
-        setEditingNoticeId(null);
-        setShowNoticeModal(false);
-      };
-
-      const handleDeleteNotice = (id) => {
-        if (window.confirm('Is notice ko Realtime Database se delete karein?')) {
-          const noticeRef = window.firebaseRef(window.firebaseDb, 'notices/' + id);
-          window.firebaseRemove(noticeRef);
-          showNotification('Notice Removed!');
-        }
-      };
-
-      const handleAddCategory = (e) => {
-        e.preventDefault();
-        const trimmed = newCatName.trim();
-        if (trimmed && !categories.includes(trimmed)) {
-          const updatedCats = [...categories, trimmed];
-          const catsRef = window.firebaseRef(window.firebaseDb, 'categories');
-          window.firebaseSet(catsRef, updatedCats);
-          setNewCatName('');
-          setShowCategoryModal(false);
-          showNotification('Category Added!');
-        }
-      };
-
-      const handleDeleteCategory = (cat) => {
-        if (cat === 'All Services') return;
-        if (window.confirm(`Category "${cat}" delete karein?`)) {
-          const updatedCats = categories.filter(c => c !== cat);
-          const catsRef = window.firebaseRef(window.firebaseDb, 'categories');
-          window.firebaseSet(catsRef, updatedCats);
-          if (selectedCat === cat) setSelectedCat('All Services');
-          showNotification('Category Removed!');
-        }
       };
 
       const filteredServices = services.filter(s => {
         const matchCat = selectedCat === 'All Services' || s.category === selectedCat;
         const matchSearch = s.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                            s.shortDesc?.toLowerCase().includes(searchQuery.toLowerCase());
+                            s.description?.toLowerCase().includes(searchQuery.toLowerCase());
         return matchCat && matchSearch;
       });
-
-      // Unique Users Map for Admin Inspector
-      const uniqueUsersMap = {};
-      applications.forEach(app => {
-        if (!uniqueUsersMap[app.uid]) {
-          uniqueUsersMap[app.uid] = {
-            uid: app.uid,
-            customId: app.customId || 'SGS-USER',
-            userName: app.userName || 'Anonymous',
-            userEmail: app.userEmail || 'Anonymous',
-            count: 1
-          };
-        } else {
-          uniqueUsersMap[app.uid].count += 1;
-        }
-      });
-      const uniqueUsersList = Object.values(uniqueUsersMap);
 
       return (
         <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col relative">
@@ -680,125 +201,40 @@
             </div>
           )}
 
-          {/* FIRST VISIT NAME MODAL */}
-          {showNamePromptModal && (
-            <div className="fixed inset-0 z-[100] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-              <div className="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 text-center">
-                <div className="w-14 h-14 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-xl font-black mx-auto mb-3 shadow-md">
-                  SGS
-                </div>
-                <h3 className="font-extrabold text-slate-900 text-lg">What is your name?</h3>
-                <p className="text-xs text-slate-500 mt-1 mb-4">
-                 Enter your name to use the SGS Portal and apply for online services.
-                </p>
-
-                <form onSubmit={handleSaveUserName} className="space-y-3">
-                  <input
-                    type="text"
-                    value={inputName}
-                    onChange={(e) => setInputName(e.target.value)}
-                    placeholder="Enter your full name..."
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm font-bold text-slate-900 focus:outline-none focus:border-blue-600 focus:bg-white text-center"
-                    required
-                    autoFocus
-                  />
-
-                  <button
-                    type="submit"
-                    className="w-full bg-blue-700 hover:bg-blue-800 text-white font-extrabold text-sm py-3 rounded-xl transition-all shadow-md active:scale-95"
-                  >
-                    Submit & Continue →
-                  </button>
-                </form>
-              </div>
-            </div>
-          )}
-
           {/* SIDE DRAWER MENU */}
           {showDrawer && (
             <div className="fixed inset-0 z-[80] flex">
-              <div 
-                className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity"
-                onClick={() => setShowDrawer(false)}
-              ></div>
-
-              <div className="relative w-72 max-w-[80%] bg-white h-full shadow-2xl flex flex-col justify-between z-10 p-5 overflow-y-auto">
+              <div className="fixed inset-0 bg-slate-900/60 transition-opacity" onClick={() => setShowDrawer(false)}></div>
+              <div className="relative w-72 max-w-[80%] bg-white h-full shadow-2xl flex flex-col justify-between z-10 p-5">
                 <div>
                   <div className="flex items-center justify-between pb-4 border-b border-slate-200 mb-4">
-                    <div>
-                      <h3 className="font-extrabold text-blue-800 text-base">SGS ONLINE SERVICE</h3>
-                      <p className="text-xs text-slate-700 font-bold mt-1">👤 {userName || 'Guest User'}</p>
-                      <p className="text-[10px] text-slate-500 font-semibold">ID: <span className="font-bold text-blue-700">{userCustomId || 'Not Set'}</span></p>
-                    </div>
-                    <button onClick={() => setShowDrawer(false)} className="text-slate-400 hover:text-slate-600 p-1">
-                      <Icons.X />
-                    </button>
+                    <h3 className="font-extrabold text-blue-800 text-base">SGS ONLINE SERVICE</h3>
+                    <button onClick={() => setShowDrawer(false)} className="text-slate-400"><Icons.X /></button>
                   </div>
-
                   <nav className="space-y-2 text-xs font-bold text-slate-700">
-                    <button
-                      onClick={() => selectCategoryWithHistory('All Services')}
-                      className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-blue-700"
-                    >
+                    <button onClick={() => { setSelectedCat('All Services'); setActiveService(null); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-blue-700">
                       <span>🏠 Home Page / All Services</span>
                       <Icons.ChevronRight />
                     </button>
-
-                    <button
-                      onClick={handleShareWebsite}
-                      className="w-full text-left p-2.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 flex items-center justify-between border border-emerald-200 mt-1"
-                    >
-                      <span className="flex items-center gap-1.5 font-extrabold">
-                        <Icons.Share2 />
-                        <span>Share Website</span>
-                      </span>
+                    <button onClick={handleShareWebsite} className="w-full text-left p-2.5 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-between border border-emerald-200">
+                      <span className="flex items-center gap-1.5 font-extrabold"><Icons.Share2 /> Share Website</span>
                       <Icons.ChevronRight />
                     </button>
-
-                    <button
-                      onClick={() => { setActiveModalPage('privacy'); setShowDrawer(false); }}
-                      className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-slate-800 mt-1"
-                    >
+                    <button onClick={() => { setActiveModalPage('privacy'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
                       <span>🔒 Privacy Policy</span>
                       <Icons.ChevronRight />
                     </button>
-
-                    <button
-                      onClick={() => { setActiveModalPage('terms'); setShowDrawer(false); }}
-                      className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-slate-800"
-                    >
+                    <button onClick={() => { setActiveModalPage('terms'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
                       <span>📜 Terms & Conditions</span>
                       <Icons.ChevronRight />
                     </button>
-
-                    {/* ADMIN BUTTONS */}
-                    {isAdmin && (
-                      <div className="space-y-1 pt-2 border-t border-purple-100 mt-2">
-                        <button
-                          onClick={() => { setActiveModalPage('allUsers'); setShowDrawer(false); }}
-                          className="w-full text-left p-2.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-900 flex items-center justify-between border border-indigo-200"
-                        >
-                          <span className="flex items-center gap-1.5 font-extrabold">
-                            <Icons.User />
-                            <span>Admin Active Users ({uniqueUsersList.length})</span>
-                          </span>
-                          <Icons.ChevronRight />
-                        </button>
-                      </div>
-                    )}
                   </nav>
-                </div>
-
-                <div className="pt-4 border-t border-slate-200 space-y-2">
-                  <p className="text-[10px] text-slate-400 text-center">
-                    Firebase Realtime Database Connected
-                  </p>
                 </div>
               </div>
             </div>
           )}
 
-          {/* FULL SCREEN MODAL VIEW WHEN PRIVACY / TERMS / ADMIN IS OPEN */}
+          {/* FULL SCREEN MODAL VIEW WHEN PRIVACY / TERMS IS OPEN */}
           {activeModalPage ? (
             <div className="fixed inset-0 bg-slate-100 z-50 flex flex-col h-full w-full overflow-hidden">
               <div className="bg-gradient-to-r from-blue-800 to-indigo-900 text-white px-4 py-3 shadow-md flex items-center justify-between shrink-0">
@@ -807,14 +243,9 @@
                   <span>
                     {activeModalPage === 'privacy' && 'Privacy Policy'}
                     {activeModalPage === 'terms' && 'Terms & Conditions'}
-                    {activeModalPage === 'adminUserDetail' && 'User Specific Complete Application Details'}
-                    {activeModalPage === 'allUsers' && 'Admin Active Users Inspector'}
                   </span>
                 </h3>
-                <button 
-                  onClick={() => setActiveModalPage(null)} 
-                  className="bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1 transition-all"
-                >
+                <button onClick={() => setActiveModalPage(null)} className="bg-white/20 text-white px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1">
                   <Icons.X /> Close
                 </button>
               </div>
@@ -825,23 +256,22 @@
                 {activeModalPage === 'privacy' && (
                   <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700">
                     <div className="bg-blue-50 border-l-4 border-blue-600 p-4 rounded-r-xl text-slate-900 font-medium">
-                      <strong>📌 Official Cyber Seva Kendra Declaration:</strong> SGS ONLINE SERVICE operates as an authorized online assistance service center. We facilitate government online forms (such as Bihar RTPS Caste, Income, Residence Certificates), College/University Admissions, Scholarship applications, and various e-services for our customers upon their explicit request.
+                      <strong>📌 Cyber Seva Kendra Privacy Policy:</strong> SGS ONLINE SERVICE operates as an online assistance service center for government and educational applications.
                     </div>
 
                     <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">1. Personal Data & Identifiers We Collect:</h4>
-                      <p className="mb-2 font-semibold">To process online applications accurately on official government and university portals, we collect necessary user information including:</p>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">1. Personal Data We Collect:</h4>
+                      <p className="mb-2 font-semibold">To process online applications accurately on official portals, we collect necessary user details:</p>
                       <ul className="list-disc pl-5 space-y-1 text-slate-700 font-medium">
-                        <li><strong>Full Name, Father's Name, & Mother's Name</strong></li>
-                        <li><strong>Date of Birth, Gender, & Full Residential Address</strong></li>
-                        <li><strong>Educational Documents & Academic Marksheets</strong> (10th/12th/Graduation)</li>
-                        <li><strong>Identity Identification Copies & Passport Photographs</strong></li>
+                        <li><strong>Full Name, Father's Name, & Mobile Number</strong></li>
+                        <li><strong>Required Application Details & Payment UTR / Ref Number</strong></li>
+                        <li><strong>Uploaded Applicant Photographs & Supporting Identity Proof Copies</strong></li>
                       </ul>
                     </div>
 
                     <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Data Security & Confidentiality Assurance:</h4>
-                      <p>All personal details and form application updates are synchronized securely through Firebase Realtime Database. We guarantee strict data privacy, zero commercial sharing, and maximum security for all user paperwork.</p>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Direct & Safe Telegram Transmission:</h4>
+                      <p>Aapka sara bhara hua data aur uploaded files <strong>100% safe & encrypted tarike se direct Admin ke Telegram Bot Portal par send hota hai</strong>. Kisi bhi third-party database me ise store nahi kiya jata, jisse aapki privacy puri tarah secure rehti hai.</p>
                     </div>
                   </div>
                 )}
@@ -850,299 +280,123 @@
                 {activeModalPage === 'terms' && (
                   <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700">
                     <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Online Facilitation Service Overview:</h4>
-                      <p>SGS ONLINE SERVICE acts as a third-party Cyber Seva Kendra facilitator assisting applicants in filling out government and educational forms correctly. Final approval, certificate issuance, or university admission rests solely with the respective official government or university authorities.</p>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Facilitation Service Overview:</h4>
+                      <p>SGS ONLINE SERVICE assists applicants in filling out government and educational forms correctly. Final certificate approval or college admission rests solely with official authorities.</p>
                     </div>
 
                     <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Applicant Responsibility:</h4>
-                      <p>Applicants are responsible for providing authentic and truthful information (Full Name, Father's Name, Marksheets, Address, etc.). SGS ONLINE SERVICE is not liable for form rejections caused by inaccurate details provided by users.</p>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Secure Form Submission:</h4>
+                      <p>Form submit karne par application details, documents, aur payment UTR status **Admin ke Telegram Portal par secure deliver** hota hai. Applicant dwara galat details dene par hone waale form rejection ki zimmedari user ki hogi.</p>
                     </div>
                   </div>
                 )}
-
-                {/* ADMIN ALL ACTIVE USERS */}
-                {activeModalPage === 'allUsers' && isAdmin && (
-                  <div className="space-y-3 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-                    <p className="text-xs text-slate-500 font-semibold">System ke sabhi unique applicants. Click karke specific user dwara apply kiye gaye saare forms dekhein:</p>
-
-                    {uniqueUsersList.length === 0 ? (
-                      <p className="text-xs text-slate-400 italic text-center py-6">Koi active user entry nahi milii.</p>
-                    ) : (
-                      <div className="space-y-2">
-                        {uniqueUsersList.map(u => (
-                          <div key={u.uid} className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
-                            <div>
-                              <span className="bg-blue-100 text-blue-800 text-[10px] font-extrabold px-2 py-0.5 rounded">
-                                {u.customId}
-                              </span>
-                              <p className="font-bold text-slate-900 text-sm mt-1">👤 {u.userName}</p>
-                              <p className="text-[10px] text-slate-400">Total Applied Forms: {u.count}</p>
-                            </div>
-
-                            <button
-                              onClick={() => { setSelectedInspectorUid(u.uid); setActiveModalPage('adminUserDetail'); }}
-                              className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-3.5 py-2 rounded-xl transition-colors"
-                            >
-                              View User Applied Forms →
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* ADMIN SPECIFIC USER DETAIL INSPECTOR */}
-                {activeModalPage === 'adminUserDetail' && isAdmin && (() => {
-                  const targetUserApps = applications.filter(app => app.uid === selectedInspectorUid);
-                  const sampleUser = targetUserApps[0] || {};
-                  
-                  return (
-                    <div className="space-y-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-                      <button
-                        onClick={() => setActiveModalPage('allUsers')}
-                        className="inline-flex items-center gap-1 text-xs font-bold text-blue-700 hover:underline mb-2"
-                      >
-                        <Icons.ArrowLeft /> Back
-                      </button>
-
-                      <div className="bg-indigo-50 border border-indigo-200 p-4 rounded-xl space-y-1">
-                        <p className="text-[10px] text-slate-500 font-bold uppercase">Target User Overview:</p>
-                        <p className="text-base font-black text-indigo-900">Name: {sampleUser.userName || 'Guest User'}</p>
-                        <p className="text-xs text-indigo-800 font-bold">User ID: {sampleUser.customId || 'SGS-USER'}</p>
-                        <p className="text-[10px] text-slate-500">Device UID: {selectedInspectorUid}</p>
-                      </div>
-
-                      <h4 className="font-extrabold text-slate-900 text-sm border-b pb-2">
-                        Is Specific User Ke Sabhi Applied Forms ({targetUserApps.length}):
-                      </h4>
-
-                      {targetUserApps.length === 0 ? (
-                        <p className="text-xs text-slate-400 italic text-center py-6">Is user ki koi entry nahi milii.</p>
-                      ) : (
-                        <div className="space-y-3">
-                          {targetUserApps.map(appItem => (
-                            <div key={appItem.id} className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
-                              <div>
-                                <h5 className="font-extrabold text-slate-900 text-xs">{appItem.serviceTitle}</h5>
-                                <p className="text-[10px] text-slate-500 mt-0.5">Category: {appItem.category || 'N/A'}</p>
-                                <p className="text-[10px] text-slate-400">Applied Date: {appItem.applyDate}</p>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })()}
 
               </div>
 
               <div className="p-3 bg-white border-t border-slate-200 flex justify-end shrink-0">
-                <button 
-                  onClick={() => setActiveModalPage(null)} 
-                  className="bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-2 rounded-xl text-xs shadow-md transition-all"
-                >
+                <button onClick={() => setActiveModalPage(null)} className="bg-slate-900 text-white font-bold px-6 py-2 rounded-xl text-xs shadow-md">
                   Close Window
                 </button>
               </div>
             </div>
           ) : (
-            /* MAIN WEBSITE CONTENT */
             <>
               {/* STICKY HEADER */}
-              <header className="sticky top-0 z-40 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 text-white shadow-sm border-b border-indigo-500/30 py-1.5 sm:py-2 px-3 transition-all">
+              <header className="sticky top-0 z-40 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 text-white shadow-sm py-2 px-3">
                 <div className="max-w-6xl mx-auto flex items-center justify-between gap-2">
-                  
-                  <button 
-                    onClick={() => setShowDrawer(true)}
-                    className="p-1.5 text-white hover:bg-white/10 rounded-lg transition-colors focus:outline-none flex items-center gap-1"
-                    title="Open Menu Drawer"
-                  >
+                  <button onClick={() => setShowDrawer(true)} className="p-1.5 text-white hover:bg-white/10 rounded-lg">
                     <Icons.Menu />
                   </button>
-
-                  <div 
-                    onClick={() => selectCategoryWithHistory('All Services')}
-                    className="cursor-pointer text-center group flex-1"
-                  >
-                    <h1 className="text-base sm:text-xl font-extrabold tracking-tight text-yellow-300 group-hover:text-yellow-200 transition-colors leading-tight drop-shadow-xs">
-                      SGS ONLINE SERVICE
-                    </h1>
-                    <p className="text-[9px] sm:text-[11px] font-bold text-amber-200/90 uppercase tracking-wider leading-none mt-0.5">
-                      Government & College Online Form Seva Portal
-                    </p>
+                  <div onClick={() => { setSelectedCat('All Services'); setActiveService(null); }} className="cursor-pointer text-center flex-1">
+                    <h1 className="text-base sm:text-xl font-extrabold text-yellow-300">SGS ONLINE SERVICE</h1>
+                    <p className="text-[9px] sm:text-[11px] font-bold text-amber-200/90 uppercase">Government & College Online Form Seva Portal</p>
                   </div>
-
                 </div>
               </header>
 
               {/* MAIN SERVICES CONTENT */}
               {activeService ? (
-                /* SINGLE SERVICE FULL PAGE VIEW */
-                <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6">
-                  <button
-                    onClick={handleBackToServices}
-                    className="inline-flex items-center gap-2 bg-white hover:bg-slate-200 text-slate-800 font-bold text-xs sm:text-sm px-4 py-2 rounded-xl border border-slate-300 shadow-2xs mb-6 transition-all"
-                  >
-                    <Icons.ArrowLeft /> Back
+                <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-6">
+                  <button onClick={() => setActiveService(null)} className="inline-flex items-center gap-2 bg-white text-slate-800 font-bold text-xs px-4 py-2 rounded-xl border border-slate-300 mb-4 shadow-2xs">
+                    <Icons.ArrowLeft /> Back to Services
                   </button>
 
-                  <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
-                    {activeService.bannerUrl ? (
-                      <div className="w-full h-48 sm:h-64 overflow-hidden bg-slate-900 relative">
-                        <img src={activeService.bannerUrl} alt={activeService.title} className="w-full h-full object-cover" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent p-6 flex flex-col justify-end">
-                          <span className="bg-blue-600 text-white text-[11px] font-bold px-2.5 py-1 rounded uppercase tracking-wider w-fit">
-                            {activeService.category}
-                          </span>
-                          <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2 leading-snug drop-shadow-md">
-                            {activeService.title}
-                          </h2>
+                  <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden p-5 sm:p-6">
+                    <span className="bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">{activeService.category}</span>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900 mt-2 mb-2">{activeService.title}</h2>
+                    <p className="text-xs text-slate-600 mb-6">{activeService.description}</p>
+
+                    <form onSubmit={handleFormSubmit} className="space-y-4">
+                      {activeService.fields && activeService.fields.map((field, idx) => (
+                        <div key={idx} className="space-y-1">
+                          <label className="block text-xs font-bold text-slate-800">{field.label}:</label>
+                          {field.type === 'file' ? (
+                            <div>
+                              <input 
+                                type="file" 
+                                name={field.name} 
+                                accept={field.accept || "image/*"} 
+                                required={field.required}
+                                onChange={(e) => handleImagePreview(e, `prev_${field.name}_${idx}`)}
+                                className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs" 
+                              />
+                              <img id={`prev_${field.name}_${idx}`} className="img-preview" alt="Selected Preview" />
+                            </div>
+                          ) : (
+                            <input 
+                              type={field.type} 
+                              name={field.name} 
+                              required={field.required} 
+                              placeholder={field.placeholder || "Details fill karein"}
+                              className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs font-medium focus:outline-none focus:border-blue-600" 
+                            />
+                          )}
                         </div>
-                      </div>
-                    ) : (
-                      <div className="bg-slate-900 text-white p-6 sm:p-8">
-                        <span className="bg-blue-600 text-white text-[11px] font-bold px-2.5 py-1 rounded uppercase tracking-wider">
-                          {activeService.category}
-                        </span>
-                        <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-3 leading-snug">
-                          {activeService.title}
-                        </h2>
-                      </div>
-                    )}
+                      ))}
 
-                    <div className="p-6 sm:p-8 space-y-6">
-                      {activeService.requiredDocs && activeService.requiredDocs.length > 0 && (
-                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
-                          <h3 className="text-base font-bold text-slate-900 flex items-center gap-2 mb-3">
-                            <Icons.FileText />
-                            <span>Kya-Kya Dastavez (Documents) Lagega:</span>
-                          </h3>
-                          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            {activeService.requiredDocs.map((doc, idx) => (
-                              <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm text-slate-700 bg-white p-2.5 rounded border border-slate-200">
-                                <span className="text-emerald-600"><Icons.CheckCircle2 /></span>
-                                <span>{doc}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-
-                      <div>
-                        <h3 className="text-base font-bold text-slate-900 mb-2 border-b border-slate-200 pb-2">
-                          Poori Jaankari / Description:
-                        </h3>
-                        {activeService.descType === 'html' ? (
-                          <div 
-                            className="text-sm text-slate-700 leading-relaxed font-sans"
-                            dangerouslySetInnerHTML={{ __html: activeService.description }}
-                          />
-                        ) : (
-                          <div className="whitespace-pre-line text-sm text-slate-700 leading-relaxed bg-slate-50/50 p-4 rounded-lg border border-slate-200">
-                            {activeService.description || "Apply Button par click karke form bharein."}
-                          </div>
-                        )}
+                      <div className="bg-blue-50/80 border border-blue-200 p-4 rounded-xl text-center my-4">
+                        <p className="text-xs font-extrabold text-blue-900 mb-2">Scan QR & Pay Application Fee</p>
+                        <img src={activeService.qrImageUrl} alt="Payment QR Code" className="max-w-[180px] mx-auto rounded-lg border-2 border-blue-600 shadow-sm" />
                       </div>
 
-                      <div className="pt-6 border-t border-slate-200 text-center">
-                        <button
-                          onClick={() => openEmbeddedForm(activeService)}
-                          className="w-full sm:w-auto min-w-[260px] bg-blue-700 hover:bg-blue-800 text-white font-extrabold text-lg px-8 py-3.5 rounded-xl shadow-lg transition-all active:scale-95"
-                        >
-                          Apply Now
-                        </button>
+                      <div className="space-y-1">
+                        <label className="block text-xs font-extrabold text-rose-600">Payment UTR / Transaction ID (Mandatory):</label>
+                        <input 
+                          type="text" 
+                          name="utr_number" 
+                          required 
+                          placeholder="12-digit UTR or Ref Number daalein" 
+                          className="w-full bg-slate-50 border border-rose-300 rounded-lg p-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-rose-600" 
+                        />
                       </div>
-                    </div>
+
+                      <button 
+                        type="submit" 
+                        disabled={isSubmitting}
+                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm py-3.5 rounded-xl shadow-lg transition-all active:scale-95 disabled:bg-slate-400 mt-2"
+                      >
+                        {isSubmitting ? "Uploading & Submitting..." : "Submit Application →"}
+                      </button>
+                    </form>
                   </div>
                 </main>
               ) : (
-                /* MAIN PAGE / CATEGORY FILTERED VIEW */
                 <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
-                  
-                  {/* FOCUSED CATEGORY HEADER BANNER */}
-                  {selectedCat !== 'All Services' ? (
-                    <div className="bg-gradient-to-r from-blue-900 to-indigo-900 text-white rounded-xl p-5 shadow-md flex items-center justify-between gap-3">
-                      <div>
-                        <span className="text-[10px] bg-amber-400 text-slate-900 font-extrabold px-2 py-0.5 rounded uppercase">
-                          Focused Category View
-                        </span>
-                        <h2 className="text-xl sm:text-2xl font-black text-white mt-1">
-                          📂 {selectedCat}
-                        </h2>
-                        <p className="text-xs text-blue-200 mt-0.5">
-                          Is section me kul {filteredServices.length} active service buttons hain.
-                        </p>
-                      </div>
-
-                      <button
-                        onClick={() => selectCategoryWithHistory('All Services')}
-                        className="bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-extrabold text-xs px-4 py-2 rounded-lg shadow transition-colors shrink-0 flex items-center gap-1"
-                      >
-                        <Icons.ArrowLeft /> Back
-                      </button>
+                  <div className="bg-white border border-slate-300 rounded-xl p-4 shadow-2xs">
+                    <div className="flex items-center gap-2 border-b border-slate-200 pb-2 mb-3">
+                      <span className="text-blue-700"><Icons.Bell /></span>
+                      <h2 className="font-extrabold text-slate-900 text-sm uppercase">Notice Board</h2>
                     </div>
-                  ) : (
-                    /* NOTICE BOARD (Visible ONLY on 'All Services' Home Page) */
-                    <div className="bg-white border border-slate-300 rounded-xl p-4 shadow-2xs">
-                      <div className="flex items-center justify-between border-b border-slate-200 pb-2 mb-3">
-                        <div className="flex items-center gap-2">
-                          <span className="text-blue-700"><Icons.Bell /></span>
-                          <h2 className="font-extrabold text-slate-900 text-sm sm:text-base uppercase tracking-wider">
-                            Notice Board
-                          </h2>
+                    <div className="space-y-2">
+                      {notices.map((n) => (
+                        <div key={n.id} className="flex items-start gap-2 text-xs font-medium text-slate-800 border-b border-slate-100 pb-1.5 last:border-0">
+                          <span className="text-blue-600 font-bold">•</span>
+                          <span>{n.text}</span>
                         </div>
-                        {isAdmin && (
-                          <button
-                            onClick={() => openNoticeModal(null)}
-                            className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1 rounded transition-colors"
-                          >
-                            + Add Notice
-                          </button>
-                        )}
-                      </div>
-
-                      <div className="space-y-2">
-                        {notices.length > 0 ? (
-                          notices.map((n) => (
-                            <div key={n.id} className="flex items-start justify-between gap-3 p-2 rounded hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-0">
-                              <div className="flex items-start gap-2 text-xs sm:text-sm font-medium text-slate-800">
-                                <span className="text-blue-600 font-bold shrink-0 mt-0.5">•</span>
-                                <span>{n.text}</span>
-                              </div>
-                              <div className="flex items-center gap-1.5 shrink-0">
-                                {n.date && <span className="text-[11px] text-slate-400 font-normal mr-1">{n.date}</span>}
-                                {isAdmin && (
-                                  <>
-                                    <button 
-                                      onClick={() => openNoticeModal(n)} 
-                                      className="text-blue-600 hover:bg-blue-50 p-1 rounded"
-                                      title="Edit Notice"
-                                    >
-                                      <Icons.Edit3 />
-                                    </button>
-                                    <button 
-                                      onClick={() => handleDeleteNotice(n.id)} 
-                                      className="text-rose-600 hover:bg-rose-50 p-1 rounded"
-                                      title="Delete Notice"
-                                    >
-                                      <Icons.Trash2 />
-                                    </button>
-                                  </>
-                                )}
-                              </div>
-                            </div>
-                          ))
-                        ) : (
-                          <p className="text-xs text-slate-400 italic">No new notices available.</p>
-                        )}
-                      </div>
+                      ))}
                     </div>
-                  )}
+                  </div>
 
-                  {/* SEARCH & CATEGORIES TABS */}
                   <div className="space-y-3">
                     <div className="relative">
                       <div className="absolute left-3.5 top-3 text-slate-400"><Icons.Search /></div>
@@ -1150,435 +404,60 @@
                         type="text"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="College Admission, Jati, Scholarship Form search karein..."
-                        className="w-full bg-white border border-slate-300 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm font-medium focus:outline-none focus:border-blue-600 shadow-2xs"
+                        placeholder="Search form, service..."
+                        className="w-full bg-white border border-slate-300 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm font-medium focus:outline-none focus:border-blue-600"
                       />
                     </div>
 
                     <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
                       {categories.map((cat) => (
-                        <div key={cat} className="flex items-center shrink-0">
-                          <button
-                            onClick={() => selectCategoryWithHistory(cat)}
-                            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border ${
-                              selectedCat === cat
-                                ? 'bg-blue-700 text-white border-blue-700'
-                                : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-200'
-                            }`}
-                          >
-                            {cat}
-                          </button>
-                          {isAdmin && cat !== 'All Services' && (
-                            <button 
-                              onClick={() => handleDeleteCategory(cat)}
-                              className="ml-1 text-slate-400 hover:text-rose-600 p-1"
-                              title="Delete Category"
-                            >
-                              <Icons.X />
-                            </button>
-                          )}
-                        </div>
-                      ))}
-
-                      {isAdmin && (
                         <button
-                          onClick={() => setShowCategoryModal(true)}
-                          className="bg-slate-800 text-white text-xs font-bold px-3 py-1.5 rounded-lg shrink-0"
+                          key={cat}
+                          onClick={() => setSelectedCat(cat)}
+                          className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border shrink-0 ${
+                            selectedCat === cat ? 'bg-blue-700 text-white border-blue-700' : 'bg-white text-slate-700 border-slate-300'
+                          }`}
                         >
-                          + Add Category
+                          {cat}
                         </button>
-                      )}
+                      ))}
                     </div>
                   </div>
 
-                  {/* SERVICE CARDS GRID */}
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-extrabold text-slate-900 text-sm sm:text-base">
-                        {selectedCat} ({filteredServices.length})
-                      </h3>
-                      {isAdmin && (
-                        <button
-                          onClick={() => openServiceModal(null)}
-                          className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3.5 py-2 rounded-lg shadow-2xs flex items-center gap-1.5"
-                        >
-                          <Icons.Plus /> Naya Service Button Add Karein
-                        </button>
-                      )}
-                    </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {filteredServices.map((srv) => (
+                      <div
+                        key={srv.id}
+                        onClick={() => openServiceDetail(srv)}
+                        className="bg-white rounded-xl border border-slate-300 p-4 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+                      >
+                        <div>
+                          <span className="bg-slate-100 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded border border-slate-200">
+                            {srv.category}
+                          </span>
+                          <h4 className="font-bold text-slate-900 text-sm mt-2">{srv.title}</h4>
+                          <p className="text-xs text-slate-500 mt-1 line-clamp-2">{srv.description}</p>
+                        </div>
 
-                    {filteredServices.length === 0 ? (
-                      <div className="bg-white p-8 rounded-xl border border-slate-200 text-center">
-                        <p className="text-slate-500 font-bold text-sm">No services are available in this category yet.</p>
+                        <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-700 mt-3">
+                          <span>Apply Now & Fill Details</span>
+                          <Icons.ChevronRight />
+                        </div>
                       </div>
-                    ) : (
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {filteredServices.map((srv, idx) => (
-                          <div
-                            key={srv.id}
-                            onClick={() => openServiceDetail(srv)}
-                            className="bg-white rounded-xl border border-slate-300 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group overflow-hidden relative"
-                          >
-                            <div>
-                              {srv.bannerUrl && (
-                                <div className="h-28 w-full overflow-hidden bg-slate-100">
-                                  <img src={srv.bannerUrl} alt={srv.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                                </div>
-                              )}
-
-                              <div className="p-4">
-                                <div className="flex items-center justify-between mb-2">
-                                  <span className="bg-slate-100 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded border border-slate-200">
-                                    {srv.category}
-                                  </span>
-
-                                  {isAdmin && (
-                                    <div className="flex items-center gap-1 z-10" onClick={(e) => e.stopPropagation()}>
-                                      {idx > 0 && (
-                                        <button
-                                          onClick={(e) => handleMoveService(idx, 'left', e)}
-                                          className="px-1.5 py-0.5 text-[10px] bg-amber-100 text-amber-800 font-bold rounded border border-amber-300"
-                                          title="Move Left / Up"
-                                        >
-                                          ⬅️
-                                        </button>
-                                      )}
-                                      {idx < filteredServices.length - 1 && (
-                                        <button
-                                          onClick={(e) => handleMoveService(idx, 'right', e)}
-                                          className="px-1.5 py-0.5 text-[10px] bg-amber-100 text-amber-800 font-bold rounded border border-amber-300"
-                                          title="Move Right / Down"
-                                        >
-                                          ➡️
-                                        </button>
-                                      )}
-                                      <button
-                                        onClick={(e) => openServiceModal(srv, e)}
-                                        className="p-1.5 text-blue-600 hover:bg-blue-50 rounded bg-blue-50/50 border border-blue-200"
-                                        title="Edit & Rename Service"
-                                      >
-                                        <Icons.Edit3 />
-                                      </button>
-                                      <button
-                                        onClick={(e) => handleDeleteService(srv.id, e)}
-                                        className="p-1.5 text-rose-600 hover:bg-rose-50 rounded bg-rose-50/50 border border-rose-200"
-                                        title="Delete Service"
-                                      >
-                                        <Icons.Trash2 />
-                                      </button>
-                                    </div>
-                                  )}
-                                </div>
-
-                                <h4 className="font-bold text-slate-900 text-sm group-hover:text-blue-700 leading-snug">
-                                  {srv.title}
-                                </h4>
-
-                                {srv.shortDesc && (
-                                  <p className="text-xs text-slate-500 mt-1.5 line-clamp-2">
-                                    {srv.shortDesc}
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-
-                            <div className="p-4 pt-2 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-700">
-                              <span>Full Detail & Apply</span>
-                              <span className="group-hover:translate-x-1 transition-transform"><Icons.ChevronRight /></span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                    ))}
                   </div>
                 </main>
               )}
 
               {/* FOOTER */}
-              <footer className="bg-slate-900 text-slate-400 text-xs py-6 mt-12 border-t border-slate-800">
-                <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-                  <div>
-                    <p className="font-bold text-white">SGS ONLINE SERVICE © 2026</p>
-                    <p className="text-slate-500 text-[11px] mt-0.5">All Governmental & College Online Works Portal</p>
-                  </div>
-
-                  <div className="flex items-center gap-4 text-xs">
-                    <button
-                      onClick={() => setActiveModalPage('privacy')}
-                      className="text-slate-400 hover:text-white underline underline-offset-2"
-                    >
-                      Privacy Policy
-                    </button>
-
-                    <button
-                      onClick={() => setActiveModalPage('terms')}
-                      className="text-slate-400 hover:text-white underline underline-offset-2"
-                    >
-                      Terms & Conditions
-                    </button>
-
-                    {isAdmin ? (
-                      <button
-                        onClick={handleAdminLogout}
-                        className="text-emerald-400 hover:text-emerald-300 text-xs font-semibold underline underline-offset-2 transition-colors cursor-pointer"
-                      >
-                        ✓ Admin Active (Logout)
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => setShowLoginModal(true)}
-                        className="text-slate-500 hover:text-slate-300 text-xs font-medium underline underline-offset-2 transition-colors cursor-pointer"
-                      >
-                        Admin Login
-                      </button>
-                    )}
-                  </div>
+              <footer className="bg-slate-900 text-slate-400 text-xs py-6 mt-12 border-t border-slate-800 text-center">
+                <p className="font-bold text-white">SGS ONLINE SERVICE © 2026</p>
+                <div className="flex items-center justify-center gap-4 text-xs mt-2">
+                  <button onClick={() => setActiveModalPage('privacy')} className="text-slate-400 hover:text-white underline">Privacy Policy</button>
+                  <button onClick={() => setActiveModalPage('terms')} className="text-slate-400 hover:text-white underline">Terms & Conditions</button>
                 </div>
               </footer>
             </>
-          )}
-
-          {/* ADMIN LOGIN MODAL */}
-          {showLoginModal && (
-            <div className="fixed inset-0 bg-slate-900/60 z-[70] flex items-center justify-center p-4">
-              <div className="bg-white rounded-xl max-w-sm w-full p-5 shadow-xl border border-slate-200">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-bold text-slate-900 text-base">Firebase Admin Login</h3>
-                  <button onClick={() => setShowLoginModal(false)} className="text-slate-400 hover:text-slate-600">
-                    <Icons.X />
-                  </button>
-                </div>
-                <form onSubmit={handleAdminEmailLogin} className="space-y-3">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">Admin Email ID:</label>
-                    <input
-                      type="email"
-                      value={adminEmail}
-                      onChange={(e) => setAdminEmail(e.target.value)}
-                      placeholder="Admin email daalein..."
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-medium focus:outline-none"
-                      required
-                      autoFocus
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">Password:</label>
-                    <input
-                      type="password"
-                      value={adminPassword}
-                      onChange={(e) => setAdminPassword(e.target.value)}
-                      placeholder="Password daalein..."
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-medium focus:outline-none"
-                      required
-                    />
-                  </div>
-
-                  {authError && <p className="text-xs text-rose-600 font-bold mt-1">{authError}</p>}
-
-                  <button
-                    type="submit"
-                    disabled={isAuthLoading}
-                    className="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2.5 rounded-lg transition-colors flex items-center justify-center gap-1"
-                  >
-                    {isAuthLoading ? 'Authenticating Firebase...' : 'Login As Admin'}
-                  </button>
-                </form>
-              </div>
-            </div>
-          )}
-
-          {/* ADD / EDIT & RENAME SERVICE MODAL */}
-          {showServiceFormModal && (
-            <div className="fixed inset-0 bg-slate-900/60 z-[70] flex items-center justify-center p-3 overflow-y-auto">
-              <div className="bg-white rounded-xl max-w-xl w-full p-5 shadow-2xl my-6 border border-slate-200">
-                <div className="flex items-center justify-between mb-4 border-b pb-2">
-                  <h3 className="font-bold text-slate-900 text-sm">
-                    {editingServiceId ? 'Service Edit & Rename Karein (Realtime DB)' : 'Naya Service Add Karein (Realtime DB)'}
-                  </h3>
-                  <button onClick={() => setShowServiceFormModal(false)} className="text-slate-400">
-                    <Icons.X />
-                  </button>
-                </div>
-
-                <form onSubmit={handleSaveService} className="space-y-3 text-xs font-medium">
-                  <div>
-                    <label className="block text-slate-700 font-bold mb-1">Category:</label>
-                    <select
-                      value={formCategory}
-                      onChange={(e) => setFormCategory(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs font-bold"
-                    >
-                      {categories.filter(c => c !== 'All Services').map(c => (
-                        <option key={c} value={c}>{c}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-slate-700 font-bold mb-1">Title / Rename Service Name:</label>
-                    <input
-                      type="text"
-                      value={formTitle}
-                      onChange={(e) => setFormTitle(e.target.value)}
-                      placeholder="e.g. Patliputra University Graduation Form"
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs font-bold text-blue-800"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-slate-700 font-bold mb-1">Banner Image Link / URL (Optional):</label>
-                    <input
-                      type="url"
-                      value={formBannerUrl}
-                      onChange={(e) => setFormBannerUrl(e.target.value)}
-                      placeholder="https://example.com/banner.jpg"
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-slate-700 font-bold mb-1">Chhota Description (Summary):</label>
-                    <input
-                      type="text"
-                      value={formShortDesc}
-                      onChange={(e) => setFormShortDesc(e.target.value)}
-                      placeholder="Card par dikhne wala ek line ka intro"
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-slate-700 font-bold mb-1">Kya-Kya Lagega (Required Docs - 1 Per Line):</label>
-                    <textarea
-                      rows={3}
-                      value={formDocs}
-                      onChange={(e) => setFormDocs(e.target.value)}
-                      placeholder="10th Marksheet&#10;Aadhaar Card&#10;Photo"
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs font-mono"
-                    />
-                  </div>
-
-                  <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <label className="text-slate-700 font-bold">Poora Description:</label>
-                      <div className="flex gap-1 bg-slate-100 p-0.5 rounded border border-slate-200">
-                        <button
-                          type="button"
-                          onClick={() => setFormDescType('normal')}
-                          className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                            formDescType === 'normal' ? 'bg-white text-blue-700 shadow-2xs' : 'text-slate-500'
-                          }`}
-                        >
-                          Normal Text
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setFormDescType('html')}
-                          className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                            formDescType === 'html' ? 'bg-white text-blue-700 shadow-2xs' : 'text-slate-500'
-                          }`}
-                        >
-                          HTML Code
-                        </button>
-                      </div>
-                    </div>
-                    <textarea
-                      rows={4}
-                      value={formDescription}
-                      onChange={(e) => setFormDescription(e.target.value)}
-                      placeholder={formDescType === 'html' ? "<h1>Code</h1>" : "Details text likhein..."}
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs font-mono"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-slate-700 font-bold mb-1">Apply Link (Google Form URL):</label>
-                    <input
-                      type="url"
-                      value={formApplyLink}
-                      onChange={(e) => setFormApplyLink(e.target.value)}
-                      placeholder="https://docs.google.com/forms/..."
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs"
-                      required
-                    />
-                  </div>
-
-                  <div className="flex justify-end gap-2 pt-2 border-t">
-                    <button
-                      type="button"
-                      onClick={() => setShowServiceFormModal(false)}
-                      className="px-3 py-1.5 bg-slate-200 font-bold rounded-lg"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="px-4 py-1.5 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-lg shadow-sm"
-                    >
-                      Save & Rename To Realtime DB
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          )}
-
-          {/* ADD / EDIT NOTICE MODAL */}
-          {showNoticeModal && (
-            <div className="fixed inset-0 bg-slate-900/60 z-[70] flex items-center justify-center p-3">
-              <div className="bg-white rounded-xl max-w-sm w-full p-5 shadow-xl border border-slate-200">
-                <h3 className="font-bold text-slate-900 text-sm mb-3">
-                  {editingNoticeId ? 'Notice Board Edit Karein' : 'Notice Board Me Naya Notice Add Karein'}
-                </h3>
-                <form onSubmit={handleSaveNotice} className="space-y-3 text-xs">
-                  <input
-                    type="text"
-                    value={noticeText}
-                    onChange={(e) => setNoticeText(e.target.value)}
-                    placeholder="Notice text likhein..."
-                    className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2"
-                    required
-                  />
-                  <div className="flex justify-end gap-2">
-                    <button type="button" onClick={() => setShowNoticeModal(false)} className="px-3 py-1.5 bg-slate-200 font-bold rounded-lg">
-                      Cancel
-                    </button>
-                    <button type="submit" className="px-3 py-1.5 bg-blue-700 text-white font-bold rounded-lg">
-                      Save Notice
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          )}
-
-          {/* ADD CATEGORY MODAL */}
-          {showCategoryModal && (
-            <div className="fixed inset-0 bg-slate-900/60 z-[70] flex items-center justify-center p-3">
-              <div className="bg-white rounded-xl max-w-sm w-full p-5 shadow-xl border border-slate-200">
-                <h3 className="font-bold text-slate-900 text-sm mb-3">Nayi Sub-Category Add Karein</h3>
-                <form onSubmit={handleAddCategory} className="space-y-3 text-xs">
-                  <input
-                    type="text"
-                    value={newCatName}
-                    onChange={(e) => setNewCatName(e.target.value)}
-                    placeholder="e.g. Government Schemes"
-                    className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2"
-                    required
-                  />
-                  <div className="flex justify-end gap-2">
-                    <button type="button" onClick={() => setShowCategoryModal(false)} className="px-3 py-1.5 bg-slate-200 font-bold rounded-lg">
-                      Cancel
-                    </button>
-                    <button type="submit" className="px-3 py-1.5 bg-blue-700 text-white font-bold rounded-lg">
-                      Add Category
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
           )}
 
         </div>
