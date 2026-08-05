@@ -1,4 +1,3 @@
-// posts.js
 const STATIC_CATEGORIES = [
   { name: 'All Services', color: 'blue' },
   { name: 'Certificates (Jati/Aaya/Niwas)', color: 'emerald' },
