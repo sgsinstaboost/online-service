@@ -6,16 +6,10 @@ const STATIC_CATEGORIES = [
   { name: 'Government Forms', color: 'rose' }
 ];
 
-
-
-
 const STATIC_NOTICES = [
   { id: 1, text: "Bihar RTPS Income / Caste Certificate online forms are active." },
   { id: 2, text: "College Admission Forms & Post Matric Scholarship portal open." }
 ];
-
-
-
 
 const ALL_POSTS = [
   {
@@ -33,10 +27,6 @@ const ALL_POSTS = [
       { name: "identity_proof", label: "Upload Identity Document Proof (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true }
     ]
   },
-
-
-
-  
   {
     id: "rtps-income-02",
     title: "Bihar RTPS Income Certificate (आय प्रमाण पत्र)",
@@ -51,11 +41,6 @@ const ALL_POSTS = [
       { name: "identity_proof", label: "Identity Proof Document (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true }
     ]
   },
-
-
-
-
-  
   {
     id: "rtps-residence-03",
     title: "Bihar RTPS Residence Certificate (निवास प्रमाण पत्र)",
@@ -70,11 +55,6 @@ const ALL_POSTS = [
       { name: "id_proof", label: "Identity Proof (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true }
     ]
   },
-
-
-
-
-  
   {
     id: "pan-card-04",
     title: "New PAN Card Online Form",
@@ -89,58 +69,42 @@ const ALL_POSTS = [
       { name: "id_proof", label: "Identity Proof Document (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true }
     ]
   },
-
-
-
-
-  
   {
-    
-  id: "college-admission-05",
-  title: "College Admission Online Form",
-  category: "College Admission",
-  description: "College Admission ke liye marksheets aur details submit karein.",
-  qrImageUrl: "https://i.ibb.co/3s4G12Z/qr-placeholder.png",
-  fields: [
-    { id: "field_full_name", name: "full_name", label: "Student Full Name", type: "text", required: true },
-    { id: "field_course_stream", name: "course_stream", label: "Course / Stream Name", type: "text", required: true, placeholder: "e.g. B.A / B.Sc / Commerce" },
-    { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number", type: "tel", required: true },
-    { id: "field_student_photo", name: "student_photo", label: "Student Photo (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
-    { id: "field_marksheet_photo", name: "marksheet_photo", label: "Marksheet Document (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
-    
-    // --- Radio Buttons Options ---
-    {
-      id: "field_document_type",
-      name: "document_type",
-      label: "Select Any One Document (कोई एक दस्तावेज़ चुनें)",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_aadhaar", label: "Aadhaar Card (आधार कार्ड)", value: "aadhaar_card" },
-        { id: "opt_pan", label: "PAN Card (पैन कार्ड)", value: "pan_card" },
-        { id: "opt_ghar_slip", label: "Ghar ki Rasid / Slip (घर का रसीद)", value: "ghar_rasid" },
-        { id: "opt_purana_jati", label: "Purana Banal Jati Certificate (पुराना जाति)", value: "purana_jati" },
-        { id: "opt_ration_card", label: "Ration Card (राशन कार्ड)", value: "ration_card" }
-      ]
-    },
-
-    // --- File Upload Field ---
-    {
-      id: "field_document_file",
-      name: "document_file",
-      label: "Upload Selected Document (Image/PDF)",
-      type: "file",
-      accept: "image/*, application/pdf",
-      required: true
-    }
-  
-     ]
-
-
-
-    
+    id: "college-admission-05",
+    title: "College Admission Online Form",
+    category: "College Admission",
+    description: "College Admission ke liye marksheets aur details submit karein.",
+    qrImageUrl: "https://i.ibb.co/3s4G12Z/qr-placeholder.png",
+    fields: [
+      { id: "field_full_name", name: "full_name", label: "Student Full Name", type: "text", required: true },
+      { id: "field_course_stream", name: "course_stream", label: "Course / Stream Name", type: "text", required: true, placeholder: "e.g. B.A / B.Sc / Commerce" },
+      { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number", type: "tel", required: true },
+      { id: "field_student_photo", name: "student_photo", label: "Student Photo (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
+      { id: "field_marksheet_photo", name: "marksheet_photo", label: "Marksheet Document (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
+      {
+        id: "field_document_type",
+        name: "document_type",
+        label: "Select Any One Document (कोई एक दस्तावेज़ चुनें)",
+        type: "radio",
+        required: true,
+        options: [
+          { id: "opt_aadhaar", label: "Aadhaar Card (आधार कार्ड)", value: "aadhaar_card" },
+          { id: "opt_pan", label: "PAN Card (पैन कार्ड)", value: "pan_card" },
+          { id: "opt_ghar_slip", label: "Ghar ki Rasid / Slip (घर का रसीद)", value: "ghar_rasid" },
+          { id: "opt_purana_jati", label: "Purana Banal Jati Certificate (पुराना जाति)", value: "purana_jati" },
+          { id: "opt_ration_card", label: "Ration Card (राशन कार्ड)", value: "ration_card" }
+        ]
+      },
+      {
+        id: "field_document_file",
+        name: "document_file",
+        label: "Upload Selected Document (Image/PDF)",
+        type: "file",
+        accept: "image/*, application/pdf",
+        required: true
+      }
+    ]
   },
-  
   {
     id: "scholarship-06",
     title: "Post Matric Scholarship Online Form",
