@@ -95,17 +95,32 @@ const ALL_POSTS = [
 
   
   {
+    
   id: "college-admission-05",
-    title: "College Admission Online Form",
-    category: "College Admission",
-    description: "College Admission ke liye marksheets aur details submit karein.",
-    qrImageUrl: "https://i.ibb.co/3s4G12Z/qr-placeholder.png",
-    fields: [
-      { name: "full_name", label: "Student Full Name", type: "text", required: true },
-      { name: "course_stream", label: "Course / Stream Name", type: "text", required: true, placeholder: "e.g. B.A / B.Sc / Commerce" },
-      { name: "mobile_no", label: "Mobile Number", type: "tel", required: true },
-      { name: "student_photo", label: "Student Photo (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
-      { name: "marksheet_photo", label: "Marksheet Document (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true }
+  title: "College Admission Online Form",
+  category: "College Admission",
+  description: "College Admission ke liye marksheets aur details submit karein.",
+  qrImageUrl: "https://i.ibb.co/3s4G12Z/qr-placeholder.png",
+  fields: [
+    { id: "field_full_name", name: "full_name", label: "Student Full Name", type: "text", required: true },
+    { id: "field_course_stream", name: "course_stream", label: "Course / Stream Name", type: "text", required: true, placeholder: "e.g. B.A / B.Sc / Commerce" },
+    { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number", type: "tel", required: true },
+    { id: "field_student_photo", name: "student_photo", label: "Student Photo (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
+    { id: "field_marksheet_photo", name: "marksheet_photo", label: "Marksheet Document (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
+    
+    // --- Radio Buttons Options ---
+    {
+      id: "field_document_type",
+      name: "document_type",
+      label: "Select Any One Document (कोई एक दस्तावेज़ चुनें)",
+      type: "radio",
+      required: true,
+      options: [
+        { id: "opt_aadhaar", label: "Aadhaar Card (आधार कार्ड)", value: "aadhaar_card" },
+        { id: "opt_pan", label: "PAN Card (पैन कार्ड)", value: "pan_card" },
+        { id: "opt_ghar_slip", label: "Ghar ki Rasid / Slip (घर का रसीद)", value: "ghar_rasid" },
+        { id: "opt_purana_jati", label: "Purana Banal Jati Certificate (पुराना जाति)", value: "purana_jati" },
+        { id: "opt_ration_card", label: "Ration Card (राशन कार्ड)", value: "ration_card" }
       ]
     },
 
@@ -118,7 +133,8 @@ const ALL_POSTS = [
       accept: "image/*, application/pdf",
       required: true
     }
-    ]
+  
+     ]
 
 
 
