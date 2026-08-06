@@ -542,5 +542,118 @@ const ALL_POSTS = [
       { name: "applicant_photo", label: "Passport Photo (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
       { name: "id_proof", label: "Identity Document Proof (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true }
     ]
-  }
+  },
+
+
+
+
+
+
+
+  
+
+{
+  id: "rtps-combo-11",
+  title: "Bihar RTPS Combo Service (जाति, आय एवं निवास प्रमाण पत्र एक साथ बनवाएं)",
+  category: "Certificates (Jati/Aaya/Niwas)",
+  description: "जाति, आय एवं निवास प्रमाण पत्र एक साथ आवेदन करने के लिए नीचे अपनी पूरी डिटेल्स भरें, सभी आवश्यक दस्तावेज़ अपलोड करें और QR कोड स्कैन करके ₹90 का भुगतान करें।",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D90%26cu%3DINR&size=200&format=png",
+  fields: [
+    { id: "field_full_name", name: "full_name", label: "आवेदक का नाम / Name of Applicant", type: "text", required: true, placeholder: "Apna name likhein" },
+    { id: "field_father_name", name: "father_name", label: "पिता का नाम / Father's Name", type: "text", required: true, placeholder: "Father name likhein" },
+    { id: "field_mother_name", name: "mother_name", label: "माता का नाम / Mother's Name", type: "text", required: true, placeholder: "Mother name likhein" },
+    { id: "field_husband_name", name: "husband_name", label: "पति का नाम / Husband's Name (Optional)", type: "text", required: false, placeholder: "Pati ka naam (yadi laagu ho)" },
+    { id: "field_mobile_no", name: "mobile_no", label: "मोबाइल नंबर / Mobile Number", type: "tel", required: true, placeholder: "Mobile number" },
+    { id: "field_district", name: "district", label: "जिला / District", type: "text", required: true, placeholder: "District name likhein" },
+    { id: "field_sub_division", name: "sub_division", label: "अनुमंडल / Sub Division", type: "text", required: true, placeholder: "Sub division likhein" },
+    { id: "field_block", name: "block", label: "प्रखंड / Block", type: "text", required: true, placeholder: "Block name likhein" },
+    { id: "field_gram_panchayat", name: "gram_panchayat", label: "ग्राम पंचायत / Gram Panchayat", type: "text", required: true, placeholder: "Panchayat name likhein" },
+    { id: "field_ward_no", name: "ward_no", label: "वार्ड संख्या / Ward No.", type: "text", required: true, placeholder: "Ward number likhein" },
+    { id: "field_village", name: "village", label: "ग्राम/मोहल्ला / Village/Town", type: "text", required: true, placeholder: "Village name likhein" },
+    { id: "field_police_station", name: "police_station", label: "थाना / Police Station", type: "text", required: true, placeholder: "Police station likhein" },
+    {
+      id: "field_applicant_photo",
+      name: "applicant_photo",
+      label: "आवेदक का फोटो / Photograph of Applicant",
+      type: "file",
+      accept: "image/*, application/pdf",
+      required: true
+    },
+    {
+      id: "field_profession",
+      name: "profession",
+      label: "पेशा / Profession",
+      type: "radio",
+      required: true,
+      options: [
+        { id: "opt_student", label: "छात्र / Student", value: "student" },
+        { id: "opt_farmer", label: "किसान / Farmer", value: "farmer" },
+        { id: "opt_housewife", label: "गृहिणी / Housewife", value: "housewife" },
+        { id: "opt_other_prof", label: "अन्य / Other", value: "other" }
+      ]
+    },
+    { id: "field_category", name: "category", label: "वर्ग / Category", type: "text", required: true, placeholder: "e.g. OBC / EBC / SC / ST" },
+    { id: "field_caste", name: "caste", label: "जाति / Caste", type: "text", required: true, placeholder: "Apni jati likhein" },
+    {
+      id: "field_annual_income_range",
+      name: "annual_income_range",
+      label: "वार्षिक आय / Annual Family Income Amount",
+      type: "radio",
+      required: true,
+      options: [
+        { id: "opt_inc_60k", label: "₹60,000", value: "60000" },
+        { id: "opt_inc_70k", label: "₹70,000", value: "70000" },
+        { id: "opt_inc_80k", label: "₹80,000", value: "80000" },
+        { id: "opt_inc_90k", label: "₹90,000", value: "90000" },
+        { id: "opt_inc_1lakh", label: "₹1,00,000", value: "100000" },
+        { id: "opt_inc_1_2lakh", label: "₹1,20,000", value: "120000" },
+        { id: "opt_inc_1_5lakh", label: "₹1,50,000", value: "150000" }
+      ]
+    },
+    {
+      id: "field_residence_type",
+      name: "residence_type",
+      label: "निवास का प्रकार / Type of Residence",
+      type: "radio",
+      required: true,
+      options: [
+        { id: "opt_sthayi", label: "स्थायी", value: "sthayi" },
+        { id: "opt_asthayi", label: "अस्थायी", value: "asthayi" }
+      ]
+    },
+    {
+      id: "field_combo_proof_doc",
+      name: "combo_proof_doc",
+      label: "प्रमाणपत्रों के साक्ष्य हेतु दस्तावेज",
+      type: "radio",
+      required: true,
+      options: [
+        { id: "opt_purana_certificates", label: "पुराना बना हुआ जाति / आय / निवास प्रमाण पत्र", value: "purana_all_certificates" },
+        { id: "opt_khatiyan_doc", label: "राजस्व अभिलेख - खतियान", value: "rajashwa_khatiyan" },
+        { id: "opt_bhumi_doc", label: "राजस्व अभिलेख - भूमि संबंधी दस्तावेज", value: "rajashwa_bhumi_dastavez" },
+        { id: "opt_ration_card_doc", label: "राशन कार्ड", value: "ration_card" },
+        { id: "opt_anya_rajashwa_doc", label: "अन्य राजस्व अभिलेख", value: "anya_rajashwa_abhilekh" }
+      ]
+    },
+    {
+      id: "field_identity_proof",
+      name: "identity_proof",
+      label: "दस्तावेज़ अपलोड करें / Upload Selected Document Proof",
+      type: "file",
+      accept: "image/*, application/pdf",
+      required: true
+    },
+    {
+      id: "field_payment_screenshot",
+      name: "payment_screenshot",
+      label: "भुगतान का स्क्रीनशॉट अपलोड करें / Upload Payment Screenshot",
+      type: "file",
+      accept: "image/*",
+      required: true
+    }
+  ]
+}
+
+
+  
 ];
