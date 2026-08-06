@@ -430,7 +430,7 @@ const ALL_POSTS = [
 
   
  {
-  id: "vksu-exam-form-all-sem",
+  id: "vksu-exam-form-all-sem-05",
   title: "VKSU Exam Form All Semester",
   category: ["College Admission", "STD Collage"], 
   description: "Veer Kunwar Singh University exam form fill up service all semesters (Sem 1 to Sem 8).",
@@ -628,7 +628,7 @@ const ALL_POSTS = [
 
 
 {
-  id: "vksu-admission-sem5-2024-2028",
+  id: "vksu-admission-sem5-2024-2028-07",
   title: "VKSU Online Admission Form (Semester 5th)",
   category: "College Admission",
   description: "Veer Kunwar Singh University, Session 2024-2028 Semester 5th Online Admission Form fill up service.",
