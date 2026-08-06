@@ -428,7 +428,7 @@ const ALL_POSTS = [
 
 
   
-  {
+ {
   id: "vksu-exam-form-all-sem",
   title: "VKSU Exam Form All Semester",
   category: "College Admission",
@@ -465,7 +465,7 @@ const ALL_POSTS = [
         { id: "opt_sem8", label: "Semester 8", value: "sem_8" }
       ]
     },
-    { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number", type: "tel", required: true, placeholder: "Mobile number" },
+    { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number", type: "tel", required: true, placeholder: "10-digit mobile number likhein" },
     { id: "field_vksu_reg_no", name: "vksu_reg_no", label: "VKSU Registration Number", type: "text", required: true, placeholder: "Registration number likhein" },
     { id: "field_vksu_password", name: "vksu_password", label: "VKSU Password (Optional)", type: "text", required: false, placeholder: "Agar password pata ho to likhein" },
     {
@@ -497,7 +497,6 @@ const ALL_POSTS = [
     
     ]
   },
-
 
 
 
