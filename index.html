@@ -198,25 +198,43 @@
 
         let textDetails = `📥 *New Online Application Received!*\n\n`;
         textDetails += `🆔 *UID:* \`${submissionId}\`\n`;
-        textDetails += `📌 *Service:* ${activeService.title}\n`;
+        textDetails += `📌 *Service:* ${activeService.title}\n\n`;
+        textDetails += `👤 *USER SUBMITTED DETAILS:*\n`;
 
         const rawFileInputs = [];
 
-        for (let [key, value] of formData.entries()) {
-          if (value instanceof File) {
-            if (value.size > 0) {
-              rawFileInputs.push({ name: key, file: value });
+        // Loop through all defined fields in post configuration to extract labels accurately
+        if (activeService.fields) {
+          activeService.fields.forEach((f) => {
+            if (f.type === 'file') {
+              const fileObj = formData.get(f.name);
+              if (fileObj && fileObj instanceof File && fileObj.size > 0) {
+                rawFileInputs.push({ label: f.label, name: f.name, file: fileObj });
+              }
+            } else if (f.type === 'radio') {
+              const selectedValue = formData.get(f.name);
+              let selectedLabel = selectedValue;
+              if (f.options) {
+                const optObj = f.options.find(o => o.value === selectedValue);
+                if (optObj) selectedLabel = optObj.label;
+              }
+              textDetails += `• *${f.label}:* ${selectedLabel || 'Not Selected'}\n`;
+            } else {
+              const val = formData.get(f.name);
+              if (val) {
+                textDetails += `• *${f.label}:* ${val}\n`;
+              }
             }
-          } else if (key !== "utr_number") {
-            textDetails += `👤 *${key.replace('_', ' ').toUpperCase()}:* ${value}\n`;
-          }
+          });
         }
 
-        textDetails += `💳 *UTR/Transaction ID:* \`${formData.get("utr_number")}\`\n`;
+        const utrVal = formData.get("utr_number");
+        textDetails += `\n💳 *UTR / Transaction ID:* \`${utrVal || 'N/A'}\`\n`;
         textDetails += `📅 *Date:* ${new Date().toLocaleString()}`;
 
         try {
-          const sendTextPromise = fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+          // 1. Send Complete Text Message First
+          await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -226,16 +244,16 @@
             })
           });
 
+          // 2. Compress Images
           const processedFiles = await Promise.all(
             rawFileInputs.map(async (item) => {
               const fileObj = await compressImage(item.file);
-              return { name: item.name, file: fileObj };
+              return { label: item.label, name: item.name, file: fileObj };
             })
           );
 
-          await sendTextPromise;
-
-          const uploadPromises = processedFiles.map((item) => {
+          // 3. Upload Files to Telegram
+          for (const item of processedFiles) {
             const fileData = new FormData();
             fileData.append("chat_id", TELEGRAM_CHAT_ID);
             
@@ -244,15 +262,13 @@
             const paramName = isPdf ? 'document' : 'photo';
 
             fileData.append(paramName, item.file);
-            fileData.append("caption", `📎 File [${item.name}] for UID: ${submissionId}`);
+            fileData.append("caption", `📎 ${item.label}\nUID: ${submissionId}`);
 
-            return fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/${endpoint}`, {
+            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/${endpoint}`, {
               method: "POST",
               body: fileData
             });
-          });
-
-          await Promise.all(uploadPromises);
+          }
 
           showNotification(`Application Submitted Successfully! UID: ${submissionId}`);
           form.reset();
@@ -546,7 +562,6 @@
                               <div id={`prev_pdf_${field.name}_${idx}`} className="pdf-preview"></div>
                             </div>
                           ) : field.type === 'radio' ? (
-                            /* --- RADIO BUTTONS FIELD SUPPORT ADDED HERE --- */
                             <div className="space-y-2 bg-slate-50 p-3 rounded-lg border border-slate-200">
                               {field.options && field.options.map((opt) => (
                                 <label key={opt.id || opt.value} className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
@@ -692,8 +707,6 @@
     }
 
     ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-    
-    
   </script>
 </body>
 </html>
