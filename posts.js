@@ -19,12 +19,12 @@ const ALL_POSTS = [
 
 
   
-  {
+{
   id: "internship-application-01",
   title: "Internship Application Online Form",
   category: "Internship",
   description: "Internship ke liye apni personal, academic aur payment details bharein.",
-  qrImageUrl: "https://shorturl.at/IFLsW",
+  qrImageUrl: "https://i.ibb.co/3s4G12Z/qr-placeholder.png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "Full Name", type: "text", required: true },
     {
@@ -143,10 +143,10 @@ const ALL_POSTS = [
       label: "Upload Payment Screenshot",
       type: "file",
       accept: "image/*",
-      required: true }   
-    ]
-  },
-
+      required: true
+    }
+  ]
+},
 
 
 
