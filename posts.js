@@ -95,7 +95,7 @@ const ALL_POSTS = [
 
   
   {
-   id: "college-admission-05",
+  id: "college-admission-05",
   title: "College Admission Online Form",
   category: "College Admission",
   description: "College Admission ke liye marksheets aur details submit karein.",
@@ -106,33 +106,38 @@ const ALL_POSTS = [
     { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number", type: "tel", required: true },
     { id: "field_student_photo", name: "student_photo", label: "Student Photo (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
     { id: "field_marksheet_photo", name: "marksheet_photo", label: "Marksheet Document (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
+    
+    // --- Ye Radio Options Screen Par Samne Dikhnge ---
     {
-      id: "field_other_doc_type",
-      name: "other_document_type",
-      label: "Select Additional Document (अन्य दस्तावेज़ चुनें)",
-      type: "select",
-      required: false,
+      id: "field_document_type",
+      name: "document_type",
+      label: "Select Any One Document (कोई एक दस्तावेज़ चुनें)",
+      type: "radio",
+      required: true,
       options: [
-        { id: "opt_ghar_slip", label: "Ghar ki Slip (घर का रसीद/रशीद)", value: "ghar_slip" },
-        { id: "opt_purana_jati", label: "Purana Banal Jati Certificate (पुराना जाति प्रमाण पत्र)", value: "purana_jati" },
+        { id: "opt_aadhaar", label: "Aadhaar Card (आधार कार्ड)", value: "aadhaar_card" },
+        { id: "opt_pan", label: "PAN Card (पैन कार्ड)", value: "pan_card" },
+        { id: "opt_ghar_slip", label: "Ghar ki Rasid / Slip (घर का रसीद)", value: "ghar_rasid" },
+        { id: "opt_purana_jati", label: "Purana Banal Jati Certificate (पुराना जाति)", value: "purana_jati" },
         { id: "opt_ration_card", label: "Ration Card (राशन कार्ड)", value: "ration_card" }
       ]
     },
+
+    // --- File Upload Field ---
     {
-      id: "field_other_doc_file",
-      name: "other_document_file",
-      label: "Upload Selected Additional Document (Image/PDF)",
+      id: "field_document_file",
+      name: "document_file",
+      label: "Upload Selected Document (Image/PDF)",
       type: "file",
       accept: "image/*, application/pdf",
-      required: false
+      required: true
     }
     ]
+
+
+
+    
   },
-
-
-
-
-
   
   {
     id: "scholarship-06",
