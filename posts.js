@@ -24,7 +24,7 @@ const ALL_POSTS = [
   title: "Internship Application Online Form",
   category: "Internship",
   description: "Internship ke liye apni personal, academic aur payment details bharein.",
-  qrImageUrl: "https://i.ibb.co/3s4G12Z/qr-placeholder.png",
+  qrImageUrl: "https://tinyurl.com/sgsonlineservice",
   fields: [
     { id: "field_full_name", name: "full_name", label: "Full Name", type: "text", required: true },
     {
