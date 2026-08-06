@@ -17,200 +17,200 @@ const ALL_POSTS = [
   
   
   
- {
-  "id": "internship-application-01",
-  "title": "Internship Application Online Form",
-  "category": "Internship",
-  "description": "Internship ke liye apni personal, academic aur payment details bharein.",
-  "qrImageUrl": "https://i.ibb.co/3s4G12Z/qr-placeholder.png",
-  "fields": [
+{
+  id: "internship-application-01",
+  title: "Internship Application Online Form",
+  category: "Internship",
+  description: "Internship ke liye apni personal, academic aur payment details bharein.",
+  qrImageUrl: "https://i.ibb.co/3s4G12Z/qr-placeholder.png",
+  fields: [
     {
-      "id": "field_full_name",
-      "name": "full_name",
-      "label": "Full Name",
-      "type": "text",
-      "required": true
+      id: "field_full_name",
+      name: "full_name",
+      label: "Full Name",
+      type: "text",
+      required: true
     },
     {
-      "id": "field_gender",
-      "name": "gender",
-      "label": "Gender",
-      "type": "select",
-      "required": true,
-      "options": [
-        { "label": "Male", "value": "male" },
-        { "label": "Female", "value": "female" }
+      id: "field_gender",
+      name: "gender",
+      label: "Gender",
+      type: "select",
+      required: true,
+      options: [
+        { label: "Male", value: "male" },
+        { label: "Female", value: "female" }
       ]
     },
     {
-      "id": "field_father_name",
-      "name": "father_name",
-      "label": "Father's Name",
-      "type": "text",
-      "required": true
+      id: "field_father_name",
+      name: "father_name",
+      label: "Father's Name",
+      type: "text",
+      required: true
     },
     {
-      "id": "field_mother_name",
-      "name": "mother_name",
-      "label": "Mother's Name",
-      "type": "text",
-      "required": true
+      id: "field_mother_name",
+      name: "mother_name",
+      label: "Mother's Name",
+      type: "text",
+      required: true
     },
     {
-      "id": "field_contact_number",
-      "name": "contact_number",
-      "label": "Contact Number",
-      "type": "tel",
-      "required": true
+      id: "field_contact_number",
+      name: "contact_number",
+      label: "Contact Number",
+      type: "tel",
+      required: true
     },
     {
-      "id": "field_email_address",
-      "name": "email_address",
-      "label": "Email Address",
-      "type": "email",
-      "required": true
+      id: "field_email_address",
+      name: "email_address",
+      label: "Email Address",
+      type: "email",
+      required: true
     },
     {
-      "id": "field_university_name",
-      "name": "university_name",
-      "label": "University Name",
-      "type": "select",
-      "required": true,
-      "options": [
-        { "label": "Veer Kunwar Singh University", "value": "veer_kunwar_singh_university" }
+      id: "field_university_name",
+      name: "university_name",
+      label: "University Name",
+      type: "select",
+      required: true,
+      options: [
+        { label: "Veer Kunwar Singh University", value: "veer_kunwar_singh_university" }
       ]
     },
     {
-      "id": "field_college_name",
-      "name": "college_name",
-      "label": "College Name",
-      "type": "text",
-      "required": true
+      id: "field_college_name",
+      name: "college_name",
+      label: "College Name",
+      type: "text",
+      required: true
     },
     {
-      "id": "field_degree",
-      "name": "degree",
-      "label": "Degree",
-      "type": "select",
-      "required": true,
-      "options": [
-        { "label": "UG", "value": "ug" }
+      id: "field_degree",
+      name: "degree",
+      label: "Degree",
+      type: "select",
+      required: true,
+      options: [
+        { label: "UG", value: "ug" }
       ]
     },
     {
-      "id": "field_stream",
-      "name": "stream",
-      "label": "Stream",
-      "type": "select",
-      "required": true,
-      "options": [
-        { "label": "B.A", "value": "ba" },
-        { "label": "B.COM", "value": "bcom" },
-        { "label": "B.SC", "value": "bsc" }
+      id: "field_stream",
+      name: "stream",
+      label: "Stream",
+      type: "select",
+      required: true,
+      options: [
+        { label: "B.A", value: "ba" },
+        { label: "B.COM", value: "bcom" },
+        { label: "B.SC", value: "bsc" }
       ]
     },
     {
-      "id": "field_semester",
-      "name": "semester",
-      "label": "Semester",
-      "type": "select",
-      "required": true,
-      "options": [
-        { "label": "5th", "value": "5th" }
+      id: "field_semester",
+      name: "semester",
+      label: "Semester",
+      type: "select",
+      required: true,
+      options: [
+        { label: "5th", value: "5th" }
       ]
     },
     {
-      "id": "field_academic_session",
-      "name": "academic_session",
-      "label": "Academic Session",
-      "type": "select",
-      "required": true,
-      "options": [
-        { "label": "2023-2027", "value": "2023_2027" },
-        { "label": "2024-2028", "value": "2024_2028" },
-        { "label": "2025-2029", "value": "2025_2029" },
-        { "label": "2026-2030", "value": "2026_2030" }
+      id: "field_academic_session",
+      name: "academic_session",
+      label: "Academic Session",
+      type: "select",
+      required: true,
+      options: [
+        { label: "2023-2027", value: "2023_2027" },
+        { label: "2024-2028", value: "2024_2028" },
+        { label: "2025-2029", value: "2025_2029" },
+        { label: "2026-2030", value: "2026_2030" }
       ]
     },
     {
-      "id": "field_major_subject",
-      "name": "major_subject",
-      "label": "Major Subject / Honors",
-      "type": "text",
-      "required": true
+      id: "field_major_subject",
+      name: "major_subject",
+      label: "Major Subject / Honors",
+      type: "text",
+      required: true
     },
     {
-      "id": "field_university_reg_no",
-      "name": "university_reg_no",
-      "label": "University Registration Number",
-      "type": "text",
-      "required": true
+      id: "field_university_reg_no",
+      name: "university_reg_no",
+      label: "University Registration Number",
+      type: "text",
+      required: true
     },
     {
-      "id": "field_university_roll_no",
-      "name": "university_roll_no",
-      "label": "University Roll Number",
-      "type": "text",
-      "required": true
+      id: "field_university_roll_no",
+      name: "university_roll_no",
+      label: "University Roll Number",
+      type: "text",
+      required: true
     },
     {
-      "id": "field_select_course",
-      "name": "select_course",
-      "label": "Select Course",
-      "type": "select",
-      "required": true,
-      "options": [
-        { "label": "Teacher Training", "value": "teacher_training" },
-        { "label": "Cyber Security", "value": "cyber_security" },
-        { "label": "Digital Literacy", "value": "digital_literacy" },
-        { "label": "Financial Literacy", "value": "financial_literacy" },
-        { "label": "Healthcare", "value": "healthcare" },
-        { "label": "Tourism", "value": "tourism" },
-        { "label": "Agriculture", "value": "agriculture" },
-        { "label": "Graphics and Content Creation", "value": "graphics_content_creation" },
-        { "label": "Entrepreneurship", "value": "entrepreneurship" },
-        { "label": "Skill and Personality Development", "value": "skill_personality_development" },
-        { "label": "Disaster Management", "value": "disaster_management" }
+      id: "field_select_course",
+      name: "select_course",
+      label: "Select Course",
+      type: "select",
+      required: true,
+      options: [
+        { label: "Teacher Training", value: "teacher_training" },
+        { label: "Cyber Security", value: "cyber_security" },
+        { label: "Digital Literacy", value: "digital_literacy" },
+        { label: "Financial Literacy", value: "financial_literacy" },
+        { label: "Healthcare", value: "healthcare" },
+        { label: "Tourism", value: "tourism" },
+        { label: "Agriculture", value: "agriculture" },
+        { label: "Graphics and Content Creation", value: "graphics_content_creation" },
+        { label: "Entrepreneurship", value: "entrepreneurship" },
+        { label: "Skill and Personality Development", value: "skill_personality_development" },
+        { label: "Disaster Management", value: "disaster_management" }
       ]
     },
     {
-      "id": "field_guardian_name",
-      "name": "guardian_name",
-      "label": "Guardian Name (Emergency Contact)",
-      "type": "text",
-      "required": true
+      id: "field_guardian_name",
+      name: "guardian_name",
+      label: "Guardian Name (Emergency Contact)",
+      type: "text",
+      required: true
     },
     {
-      "id": "field_emergency_contact_no",
-      "name": "emergency_contact_no",
-      "label": "Emergency Contact Number",
-      "type": "tel",
-      "required": true
+      id: "field_emergency_contact_no",
+      name: "emergency_contact_no",
+      label: "Emergency Contact Number",
+      type: "tel",
+      required: true
     },
     {
-      "id": "field_relationship",
-      "name": "relationship",
-      "label": "Relationship with Emergency Contact",
-      "type": "select",
-      "required": true,
-      "options": [
-        { "label": "Mother", "value": "mother" },
-        { "label": "Father", "value": "father" },
-        { "label": "Brother", "value": "brother" },
-        { "label": "Sister", "value": "sister" },
-        { "label": "Other", "value": "other" }
+      id: "field_relationship",
+      name: "relationship",
+      label: "Relationship with Emergency Contact",
+      type: "select",
+      required: true,
+      options: [
+        { label: "Mother", value: "mother" },
+        { label: "Father", value: "father" },
+        { label: "Brother", value: "brother" },
+        { label: "Sister", value: "sister" },
+        { label: "Other", value: "other" }
       ]
     },
     {
-      "id": "field_payment_screenshot",
-      "name": "payment_screenshot",
-      "label": "Upload Payment Screenshot",
-      "type": "file",
-      "accept": "image/*",
-      "required": true }
+      id: "field_payment_screenshot",
+      name: "payment_screenshot",
+      label: "Upload Payment Screenshot",
+      type: "file",
+      accept: "image/*",
+      required: true }
     
-    ]
-  },
+  ]
+},
     
   
   
