@@ -185,6 +185,14 @@ const ALL_POSTS = [
       required: true
     },
     {
+      id: "field_payment_screenshot",
+      name: "adhar_card",
+      label: "आधार कार्ड के दोनों साइड का फोटो अपलोड करें / Upload photos of both sides of the Aadhaar card.",
+      type: "file",
+      accept: "image/*",
+      required: true
+    },
+    {
       id: "field_profession",
       name: "profession",
       label: "पेशा / Profession",
@@ -265,6 +273,14 @@ const ALL_POSTS = [
       label: "आवेदक का फोटो / Photograph of Applicant",
       type: "file",
       accept: "image/*, application/pdf",
+      required: true
+    },
+    {
+      id: "field_payment_screenshot",
+      name: "adhar_card",
+      label: "आधार कार्ड के दोनों साइड का फोटो अपलोड करें / Upload photos of both sides of the Aadhaar card.",
+      type: "file",
+      accept: "image/*",
       required: true
     },
     {
@@ -350,6 +366,14 @@ const ALL_POSTS = [
       required: true
     },
     {
+      id: "field_payment_screenshot",
+      name: "adhar_card",
+      label: "आधार कार्ड के दोनों साइड का फोटो अपलोड करें / Upload photos of both sides of the Aadhaar card.",
+      type: "file",
+      accept: "image/*",
+      required: true
+    },
+    {
       id: "field_residence_type",
       name: "residence_type",
       label: "निवास का प्रकार / Type of Residence",
@@ -397,22 +421,6 @@ const ALL_POSTS = [
 
 
   
-  {
-    id: "pan-card-05",
-    title: "New PAN Card Online Form",
-    category: "Government Forms",
-    description: "Naya PAN card banane ke liye details aur documents upload karein.",
-    qrImageUrl: "https://i.ibb.co/3s4G12Z/qr-placeholder.png",
-    fields: [
-      { name: "full_name", label: "Name as per Identity Document", type: "text", required: true },
-      { name: "dob", label: "Date of Birth (DD/MM/YYYY)", type: "text", required: true },
-      { name: "mobile_no", label: "Mobile Number", type: "tel", required: true },
-      { name: "passport_photo", label: "Passport Size Photo (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
-      { name: "id_proof", label: "Identity Proof Document (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true }
-    ]
-  },
-
-
 
 
 
@@ -421,7 +429,7 @@ const ALL_POSTS = [
 
   
   {
-    id: "college-admission-06",
+    id: "college-admission-05",
     title: "College Admission Online Form",
     category: "College Admission",
     description: "College Admission ke liye marksheets aur details submit karein.",
@@ -462,98 +470,14 @@ const ALL_POSTS = [
 
 
 
-
-
-
   
-  {
-    id: "scholarship-07",
-    title: "Post Matric Scholarship Online Form",
-    category: "Scholarship",
-    description: "Post matric scholarship form fill up service.",
-    qrImageUrl: "https://i.ibb.co/3s4G12Z/qr-placeholder.png",
-    fields: [
-      { name: "full_name", label: "Student Name", type: "text", required: true },
-      { name: "college_name", label: "College Name", type: "text", required: true },
-      { name: "mobile_no", label: "Mobile Number", type: "tel", required: true },
-      { name: "bonafide_receipt", label: "Bonafide / Fee Receipt (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
-      { name: "student_photo", label: "Student Photo (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true }
-    ]
-  },
-
-
-
-
-
-
-
-
-  
-  {
-    id: "voter-card-08",
-    title: "New Voter ID Card Apply",
-    category: "Government Forms",
-    description: "Voter card apply karne ke liye details aur photos upload karein.",
-    qrImageUrl: "https://i.ibb.co/3s4G12Z/qr-placeholder.png",
-    fields: [
-      { name: "full_name", label: "Applicant Name", type: "text", required: true },
-      { name: "father_name", label: "Father Name", type: "text", required: true },
-      { name: "mobile_no", label: "Mobile Number", type: "tel", required: true },
-      { name: "applicant_photo", label: "Passport Photo (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
-      { name: "id_proof", label: "Age & Address Proof (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true }
-    ]
-  },
-
-
-
-
-
-
-
-  
-  {
-    id: "ration-card-09",
-    title: "Ration Card Member Add / New Apply",
-    category: "Government Forms",
-    description: "Ration card me name add karne ke liye documents upload karein.",
-    qrImageUrl: "https://i.ibb.co/3s4G12Z/qr-placeholder.png",
-    fields: [
-      { name: "head_name", label: "Head of Family Name", type: "text", required: true },
-      { name: "mobile_no", label: "Mobile Number", type: "tel", required: true },
-      { name: "family_photo", label: "Group Family Photo (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
-      { name: "id_proof", label: "Family Identity Document (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true }
-    ]
-  },
-
-
-
-
-  
-  {
-    id: "driving-license-10",
-    title: "Learner Driving License Online Apply",
-    category: "Government Forms",
-    description: "Driving license form apply service.",
-    qrImageUrl: "https://i.ibb.co/3s4G12Z/qr-placeholder.png",
-    fields: [
-      { name: "full_name", label: "Full Name", type: "text", required: true },
-      { name: "blood_group", label: "Blood Group", type: "text", required: true },
-      { name: "mobile_no", label: "Mobile Number", type: "tel", required: true },
-      { name: "applicant_photo", label: "Passport Photo (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
-      { name: "id_proof", label: "Identity Document Proof (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true }
-    ]
-  },
-
-
-
-
 
 
 
   
 
 {
-  id: "rtps-combo-11",
+  id: "rtps-combo-06",
   title: "Bihar RTPS Combo Service (जाति, आय एवं निवास प्रमाण पत्र एक साथ बनवाएं)",
   category: "Certificates (Jati/Aaya/Niwas)",
   description: "जाति, आय एवं निवास प्रमाण पत्र एक साथ आवेदन करने के लिए नीचे अपनी पूरी डिटेल्स भरें, सभी आवश्यक दस्तावेज़ अपलोड करें और QR कोड स्कैन करके ₹90 का भुगतान करें।",
@@ -577,6 +501,14 @@ const ALL_POSTS = [
       label: "आवेदक का फोटो / Photograph of Applicant",
       type: "file",
       accept: "image/*, application/pdf",
+      required: true
+    },
+    {
+      id: "field_payment_screenshot",
+      name: "adhar_card",
+      label: "आधार कार्ड के दोनों साइड का फोटो अपलोड करें / Upload photos of both sides of the Aadhaar card.",
+      type: "file",
+      accept: "image/*",
       required: true
     },
     {
