@@ -429,39 +429,72 @@ const ALL_POSTS = [
 
   
   {
-    id: "college-admission-05",
-    title: "College Admission Online Form",
-    category: "College Admission",
-    description: "College Admission ke liye marksheets aur details submit karein.",
-    qrImageUrl: "https://i.ibb.co/3s4G12Z/qr-placeholder.png",
-    fields: [
-      { id: "field_full_name", name: "full_name", label: "Student Full Name", type: "text", required: true },
-      { id: "field_course_stream", name: "course_stream", label: "Course / Stream Name", type: "text", required: true, placeholder: "e.g. B.A / B.Sc / Commerce" },
-      { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number", type: "tel", required: true },
-      { id: "field_student_photo", name: "student_photo", label: "Student Photo (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
-      { id: "field_marksheet_photo", name: "marksheet_photo", label: "Marksheet Document (Image/PDF)", type: "file", accept: "image/*, application/pdf", required: true },
-      {
-        id: "field_document_type",
-        name: "document_type",
-        label: "Select Any One Document (कोई एक दस्तावेज़ चुनें)",
-        type: "radio",
-        required: true,
-        options: [
-          { id: "opt_aadhaar", label: "Aadhaar Card (आधार कार्ड)", value: "aadhaar_card" },
-          { id: "opt_pan", label: "PAN Card (पैन कार्ड)", value: "pan_card" },
-          { id: "opt_ghar_slip", label: "Ghar ki Rasid / Slip (घर का रसीद)", value: "ghar_rasid" },
-          { id: "opt_purana_jati", label: "Purana Banal Jati Certificate (पुराना जाति)", value: "purana_jati" },
-          { id: "opt_ration_card", label: "Ration Card (राशन कार्ड)", value: "ration_card" }
-        ]
-      },
-      {
-        id: "field_document_file",
-        name: "document_file",
-        label: "Upload Selected Document (Image/PDF)",
-        type: "file",
-        accept: "image/*, application/pdf",
-        required: true
-      }
+  id: "vksu-exam-form-all-sem",
+  title: "VKSU Exam Form All Semester",
+  category: "College Admission",
+  description: "Veer Kunwar Singh University exam form fill up service all semesters (Sem 1 to Sem 8).",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D630%26cu%3DINR&size=200&format=png",
+  fields: [
+    { id: "field_student_name", name: "student_name", label: "Student Name", type: "text", required: true, placeholder: "Apna name likhein" },
+    {
+      id: "field_course",
+      name: "course",
+      label: "Course / Stream",
+      type: "radio",
+      required: true,
+      options: [
+        { id: "opt_ba", label: "B.A", value: "ba" },
+        { id: "opt_bcom", label: "B.Com", value: "bcom" },
+        { id: "opt_bsc", label: "B.Sc", value: "bsc" }
+      ]
+    },
+    {
+      id: "field_semester",
+      name: "semester",
+      label: "Select Semester",
+      type: "radio",
+      required: true,
+      options: [
+        { id: "opt_sem1", label: "Semester 1", value: "sem_1" },
+        { id: "opt_sem2", label: "Semester 2", value: "sem_2" },
+        { id: "opt_sem3", label: "Semester 3", value: "sem_3" },
+        { id: "opt_sem4", label: "Semester 4", value: "sem_4" },
+        { id: "opt_sem5", label: "Semester 5", value: "sem_5" },
+        { id: "opt_sem6", label: "Semester 6", value: "sem_6" },
+        { id: "opt_sem7", label: "Semester 7", value: "sem_7" },
+        { id: "opt_sem8", label: "Semester 8", value: "sem_8" }
+      ]
+    },
+    { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number", type: "tel", required: true, placeholder: "Mobile number" },
+    { id: "field_vksu_reg_no", name: "vksu_reg_no", label: "VKSU Registration Number", type: "text", required: true, placeholder: "Registration number likhein" },
+    { id: "field_vksu_password", name: "vksu_password", label: "VKSU Password (Optional)", type: "text", required: false, placeholder: "Agar password pata ho to likhein" },
+    {
+      id: "field_password_forgot",
+      name: "password_forgot",
+      label: "Password yaad nahi hai? (Optional)",
+      type: "radio",
+      required: false,
+      options: [
+        { id: "opt_pass_yes", label: "Yes", value: "yes" },
+        { id: "opt_pass_no", label: "No", value: "no" }
+      ]
+    },
+    {
+      id: "field_student_photo",
+      name: "student_photo",
+      label: "Student Photo (Image/PDF)",
+      type: "file",
+      accept: "image/*, application/pdf",
+      required: true
+    },
+    {
+      id: "field_payment_screenshot",
+      name: "payment_screenshot",
+      label: "Upload Payment Screenshot",
+      type: "file",
+      accept: "image/*",
+      required: true }
+    
     ]
   },
 
