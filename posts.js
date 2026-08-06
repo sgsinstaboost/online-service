@@ -1,6 +1,6 @@
 const STATIC_CATEGORIES = [
   { name: 'All Services', color: 'blue' },
-   { name: 'STD Collage', color: 'purpal' },
+  { name: 'STD Collage', color: 'purpal' },
   { name: 'Internship', color: 'indigo' },
   { name: 'Certificates (Jati/Aaya/Niwas)', color: 'emerald' },
   { name: 'College Admission', color: 'purple' },
