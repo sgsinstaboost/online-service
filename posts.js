@@ -432,7 +432,7 @@ const ALL_POSTS = [
  {
   id: "vksu-exam-form-all-sem",
   title: "VKSU Exam Form All Semester",
-  category: "College Admission",
+  category: ["College Admission", "STD Collage"], 
   description: "Veer Kunwar Singh University exam form fill up service all semesters (Sem 1 to Sem 8).",
   qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D630%26cu%3DINR&size=200&format=png",
   fields: [
@@ -617,8 +617,91 @@ const ALL_POSTS = [
       required: true
     }
   ]
-}
+},
 
 
+
+
+
+
+
+
+
+{
+  id: "vksu-admission-sem5-2024-2028",
+  title: "VKSU Online Admission Form (Semester 5th)",
+  category: "College Admission",
+  description: "Veer Kunwar Singh University, Session 2024-2028 Semester 5th Online Admission Form fill up service.",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D30%26cu%3DINR&size=200&format=png",
+  fields: [
+    { id: "field_student_name", name: "student_name", label: "Student Name", type: "text", required: true, placeholder: "Apna name likhein" },
+    {
+      id: "field_select_class",
+      name: "select_class",
+      label: "Select Class",
+      type: "radio",
+      required: true,
+      options: [
+        { id: "opt_ba", label: "B.A", value: "ba" },
+        { id: "opt_bcom", label: "B.COM", value: "bcom" },
+        { id: "opt_bsc", label: "B.SC", value: "bsc" }
+      ]
+    },
+    {
+      id: "field_semester",
+      name: "semester",
+      label: "Semester",
+      type: "radio",
+      required: true,
+      options: [
+        { id: "opt_sem_v", label: "V", value: "5th" }
+      ]
+    },
+    {
+      id: "field_session",
+      name: "session",
+      label: "Session",
+      type: "radio",
+      required: true,
+      options: [
+        { id: "opt_session_2024_2028", label: "2024-2028", value: "2024_2028" }
+      ]
+    },
+    { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number", type: "tel", required: true, placeholder: "10-digit mobile number likhein" },
+    { id: "field_registration_no", name: "registration_no", label: "Registration No.", type: "text", required: true, placeholder: "University Registration Number likhein" },
+    { id: "field_roll_number", name: "roll_number", label: "University Roll Number", type: "text", required: true, placeholder: "University Roll Number likhein" },
+    { id: "field_dob", name: "dob", label: "Date of Birth (DD/MM/YYYY)", type: "text", required: true, placeholder: "DD/MM/YYYY" },
+    {
+      id: "field_student_photo",
+      name: "student_photo",
+      label: "Upload Student Photo",
+      type: "file",
+      accept: "image/*",
+      required: true
+    },
+    {
+      id: "field_student_sign",
+      name: "student_sign",
+      label: "Upload Student Signature",
+      type: "file",
+      accept: "image/*",
+      required: true
+    },
+    {
+      id: "field_payment_screenshot",
+      name: "payment_screenshot",
+      label: "Upload Payment Screenshot",
+      type: "file",
+      accept: "image/*",
+      required: true }
+    
+    ]
+  }
+
+
+
+
+
+  
   
 ];
