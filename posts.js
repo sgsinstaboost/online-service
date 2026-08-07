@@ -432,7 +432,7 @@ const ALL_POSTS = [
  {
   id: "vksu-exam-form-all-sem-05",
   title: "VKSU Exam Form All Semester",
-  category: ["College Admission", "STD Collage"], 
+  category: "College Admission", "STD Collage", 
   description: "Veer Kunwar Singh University exam form fill up service all semesters (Sem 1 to Sem 8).",
   qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D630%26cu%3DINR&size=200&format=png",
   fields: [
