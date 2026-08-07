@@ -664,15 +664,7 @@ const ALL_POSTS = [
       type: "file",
       accept: "image/*, application/pdf",
       required: true
-    },
-    {
-      id: "field_payment_screenshot",
-      name: "payment_screenshot",
-      label: "Upload Payment Screenshot / भुगतान का स्क्रीनशॉट अपलोड करें",
-      type: "file",
-      accept: "image/*",
-      required: true }
-    
+    }, 
     ]
   }
 
