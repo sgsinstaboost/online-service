@@ -14,12 +14,6 @@ const STATIC_NOTICES = [
 ];
 
 const ALL_POSTS = [
-
-
-
-
-
-  
 {
   id: "internship-application-01",
   title: "Internship Application Online Form",
@@ -137,28 +131,10 @@ const ALL_POSTS = [
         { id: "opt_sister", label: "Sister", value: "sister" },
         { id: "opt_other", label: "Other", value: "other" }
       ]
-    },
-    {
-      id: "field_payment_screenshot",
-      name: "payment_screenshot",
-      label: "Upload Payment Screenshot",
-      type: "file",
-      accept: "image/*",
-      required: true
     }
   ]
 },
-
-
-
-
-
-  
-
-  
-
-  
- {
+{
   id: "rtps-caste-02",
   title: "Bihar RTPS Caste Certificate (जाति प्रमाण पत्र)",
   category: "Certificates (Jati/Aaya/Niwas)",
@@ -228,27 +204,9 @@ const ALL_POSTS = [
       type: "file",
       accept: "image/*, application/pdf",
       required: true
-    },
-    {
-      id: "field_payment_screenshot",
-      name: "payment_screenshot",
-      label: "भुगतान का स्क्रीनशॉट अपलोड करें / Upload Payment Screenshot",
-      type: "file",
-      accept: "image/*",
-      required: true }
-    
-    ]
-  },
-
-
-
-
-  
-
-
-  
-
-  
+    }
+  ]
+},
 {
   id: "rtps-income-03",
   title: "Bihar RTPS Income Certificate (आय प्रमाण पत्र)",
@@ -318,27 +276,9 @@ const ALL_POSTS = [
       type: "file",
       accept: "image/*, application/pdf",
       required: true
-    },
-    {
-      id: "field_payment_screenshot",
-      name: "payment_screenshot",
-      label: "भुगतान का स्क्रीनशॉट अपलोड करें / Upload Payment Screenshot",
-      type: "file",
-      accept: "image/*",
-      required: true }
-    
-    ]
-  },
-
-
-
-
-
-  
-
-
-
-  
+    }
+  ]
+},
 {
   id: "rtps-residence-04",
   title: "Bihar RTPS Residence Certificate (निवास प्रमाण पत्र)",
@@ -406,30 +346,10 @@ const ALL_POSTS = [
       type: "file",
       accept: "image/*, application/pdf",
       required: true
-    },
-    {
-      id: "field_payment_screenshot",
-      name: "payment_screenshot",
-      label: "भुगतान का स्क्रीनशॉट अपलोड करें / Upload Payment Screenshot",
-      type: "file",
-      accept: "image/*",
-      required: true }
-    
-    ]
-  },
-
-
-
-
-  
-
-
-
-
-
-
-  
- {
+    }
+  ]
+},
+{
   id: "vksu-exam-form-all-sem-05",
   title: "VKSU Exam Form All Semester",
   category: "STD Collage", 
@@ -487,28 +407,9 @@ const ALL_POSTS = [
       type: "file",
       accept: "image/*, application/pdf",
       required: true
-    },
-    {
-      id: "field_payment_screenshot",
-      name: "payment_screenshot",
-      label: "Upload Payment Screenshot",
-      type: "file",
-      accept: "image/*",
-      required: true }
-    
-    ]
-  },
-
-
-
-
-
-  
-
-
-
-  
-
+    }
+  ]
+},
 {
   id: "rtps-combo-06",
   title: "Bihar RTPS Combo Service (जाति, आय एवं निवास प्रमाण पत्र एक साथ बनवाएं)",
@@ -607,26 +508,9 @@ const ALL_POSTS = [
       type: "file",
       accept: "image/*, application/pdf",
       required: true
-    },
-    {
-      id: "field_payment_screenshot",
-      name: "payment_screenshot",
-      label: "भुगतान का स्क्रीनशॉट अपलोड करें / Upload Payment Screenshot",
-      type: "file",
-      accept: "image/*",
-      required: true
     }
   ]
 },
-
-
-
-
-
-
-
-
-
 {
   id: "vksu-admission-sem5-2024-2028-07",
   title: "VKSU Online Admission Form (Semester 5th)",
@@ -664,7 +548,7 @@ const ALL_POSTS = [
       type: "radio",
       required: true,
       options: [
-        { id: "opt_session_2024_2028", label: "2024-2028", value: "2024_2028" }
+        { id: "opt_session_2024_2028", label: "2024_2028" }
       ]
     },
     { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number", type: "tel", required: true, placeholder: "10-digit mobile number likhein" },
@@ -686,22 +570,7 @@ const ALL_POSTS = [
       type: "file",
       accept: "image/*",
       required: true
-    },
-    {
-      id: "field_payment_screenshot",
-      name: "payment_screenshot",
-      label: "Upload Payment Screenshot",
-      type: "file",
-      accept: "image/*",
-      required: true }
-    
-    ]
-  }
-
-
-
-
-
-  
-  
+    }
+  ]
+}
 ];
