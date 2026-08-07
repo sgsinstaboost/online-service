@@ -664,9 +664,9 @@ const ALL_POSTS = [
       type: "file",
       accept: "image/*, application/pdf",
       required: true
-    }, 
-    ]
-  }
+    }
+  ]
+}
  
 
 
