@@ -134,6 +134,13 @@ const ALL_POSTS = [
     }
   ]
 },
+
+
+
+
+
+
+  
 {
   id: "rtps-caste-02",
   title: "Bihar RTPS Caste Certificate (जाति प्रमाण पत्र)",
@@ -207,6 +214,16 @@ const ALL_POSTS = [
     }
   ]
 },
+
+
+
+
+
+
+
+
+
+  
 {
   id: "rtps-income-03",
   title: "Bihar RTPS Income Certificate (आय प्रमाण पत्र)",
@@ -349,6 +366,13 @@ const ALL_POSTS = [
     }
   ]
 },
+
+
+
+
+
+
+  
 {
   id: "vksu-exam-form-all-sem-05",
   title: "VKSU Exam Form All Semester",
@@ -410,6 +434,15 @@ const ALL_POSTS = [
     }
   ]
 },
+
+
+
+
+
+
+
+
+  
 {
   id: "rtps-combo-06",
   title: "Bihar RTPS Combo Service (जाति, आय एवं निवास प्रमाण पत्र एक साथ बनवाएं)",
@@ -511,6 +544,13 @@ const ALL_POSTS = [
     }
   ]
 },
+
+
+
+
+
+
+  
 {
   id: "vksu-admission-sem5-2024-2028-07",
   title: "VKSU Online Admission Form (Semester 5th)",
@@ -572,5 +612,72 @@ const ALL_POSTS = [
       required: true
     }
   ]
-}
+},
+
+
+
+
+
+
+
+  
+
+{
+  id: "Government-Forms-08",
+  title: "Bihar Character Certificate (चरित्र प्रमाण पत्र)",
+  category: "Government Forms",
+  description: "Character Certificate online apply karne ke liye niche details bharein, documents upload karein aur QR par pay karein.",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D40%26cu%3DINR&size=200&format=png",
+  fields: [
+    { id: "field_full_name", name: "full_name", label: "Name / नाम", type: "text", required: true, placeholder: "Apna name likhein" },
+    { id: "field_father_name", name: "father_name", label: "Father Name / पिता का नाम", type: "text", required: true, placeholder: "Father name likhein" },
+    { id: "field_mother_name", name: "mother_name", label: "Mother Name / माता का नाम", type: "text", required: true, placeholder: "Mother name likhein" },
+    { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number / मोबाइल नंबर", type: "tel", required: true, placeholder: "10-digit mobile number" },
+    { id: "field_sub_division", name: "sub_division", label: "Sub-division / अनुमंडल", type: "text", required: true, placeholder: "Sub division likhein" },
+    { id: "field_block", name: "block", label: "Block / प्रखंड", type: "text", required: true, placeholder: "Block name likhein" },
+    { id: "field_village", name: "village", label: "Village / ग्राम/मोहल्ला", type: "text", required: true, placeholder: "Village name likhein" },
+    { id: "field_post_office", name: "post_office", label: "Post Office / डाक घर", type: "text", required: true, placeholder: "Post office name likhein" },
+    { id: "field_ward_no", name: "ward_no", label: "Ward No. / वार्ड संख्या", type: "text", required: true, placeholder: "Ward number likhein" },
+    { id: "field_pin_code", name: "pin_code", label: "Pin Code / पिन कोड", type: "text", required: true, placeholder: "6-digit pin code" },
+    { id: "field_gram_panchayat", name: "gram_panchayat", label: "Gram Panchayat / ग्राम पंचायत", type: "text", required: true, placeholder: "Panchayat name likhein" },
+    { id: "field_police_station", name: "police_station", label: "Police Station / थाना", type: "text", required: true, placeholder: "Police station likhein" },
+    {
+      id: "field_applicant_photo",
+      name: "applicant_photo",
+      label: "Upload Photo / फोटो अपलोड करें",
+      type: "file",
+      accept: "image/*",
+      required: true
+    },
+    {
+      id: "field_applicant_sign",
+      name: "applicant_sign",
+      label: "Upload Sign / हस्ताक्षर अपलोड करें",
+      type: "file",
+      accept: "image/*",
+      required: true
+    },
+    {
+      id: "field_aadhar_card",
+      name: "aadhar_card",
+      label: "Upload Aadhaar Card Both Side / आधार कार्ड दोनों तरफ का अपलोड करें",
+      type: "file",
+      accept: "image/*, application/pdf",
+      required: true
+    },
+    {
+      id: "field_payment_screenshot",
+      name: "payment_screenshot",
+      label: "Upload Payment Screenshot / भुगतान का स्क्रीनशॉट अपलोड करें",
+      type: "file",
+      accept: "image/*",
+      required: true }
+    
+    ]
+  }
+
+
+
+
+  
 ];
