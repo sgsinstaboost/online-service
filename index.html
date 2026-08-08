@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SGS ONLINE SERVICE - Government & College Online Seva Portal</title>
+  <title>SGS ONLINE SERVICE - Form Filling Assistance & Help Desk</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -34,11 +34,11 @@
         SGS ONLINE SERVICE
       </h1>
       <p class="text-[11px] font-bold text-amber-200/90 uppercase tracking-widest mt-1">
-        Government & College Online Seva Portal
+        Online Form Filling Assistance & Facilitation Portal
       </p>
       <div class="mt-8 flex flex-col items-center gap-2">
         <div class="w-8 h-8 border-3 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
-        <p class="text-[11px] text-slate-300 font-semibold tracking-wide">Loading Seva Portal...</p>
+        <p class="text-[11px] text-slate-300 font-semibold tracking-wide">Loading Assistance Portal...</p>
       </div>
     </div>
   </div>
@@ -76,7 +76,7 @@
       ShieldCheck: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>,
       Share2: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>,
       Headphones: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>,
-      ListCheck: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>,
+      ListCheck: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 022 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>,
       Trash: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
     };
 
@@ -157,6 +157,22 @@
       const [activeModalPage, setActiveModalPage] = useState(null);
       const [toastMsg, setToastMsg] = useState('');
       const [isSubmitting, setIsSubmitting] = useState(false);
+
+      // First Time Visit Legal Agreement State
+      const [hasAgreed, setHasAgreed] = useState(() => {
+        try {
+          return localStorage.getItem('sgs_terms_accepted') === 'true';
+        } catch (e) {
+          return false;
+        }
+      });
+
+      const handleAcceptTerms = () => {
+        try {
+          localStorage.setItem('sgs_terms_accepted', 'true');
+        } catch (e) {}
+        setHasAgreed(true);
+      };
 
       // User Applications State from LocalStorage
       const [userApps, setUserApps] = useState(() => {
@@ -246,7 +262,7 @@
         const formData = new FormData(form);
         const submissionId = "SGS-" + Math.floor(100000 + Math.random() * 900000);
 
-        let textDetails = `📥 *New Online Application Received!*\n\n`;
+        let textDetails = `📥 *New Online Assistance Request Received!*\n\n`;
         textDetails += `🆔 *UID:* \`${submissionId}\`\n`;
         textDetails += `📌 *Service:* ${activeService.title}\n\n`;
         textDetails += `👤 *USER SUBMITTED DETAILS:*\n`;
@@ -430,6 +446,75 @@
             </div>
           )}
 
+          {/* FIRST VISIT MANDATORY LEGAL DISCLAIMER POPUP MODAL */}
+          {!hasAgreed && (
+            <div className="fixed inset-0 z-[120] bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+              <div className="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden animate-fade-in flex flex-col">
+                <div className="bg-gradient-to-r from-blue-800 to-indigo-900 text-white p-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-yellow-400 text-lg"><Icons.ShieldCheck /></span>
+                    <h3 className="font-extrabold text-sm sm:text-base tracking-wide">Terms, Privacy Policy & Disclaimer Notice</h3>
+                  </div>
+                </div>
+
+                <div className="p-5 text-xs text-slate-700 space-y-4 leading-relaxed max-h-[65vh] overflow-y-auto">
+                  <div className="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r-lg text-amber-950 font-semibold">
+                    Please read our complete Privacy Policy, Terms & Conditions, and Disclaimer before proceeding to use SGS ONLINE SERVICE.
+                  </div>
+
+                  {/* 1. PRIVACY POLICY DETAILS */}
+                  <div className="border border-slate-200 p-3.5 rounded-xl bg-slate-50 space-y-2">
+                    <h4 className="font-extrabold text-blue-900 text-xs uppercase tracking-wider flex items-center gap-1">
+                      🔒 1. Privacy Policy & Data Collection
+                    </h4>
+                    <p className="text-slate-600">
+                      SGS ONLINE SERVICE operates independently as a private digital facilitation desk helping users fill out online application forms (college admission, RTPS certificates, scholarship forms, etc.) accurately.
+                    </p>
+                    <ul className="list-disc pl-4 space-y-1 text-slate-700 font-medium text-[11px]">
+                      <li><strong>Data Collected:</strong> Name, DOB, Parent Names, Contact Number, Address, Academic Qualifications, Uploaded Scanned Documents/PDFs, and Payment Screenshots.</li>
+                      <li><strong>Purpose:</strong> Data is solely collected to fill out official forms on external portals on your behalf after verification via call/WhatsApp.</li>
+                      <li><strong>Secure Storage:</strong> All user-submitted form data, compressed images, and documents are securely transmitted via end-to-end encrypted connection directly to our admin panel via Telegram Bot for processing. Your private records are 100% confidential and never shared or sold to third parties.</li>
+                    </ul>
+                  </div>
+
+                  {/* 2. TERMS & CONDITIONS DETAILS */}
+                  <div className="border border-slate-200 p-3.5 rounded-xl bg-slate-50 space-y-2">
+                    <h4 className="font-extrabold text-blue-900 text-xs uppercase tracking-wider flex items-center gap-1">
+                      📜 2. Terms & Conditions
+                    </h4>
+                    <ul className="list-disc pl-4 space-y-1 text-slate-700 font-medium text-[11px]">
+                      <li><strong>Private Facilitation:</strong> SGS ONLINE SERVICE is an independent cyber cafe / form assistance center and NOT an official government entity or college portal.</li>
+                      <li><strong>Accuracy Responsibility:</strong> Users are solely responsible for providing 100% accurate and authentic personal details and documents.</li>
+                      <li><strong>Fee Policy:</strong> Payment includes the official fee (if applicable) plus our nominal form-filling service charge. Valid payment screenshot proof is mandatory.</li>
+                    </ul>
+                  </div>
+
+                  {/* 3. DISCLAIMER NOTICE DETAILS */}
+                  <div className="border border-slate-200 p-3.5 rounded-xl bg-amber-50/60 space-y-2">
+                    <h4 className="font-extrabold text-amber-900 text-xs uppercase tracking-wider flex items-center gap-1">
+                      ⚠️ 3. Non-Government Disclaimer
+                    </h4>
+                    <p className="text-amber-950 font-medium text-[11px]">
+                      We do NOT claim to be an official government portal. All official form submissions are carried out on respective official government / university websites on behalf of the applicant. Final approval/rejection rests with the official authority.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-slate-50 border-t border-slate-200 flex flex-col gap-2">
+                  <button 
+                    onClick={handleAcceptTerms} 
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs py-3 rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
+                  >
+                    <span>I Agree & Continue</span> →
+                  </button>
+                  <p className="text-[10px] text-center text-slate-400 font-medium">
+                    By clicking "I Agree & Continue", you accept all Privacy Policy, Terms & Disclaimer conditions.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* SIDE DRAWER MENU */}
           {showDrawer && (
             <div className="fixed inset-0 z-[80] flex">
@@ -473,6 +558,10 @@
                       <span>📜 Terms & Conditions</span>
                       <Icons.ChevronRight />
                     </button>
+                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('disclaimer'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
+                      <span>⚠️ Disclaimer Notice</span>
+                      <Icons.ChevronRight />
+                    </button>
                   </nav>
 
                   {/* CUSTOMER SUPPORT SECTION INSIDE DRAWER */}
@@ -500,7 +589,7 @@
                 </div>
 
                 <div className="pt-4 mt-6 border-t border-slate-100 text-center text-[10px] text-slate-400 font-semibold">
-                  SGS Helpdesk • 24/7 Service Support
+                  SGS Helpdesk • Private Form Filling Facilitation Center
                 </div>
               </div>
             </div>
@@ -516,6 +605,7 @@
                     {activeModalPage === 'track' && 'Track My Applications'}
                     {activeModalPage === 'privacy' && 'Privacy Policy'}
                     {activeModalPage === 'terms' && 'Terms & Conditions'}
+                    {activeModalPage === 'disclaimer' && 'Disclaimer & Service Policy'}
                   </span>
                 </h3>
                 <button onClick={() => setActiveModalPage(null)} className="bg-white/20 text-white px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1">
@@ -530,7 +620,7 @@
                   <div className="space-y-4">
                     <div className="bg-amber-50 border-l-4 border-amber-600 p-4 rounded-r-xl text-slate-900 font-medium flex items-center justify-between gap-2 flex-wrap">
                       <div>
-                        <strong>📋 Application Tracking Center:</strong> Aapke dwara submit kiye gaye sabhi online applications ke UIDs.
+                        <strong>📋 Application Tracking Center:</strong> Aapke dwara submit kiye gaye sabhi online assistance requests ke UIDs.
                       </div>
                       {userApps.length > 0 && (
                         <button 
@@ -544,7 +634,7 @@
 
                     {userApps.length === 0 ? (
                       <div className="bg-white p-8 rounded-2xl border border-slate-200 text-center">
-                        <p className="text-sm font-bold text-slate-500">Aapne abhi tak koi form submit nahi kiya hai.</p>
+                        <p className="text-sm font-bold text-slate-500">Aapne abhi tak koi form assistance request submit nahi kiya hai.</p>
                       </div>
                     ) : (
                       <div className="space-y-3">
@@ -568,15 +658,16 @@
                   </div>
                 )}
 
+                {/* PRIVACY POLICY MODAL PAGE */}
                 {activeModalPage === 'privacy' && (
                   <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
                     <div className="bg-blue-50 border-l-4 border-blue-600 p-4 rounded-r-xl text-slate-900 font-medium">
-                      <strong>📌 Cyber Seva Kendra Privacy Policy:</strong> SGS ONLINE SERVICE operates as an online digital facilitation center assisting users with government, college, and administrative online applications.
+                      <strong>📌 Private Form Facilitation Center Privacy Policy:</strong> SGS ONLINE SERVICE operates independently as a private online digital assistance center helping users fill out government, college, and administrative online forms accurately upon request.
                     </div>
 
                     <div>
                       <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">1. Comprehensive Data Collection Notice</h4>
-                      <p className="mb-2">To process online application forms, process service payments, and provide customer support, we collect full personal data directly submitted by users during form filling:</p>
+                      <p className="mb-2">To assist users in filling online application forms, verifying details via call/WhatsApp, and providing customer support, we collect personal data directly submitted by users during form submission:</p>
                       <ul className="list-disc pl-5 space-y-1 text-slate-700 font-medium">
                         <li><strong>Personal Identification Details:</strong> Full Name, Father's Name, Mother's Name, Date of Birth, Gender, Category/Caste, and Religion.</li>
                         <li><strong>Contact Information:</strong> Mobile Number, Email Address, Full Postal Address, District, Pin Code, and State.</li>
@@ -588,26 +679,27 @@
 
                     <div>
                       <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Purpose of Data Collection & Usage</h4>
-                      <p>All data collected from users is strictly used to perform digital facilitation services, complete official online application form submissions on external government/college portals, verify registration details, generate application tracking IDs, and deliver customer support updates.</p>
+                      <p>All user-provided data is used exclusively to fill out online application forms on official external portals on behalf of the user after phone verification, generate tracking IDs, and deliver completed receipts via WhatsApp or Email.</p>
                     </div>
 
                     <div>
                       <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. End-to-End Secure Telegram Storage</h4>
-                      <p>User-submitted form data, compressed high-resolution images, and uploaded PDF files are transmitted through encrypted connections directly to our secure Admin Telegram Bot Portal. We do not sell, lease, trade, or share user personal records with unauthorized third parties.</p>
+                      <p>User-submitted form data, compressed high-resolution images, and uploaded PDF files are transmitted through encrypted connections directly to our admin panel via Telegram. We strictly do NOT sell, lease, trade, or share user personal records with any unauthorized third parties.</p>
                     </div>
 
                     <div>
                       <h4 className="font-extrabold text-slate-900 text-sm mb-1">4. User Rights & Data Protection</h4>
-                      <p>Users maintain full rights to verify, review, or request corrections to their application status by contacting our designated support team via WhatsApp or Email along with their unique Support Ticket ID.</p>
+                      <p>Users maintain full rights to verify, review, or request corrections or deletion of their application status by contacting our designated support team via WhatsApp or Email along with their unique Support Ticket ID.</p>
                     </div>
                   </div>
                 )}
 
+                {/* TERMS & CONDITIONS MODAL PAGE */}
                 {activeModalPage === 'terms' && (
                   <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
                     <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Facilitation Service Overview</h4>
-                      <p>SGS ONLINE SERVICE operates independently as an online assistance service center. We help applicants fill out government, university, college, and competitive examination forms accurately based entirely on information provided by the user.</p>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Private Facilitation Service Overview</h4>
+                      <p>SGS ONLINE SERVICE operates independently as a private cyber cafe and online form-filling assistance center. We help applicants fill out government, university, college, and competitive examination forms accurately based entirely on information provided by the user.</p>
                     </div>
 
                     <div>
@@ -617,17 +709,41 @@
 
                     <div>
                       <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. Payment Verification & Fee Policy</h4>
-                      <p>Application submission processing requires valid payment confirmation. Users must provide a genuine payment screenshot after scanning the payment QR code or paying via UPI buttons. Fake or misleading transaction entries will lead to immediate cancellation of application processing.</p>
+                      <p>Application processing requires valid payment confirmation covering official portal fees (if applicable) and our nominal service facilitation charge. Users must provide a genuine payment screenshot after scanning the payment QR code or paying via UPI buttons.</p>
                     </div>
 
                     <div>
                       <h4 className="font-extrabold text-slate-900 text-sm mb-1">4. Non-Affiliation Disclaimer</h4>
-                      <p>SGS ONLINE SERVICE is a private assistance portal and does not claim to be an official government entity or official government website unless explicitly stated. All official application fees are remitted according to respective official guidelines.</p>
+                      <p>SGS ONLINE SERVICE is a private assistance portal and is NOT an official government entity or official college representative. All official form submissions are carried out on respective official government portals on behalf of the user.</p>
                     </div>
 
                     <div>
                       <h4 className="font-extrabold text-slate-900 text-sm mb-1">5. Support & Query Resolution</h4>
                       <p>For any queries, submission verification, or support regarding online forms, users can access our WhatsApp or Email support channels available in the side drawer menu to receive automated Ticket tracking support.</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* DISCLAIMER MODAL PAGE */}
+                {activeModalPage === 'disclaimer' && (
+                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
+                    <div className="bg-amber-50 border-l-4 border-amber-600 p-4 rounded-r-xl text-amber-950 font-bold">
+                      ⚠️ DISCLAIMER & NON-AFFILIATION NOTICE
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Swatantra Private Service (Non-Government)</h4>
+                      <p>SGS ONLINE SERVICE ek swatantra private online cyber cafe aur form filling assistance desk hai. Hum kisi bhi sarkari vibhag (Government Department), Bihar RTPS Portal, VKSU University, ya kisi bhi official college/university administration se affiliated ya authorized portal nahi hain.</p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Form Filling Facilitation</h4>
+                      <p>Humare dwaara pradan ki jaane wali seva sirf users ke anurodh par unka online application form sahi tarike se official portals par bharne mein madad karne ki facilitation service hai. Iske badle mein hum ek nominal assistance service charge lete hain.</p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. External Links & Official Portals</h4>
+                      <p>Aapke dwara jama kiye gaye sabhi details ko humari team verification ke baad official government / university portals par submit karti hai. Aavedan patra ki manjuri ya aswikriti (Approval/Rejection) puri tarah se sambandhit sarkari/college adhikaariyon ke haath mein hoti hai.</p>
                     </div>
                   </div>
                 )}
@@ -649,10 +765,16 @@
                   </button>
                   <div onClick={() => { setSelectedCat('All Services'); setActiveService(null); }} className="cursor-pointer text-center flex-1">
                     <h1 className="text-base sm:text-xl font-extrabold text-yellow-300">SGS ONLINE SERVICE</h1>
-                    <p className="text-[9px] sm:text-[11px] font-bold text-amber-200/90 uppercase">Government & College Online Form Seva Portal</p>
+                    <p className="text-[9px] sm:text-[11px] font-bold text-amber-200/90 uppercase">Online Form Filling Assistance Portal (Private Service)</p>
                   </div>
                 </div>
               </header>
+
+              {/* MANDATORY LEGAL NOTICE BANNER BELOW HEADER */}
+              <div className="bg-slate-900 text-slate-200 text-[11px] px-4 py-2 border-b border-slate-800 text-center font-medium">
+                <span className="bg-amber-400 text-slate-950 font-black px-1.5 py-0.5 rounded text-[10px] mr-1.5">NOTICE</span>
+                SGS Online Service is an independent private form filling assistance portal (Cyber Cafe). We are NOT an official government or college portal.
+              </div>
 
               {/* MAIN SERVICES CONTENT */}
               {activeService ? (
@@ -664,7 +786,12 @@
                   <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden p-5 sm:p-6">
                     <span className="bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">{activeService.category}</span>
                     <h2 className="text-xl sm:text-2xl font-black text-slate-900 mt-2 mb-2">{activeService.title}</h2>
-                    <p className="text-xs text-slate-600 mb-6">{activeService.description}</p>
+                    <p className="text-xs text-slate-600 mb-4">{activeService.description}</p>
+
+                    {/* Form Filling Transparency Note */}
+                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-[11px] text-amber-900 font-medium mb-5">
+                      ℹ️ <strong>Assistance Notice:</strong> Information submitted below will be used by our team to fill out your official online form on your behalf after phone confirmation.
+                    </div>
 
                     <form onSubmit={handleFormSubmit} className="space-y-4">
                       {activeService.fields && activeService.fields.map((field, idx) => (
@@ -869,12 +996,13 @@
                 </main>
               )}
 
-              {/* FOOTER */}
-              <footer className="bg-slate-900 text-slate-400 text-xs py-6 mt-12 border-t border-slate-800 text-center">
+              {/* FOOTER WITH MODAL BUTTONS */}
+              <footer className="bg-slate-900 text-slate-400 text-xs py-6 mt-12 border-t border-slate-800 text-center px-4">
                 <p className="font-bold text-white">SGS ONLINE SERVICE © 2026</p>
-                <div className="flex items-center justify-center gap-4 text-xs mt-2">
+                <div className="flex flex-wrap items-center justify-center gap-4 text-xs mt-3">
                   <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('privacy'); }} className="text-slate-400 hover:text-white underline">Privacy Policy</button>
                   <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('terms'); }} className="text-slate-400 hover:text-white underline">Terms & Conditions</button>
+                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('disclaimer'); }} className="text-slate-400 hover:text-white underline">Disclaimer</button>
                 </div>
               </footer>
             </>
