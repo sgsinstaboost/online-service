@@ -232,7 +232,8 @@
       Moon: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>,
       Download: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>,
       CheckCircle: () => <svg className="w-12 h-12 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
-      Info: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      Info: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
+      Receipt: () => <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
     };
 
     // HIGH QUALITY HD IMAGE COMPRESSION (1600px Max, 85% Quality)
@@ -519,24 +520,20 @@
             });
           }
 
-          // 4. Save Only UID and Service Title to LocalStorage
+          // 4. Save UID, Title, Category, Amount & Date to LocalStorage
+          const upi = getUpiDetails(activeService.qrImageUrl);
+          const paidAmount = upi.am ? `₹${upi.am}` : "As Applicable / Paid";
+
           const newAppItem = {
             uid: submissionId,
-            serviceTitle: activeService.title
+            serviceTitle: activeService.title,
+            category: activeService.category,
+            amount: paidAmount,
+            dateTime: dateStr
           };
           const updatedApps = [newAppItem, ...userApps];
           setUserApps(updatedApps);
           localStorage.setItem('sgs_user_applications', JSON.stringify(updatedApps));
-
-          // 5. Extract amount paid for receipt page
-          const upi = getUpiDetails(activeService.qrImageUrl);
-          const receiptData = {
-            uid: submissionId,
-            serviceTitle: activeService.title,
-            category: activeService.category,
-            dateTime: dateStr,
-            amount: upi.am ? `₹${upi.am}` : "As Applicable / Paid"
-          };
 
           showNotification(`Application Submitted! UID: ${submissionId}`);
           form.reset();
@@ -545,7 +542,7 @@
           
           setActiveService(null);
           window.history.pushState({ page: 'receipt' }, '');
-          setSubmittedReceipt(receiptData);
+          setSubmittedReceipt(newAppItem);
 
         } catch (err) {
           showNotification("Submission Failed. Please try again.");
@@ -553,6 +550,19 @@
         } finally {
           setIsSubmitting(false);
         }
+      };
+
+      const handleViewPastReceipt = (app) => {
+        const receiptData = {
+          uid: app.uid,
+          serviceTitle: app.serviceTitle,
+          category: app.category || "Service Request",
+          dateTime: app.dateTime || "Recent Submission",
+          amount: app.amount || "Paid / Verified"
+        };
+        setActiveModalPage(null);
+        window.history.pushState({ page: 'receipt' }, '');
+        setSubmittedReceipt(receiptData);
       };
 
       const handleShareWebsite = () => {
@@ -876,7 +886,7 @@
                       onClick={handleSendReceiptWhatsApp} 
                       className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs py-3 px-3 rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
                     >
-                      <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+                      <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
                       Send Receipt on WhatsApp
                     </button>
                   </div>
@@ -999,7 +1009,7 @@
                   </div>
                 )}
 
-                {/* TRACK APPLICATION MODAL PAGE */}
+                {/* TRACK APPLICATION MODAL PAGE WITH VIEW RECEIPT BUTTON */}
                 {activeModalPage === 'track' && (
                   <div className="space-y-4">
                     <div className="bg-amber-50 border-l-4 border-amber-600 p-4 rounded-r-xl text-slate-900 font-medium flex items-center justify-between gap-2 flex-wrap">
@@ -1023,18 +1033,30 @@
                     ) : (
                       <div className="space-y-3">
                         {userApps.map((app, i) => (
-                          <div key={i} className="bg-white border border-slate-300 rounded-xl p-4 shadow-sm flex items-center justify-between gap-3">
+                          <div key={i} className="bg-white border border-slate-300 rounded-xl p-4 shadow-sm flex items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
                             <div>
                               <span className="font-black text-blue-700 text-sm block">UID: {app.uid}</span>
-                              <p className="text-xs font-bold text-slate-800 mt-1">Form: {app.serviceTitle}</p>
+                              <p className="text-xs font-bold text-slate-800 mt-0.5">Form: {app.serviceTitle}</p>
+                              {app.dateTime && <p className="text-[10px] text-slate-400 mt-0.5">Submitted: {app.dateTime}</p>}
                             </div>
-                            <button 
-                              onClick={() => deleteSingleApp(app.uid)}
-                              title="Delete this record"
-                              className="text-slate-400 hover:text-rose-600 p-2 rounded-lg hover:bg-rose-50 transition-colors"
-                            >
-                              <Icons.Trash />
-                            </button>
+                            
+                            <div className="flex items-center gap-2">
+                              {/* VIEW RECEIPT BUTTON */}
+                              <button 
+                                onClick={() => handleViewPastReceipt(app)} 
+                                className="bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-extrabold px-3 py-1.5 rounded-lg shadow-2xs flex items-center gap-1 transition-all no-neon"
+                              >
+                                <Icons.Receipt /> View Receipt
+                              </button>
+
+                              <button 
+                                onClick={() => deleteSingleApp(app.uid)}
+                                title="Delete this record"
+                                className="text-slate-400 hover:text-rose-600 p-2 rounded-lg hover:bg-rose-50 transition-colors"
+                              >
+                                <Icons.Trash />
+                              </button>
+                            </div>
                           </div>
                         ))}
                       </div>
