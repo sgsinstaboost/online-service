@@ -30,18 +30,25 @@
       color: #ffffff !important;
     }
     /* Main Background Containers */
-    body.neon-blue-mode div[class*="bg-white"]:not(.slip-card-clean):not(.slip-card-clean *),
-    body.neon-blue-mode div[class*="bg-slate"]:not(.slip-card-clean):not(.slip-card-clean *),
-    body.neon-blue-mode div[class*="bg-indigo"]:not(.slip-card-clean):not(.slip-card-clean *),
-    body.neon-blue-mode div[class*="bg-amber"]:not(.slip-card-clean):not(.slip-card-clean *),
-    body.neon-blue-mode div[class*="bg-emerald"]:not(.slip-card-clean):not(.slip-card-clean *),
-    body.neon-blue-mode div[class*="bg-blue"]:not(.slip-card-clean):not(.slip-card-clean *),
-    body.neon-blue-mode nav,
+    body.neon-blue-mode div[class*="bg-white"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *),
+    body.neon-blue-mode div[class*="bg-slate"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *),
+    body.neon-blue-mode div[class*="bg-indigo"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *),
+    body.neon-blue-mode div[class*="bg-amber"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *),
+    body.neon-blue-mode div[class*="bg-emerald"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *),
+    body.neon-blue-mode div[class*="bg-blue"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *),
     body.neon-blue-mode main {
       background-color: #0a1128 !important;
       color: #ffffff !important;
       border-color: #00f3ff !important;
       box-shadow: 0 0 8px rgba(0, 243, 255, 0.25) !important;
+    }
+
+    /* DRAWER OVERLAY IN NEON BLUE MODE */
+    body.neon-blue-mode .drawer-panel {
+      background-color: #0b132b !important;
+      color: #ffffff !important;
+      border-right: 2px solid #00f3ff !important;
+      box-shadow: 5px 0 25px rgba(0, 243, 255, 0.3) !important;
     }
 
     /* NOTICE BOARD FULL RED OVERRIDE IN NEON MODE */
@@ -65,7 +72,7 @@
       font-weight: 700 !important;
     }
 
-    /* ALL TEXT INSIDE NEON MODE (EXCARD SLIP RECEIPT) */
+    /* ALL TEXT INSIDE NEON MODE (EXCEPT SLIP RECEIPT) */
     body.neon-blue-mode h1:not(.slip-card-clean *), 
     body.neon-blue-mode h2:not(.slip-card-clean *), 
     body.neon-blue-mode h3:not(.slip-card-clean *), 
@@ -701,11 +708,11 @@
             </div>
           )}
 
-          {/* SIDE DRAWER MENU */}
+          {/* SIDE DRAWER MENU WITH BLUR BACKDROP */}
           {showDrawer && (
             <div className="fixed inset-0 z-[80] flex">
-              <div className="fixed inset-0 bg-slate-900/60 transition-opacity" onClick={() => setShowDrawer(false)}></div>
-              <div className="relative w-80 max-w-[85%] bg-white h-full shadow-2xl flex flex-col justify-between z-10 p-5 overflow-y-auto">
+              <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-md transition-opacity" onClick={() => setShowDrawer(false)}></div>
+              <div className="relative w-80 max-w-[85%] bg-white h-full shadow-2xl flex flex-col justify-between z-10 p-5 overflow-y-auto drawer-panel">
                 <div>
                   <div className="flex items-center justify-between pb-4 border-b border-slate-200 mb-4">
                     <h3 className="font-extrabold text-blue-800 text-base">SGS ONLINE SERVICE</h3>
