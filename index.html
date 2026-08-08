@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi"> 
+<html lang="en"> 
 <head>
 
 
@@ -23,6 +23,140 @@
     #splash-screen { transition: opacity 0.3s ease-out; }
     .img-preview { max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px dashed #3b82f6; display: none; object-fit: cover; margin-top: 6px; }
     .pdf-preview { display: none; margin-top: 6px; font-size: 11px; font-weight: bold; color: #1d4ed8; background: #eff6ff; padding: 6px 10px; border-radius: 6px; border: 1px solid #bfdbfe; width: fit-content; }
+
+    /* PERFECT HIGH-CONTRAST NEON BLUE NIGHT MODE OVERRIDES */
+    body.neon-blue-mode {
+      background-color: #030712 !important;
+      color: #ffffff !important;
+    }
+    /* Main Background Containers */
+    body.neon-blue-mode div[class*="bg-white"]:not(.slip-card-clean):not(.slip-card-clean *),
+    body.neon-blue-mode div[class*="bg-slate"]:not(.slip-card-clean):not(.slip-card-clean *),
+    body.neon-blue-mode div[class*="bg-indigo"]:not(.slip-card-clean):not(.slip-card-clean *),
+    body.neon-blue-mode div[class*="bg-amber"]:not(.slip-card-clean):not(.slip-card-clean *),
+    body.neon-blue-mode div[class*="bg-emerald"]:not(.slip-card-clean):not(.slip-card-clean *),
+    body.neon-blue-mode div[class*="bg-blue"]:not(.slip-card-clean):not(.slip-card-clean *),
+    body.neon-blue-mode nav,
+    body.neon-blue-mode main {
+      background-color: #0a1128 !important;
+      color: #ffffff !important;
+      border-color: #00f3ff !important;
+      box-shadow: 0 0 8px rgba(0, 243, 255, 0.25) !important;
+    }
+
+    /* NOTICE BOARD FULL RED OVERRIDE IN NEON MODE */
+    body.neon-blue-mode div[class*="from-blue-50"] {
+      background: #dc2626 !important;
+      border: 2px solid #f87171 !important;
+      box-shadow: 0 0 12px rgba(220, 38, 38, 0.7) !important;
+    }
+    body.neon-blue-mode div[class*="from-blue-50"] h2,
+    body.neon-blue-mode div[class*="from-blue-50"] > div:first-child span {
+      color: #000000 !important;
+      font-weight: 900 !important;
+    }
+    body.neon-blue-mode div[class*="from-blue-50"] > div:first-child svg {
+      stroke: #000000 !important;
+    }
+    /* NOTICE LIST ITEMS TEXT COLOR FIX (WHITE TEXT ON DARK BOX) */
+    body.neon-blue-mode div[class*="from-blue-50"] div[class*="space-y"] span,
+    body.neon-blue-mode div[class*="from-blue-50"] div[class*="space-y"] div {
+      color: #ffffff !important;
+      font-weight: 700 !important;
+    }
+
+    /* ALL TEXT INSIDE NEON MODE (EXCARD SLIP RECEIPT) */
+    body.neon-blue-mode h1:not(.slip-card-clean *), 
+    body.neon-blue-mode h2:not(.slip-card-clean *), 
+    body.neon-blue-mode h3:not(.slip-card-clean *), 
+    body.neon-blue-mode h4:not(.slip-card-clean *), 
+    body.neon-blue-mode h5:not(.slip-card-clean *),
+    body.neon-blue-mode h6:not(.slip-card-clean *),
+    body.neon-blue-mode p:not(.slip-card-clean *), 
+    body.neon-blue-mode label:not(.slip-card-clean *), 
+    body.neon-blue-mode span:not(.no-neon):not(.slip-card-clean *), 
+    body.neon-blue-mode li:not(.slip-card-clean *), 
+    body.neon-blue-mode strong:not(.slip-card-clean *) {
+      color: #ffffff !important;
+      text-shadow: none !important;
+    }
+
+    /* SLIP RECEIPT CARD ISOLATION CSS RULES (MODE INDEPENDENT) */
+    .slip-card-clean {
+      background-color: #ffffff !important;
+      color: #0f172a !important;
+      border: 2px solid #2563eb !important;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15) !important;
+    }
+    .slip-card-clean * {
+      text-shadow: none !important;
+    }
+    .slip-text-dark {
+      color: #0f172a !important;
+    }
+    .slip-text-muted {
+      color: #475569 !important;
+    }
+    .slip-box-inner {
+      background-color: #f8fafc !important;
+      border: 1px solid #cbd5e1 !important;
+    }
+
+    /* DRAWER NAVIGATION LINKS TEXT */
+    body.neon-blue-mode nav button span,
+    body.neon-blue-mode nav button {
+      color: #ffffff !important;
+    }
+
+    /* RED BUTTONS & POST CARDS CATEGORY BADGES FOR NEON MODE */
+    body.neon-blue-mode button:not(.no-neon):not(.slip-card-clean *),
+    body.neon-blue-mode .neon-red-btn,
+    body.neon-blue-mode span[class*="bg-slate-100"]:not(.slip-card-clean *),
+    body.neon-blue-mode span[class*="bg-blue-600"]:not(.slip-card-clean *) {
+      background-color: #dc2626 !important;
+      color: #000000 !important;
+      font-weight: 900 !important;
+      border: 1px solid #f87171 !important;
+      box-shadow: 0 0 10px rgba(220, 38, 38, 0.6) !important;
+    }
+
+    /* INPUT FIELDS */
+    body.neon-blue-mode input,
+    body.neon-blue-mode select,
+    body.neon-blue-mode textarea {
+      background-color: #121e42 !important;
+      color: #00f3ff !important;
+      border: 1px solid #00f3ff !important;
+    }
+
+    /* HEADER BAR */
+    body.neon-blue-mode header {
+      background: linear-gradient(to right, #020617, #0f172a, #1e1b4b) !important;
+      border-bottom: 2px solid #00f3ff !important;
+    }
+
+    /* SVG ICONS COLOR */
+    body.neon-blue-mode svg:not(.slip-card-clean *) {
+      stroke: #00f3ff !important;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printable-receipt, #printable-receipt * {
+        visibility: visible;
+      }
+      #printable-receipt {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
   </style>
 
   <!-- External Static Posts Data File -->
@@ -83,7 +217,11 @@
       Share2: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>,
       Headphones: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>,
       ListCheck: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 022 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>,
-      Trash: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+      Trash: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>,
+      Moon: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>,
+      Download: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>,
+      CheckCircle: () => <svg className="w-12 h-12 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
+      Info: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
     };
 
     // HIGH QUALITY HD IMAGE COMPRESSION (1600px Max, 85% Quality)
@@ -163,6 +301,26 @@
       const [activeModalPage, setActiveModalPage] = useState(null);
       const [toastMsg, setToastMsg] = useState('');
       const [isSubmitting, setIsSubmitting] = useState(false);
+      const [submittedReceipt, setSubmittedReceipt] = useState(null);
+
+      // Neon Blue Theme State
+      const [isNeonMode, setIsNeonMode] = useState(() => {
+        try {
+          return localStorage.getItem('sgs_theme') === 'neon';
+        } catch (e) {
+          return false;
+        }
+      });
+
+      useEffect(() => {
+        if (isNeonMode) {
+          document.body.classList.add('neon-blue-mode');
+          try { localStorage.setItem('sgs_theme', 'neon'); } catch (e) {}
+        } else {
+          document.body.classList.remove('neon-blue-mode');
+          try { localStorage.setItem('sgs_theme', 'light'); } catch (e) {}
+        }
+      }, [isNeonMode]);
 
       // First Time Visit Legal Agreement State
       const [hasAgreed, setHasAgreed] = useState(() => {
@@ -205,7 +363,7 @@
 
       // Helper function to clear all tracking items
       const clearAllApps = () => {
-        if (window.confirm("Kya aap saare tracking history clear karna chahte hain?")) {
+        if (window.confirm("Do you want to clear all application tracking history?")) {
           setUserApps([]);
           localStorage.removeItem('sgs_user_applications');
           showNotification("All tracking history cleared!");
@@ -215,7 +373,9 @@
       // Hardware Mobile Back Button Sync
       useEffect(() => {
         const handlePopState = () => {
-          if (activeService) {
+          if (submittedReceipt) {
+            setSubmittedReceipt(null);
+          } else if (activeService) {
             setActiveService(null);
           } else if (activeModalPage) {
             setActiveModalPage(null);
@@ -227,7 +387,7 @@
         };
         window.addEventListener('popstate', handlePopState);
         return () => window.removeEventListener('popstate', handlePopState);
-      }, [activeService, activeModalPage, showDrawer, selectedCat]);
+      }, [submittedReceipt, activeService, activeModalPage, showDrawer, selectedCat]);
 
       const openServiceDetail = (srv) => {
         window.history.pushState({ page: 'detail' }, '');
@@ -357,11 +517,24 @@
           setUserApps(updatedApps);
           localStorage.setItem('sgs_user_applications', JSON.stringify(updatedApps));
 
+          // 5. Extract amount paid for receipt page
+          const upi = getUpiDetails(activeService.qrImageUrl);
+          const receiptData = {
+            uid: submissionId,
+            serviceTitle: activeService.title,
+            category: activeService.category,
+            dateTime: dateStr,
+            amount: upi.am ? `₹${upi.am}` : "As Applicable / Paid"
+          };
+
           showNotification(`Application Submitted! UID: ${submissionId}`);
           form.reset();
           document.querySelectorAll('.img-preview').forEach(img => img.style.display = 'none');
           document.querySelectorAll('.pdf-preview').forEach(pdf => pdf.style.display = 'none');
+          
           setActiveService(null);
+          window.history.pushState({ page: 'receipt' }, '');
+          setSubmittedReceipt(receiptData);
 
         } catch (err) {
           showNotification("Submission Failed. Please try again.");
@@ -392,6 +565,13 @@
         
         alert(`Your Support Ticket ID: ${ticketId}\nOpening WhatsApp...`);
         window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
+      };
+
+      const handleSendReceiptWhatsApp = () => {
+        if (!submittedReceipt) return;
+        const phone = atob(_0xwa);
+        const msg = encodeURIComponent(`Hello Admin,\n\nI have submitted a new form on SGS Online Service.\n\n🆔 Application UID: ${submittedReceipt.uid}\n📌 Service: ${submittedReceipt.serviceTitle}\n📂 Category: ${submittedReceipt.category}\n💳 Amount Paid: ${submittedReceipt.amount}\n📅 Date: ${submittedReceipt.dateTime}\n\nPlease verify and process my form.`);
+        window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
       };
 
       const handleEmailSupport = () => {
@@ -479,7 +659,7 @@
                     <ul className="list-disc pl-4 space-y-1 text-slate-700 font-medium text-[11px]">
                       <li><strong>Data Collected:</strong> Name, DOB, Parent Names, Contact Number, Address, Academic Qualifications, Uploaded Scanned Documents/PDFs, and Payment Screenshots.</li>
                       <li><strong>Purpose:</strong> Data is solely collected to fill out official forms on external portals on your behalf after verification via call/WhatsApp.</li>
-                      <li><strong>Secure Storage:</strong> All user-submitted form data, compressed images, and documents are securely transmitted via end-to-end encrypted connection directly to our secure admin panel for processing. Your private records are 100% confidential and never shared or sold to third parties</li>
+                      <li><strong>Secure Storage:</strong> All user-submitted form data, compressed images, and documents are securely transmitted via end-to-end encrypted connection directly to our secure admin panel for processing. Your private records are 100% confidential and never shared or sold to third parties.</li>
                     </ul>
                   </div>
 
@@ -509,7 +689,7 @@
                 <div className="p-4 bg-slate-50 border-t border-slate-200 flex flex-col gap-2">
                   <button 
                     onClick={handleAcceptTerms} 
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs py-3 rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs py-3 rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 neon-red-btn"
                   >
                     <span>I Agree & Continue</span> →
                   </button>
@@ -534,10 +714,31 @@
 
                   {/* NAV LINKS */}
                   <nav className="space-y-2 text-xs font-bold text-slate-700">
-                    <button onClick={() => { setSelectedCat('All Services'); setActiveService(null); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-blue-700">
+                    <button onClick={() => { setSelectedCat('All Services'); setActiveService(null); setSubmittedReceipt(null); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-blue-700">
                       <span>🏠 Home Page / All Services</span>
                       <Icons.ChevronRight />
                     </button>
+
+                    {/* ABOUT US NAVIGATION LINK */}
+                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('about'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
+                      <span className="flex items-center gap-1.5 font-bold"><Icons.Info /> About Us</span>
+                      <Icons.ChevronRight />
+                    </button>
+
+                    {/* NEON BLUE NIGHT MODE TOGGLE BUTTON */}
+                    <div className="p-2.5 rounded-lg bg-indigo-50/80 border border-indigo-200 flex items-center justify-between">
+                      <span className="flex items-center gap-1.5 font-extrabold text-indigo-900">
+                        <Icons.Moon /> Neon Blue Mode
+                      </span>
+                      <button 
+                        onClick={() => setIsNeonMode(!isNeonMode)} 
+                        className={`px-3 py-1 rounded-md font-bold text-[11px] transition-all no-neon ${
+                          isNeonMode ? 'bg-cyan-400 text-slate-950 shadow-[0_0_10px_rgba(0,243,255,0.8)]' : 'bg-indigo-600 text-white'
+                        }`}
+                      >
+                        {isNeonMode ? 'ON ⚡' : 'OFF'}
+                      </button>
+                    </div>
 
                     {/* TRACK MY APPLICATION BUTTON */}
                     <button 
@@ -571,7 +772,7 @@
                   </nav>
 
                   {/* CUSTOMER SUPPORT SECTION INSIDE DRAWER */}
-                  <div className="mt-6 pt-5 border-t border-slate-200 space-y-3">
+                  <div className="mt-6 pt-5 border-t border-slate-200 space-y-3" id="drawer-customer-support">
                     <h4 className="text-xs font-extrabold uppercase text-slate-400 tracking-wider flex items-center gap-1.5 mb-3">
                       <Icons.Headphones /> Customer Support
                     </h4>
@@ -579,7 +780,7 @@
                     <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-2xs">
                       <h5 className="font-extrabold text-slate-900 text-xs mb-1">WhatsApp Support</h5>
                       <p className="text-[11px] text-slate-500 mb-2.5 leading-snug">Fast Reply (Instant Assistance). Connect directly on WhatsApp.</p>
-                      <button onClick={handleWhatsAppSupport} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2 rounded-lg transition-colors">
+                      <button onClick={handleWhatsAppSupport} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2 rounded-lg transition-colors neon-red-btn">
                         Chat on WhatsApp
                       </button>
                     </div>
@@ -587,7 +788,7 @@
                     <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-2xs">
                       <h5 className="font-extrabold text-slate-900 text-xs mb-1">Email Support</h5>
                       <p className="text-[11px] text-slate-500 mb-2.5 leading-snug">Send us an email inquiry for official ticket assistance.</p>
-                      <button onClick={handleEmailSupport} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-2 rounded-lg transition-colors">
+                      <button onClick={handleEmailSupport} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-2 rounded-lg transition-colors neon-red-btn">
                         Send Email
                       </button>
                     </div>
@@ -601,14 +802,91 @@
             </div>
           )}
 
-          {/* FULL SCREEN MODAL VIEW */}
-          {activeModalPage ? (
+          {/* DYNAMIC SUCCESSFUL APPLICATION RECEIPT SCREEN */}
+          {submittedReceipt ? (
+            <div className="min-h-screen bg-slate-100 p-4 sm:p-6 flex flex-col items-center justify-center">
+              <div id="printable-receipt" className="slip-card-clean max-w-md w-full rounded-2xl border-2 border-blue-600 shadow-2xl overflow-hidden p-6 text-slate-900 space-y-5">
+                
+                {/* THANK YOU BANNER */}
+                <div className="bg-blue-600 text-white p-3 rounded-xl text-center shadow-md mb-2">
+                  <h3 className="font-black text-xs uppercase tracking-wider">🎉 Thanks for applying through SGS Online Service!</h3>
+                </div>
+
+                <div className="text-center space-y-2 border-b border-slate-200 pb-4">
+                  <div className="flex justify-center mb-1">
+                    <Icons.CheckCircle />
+                  </div>
+                  <h2 className="text-xl font-black slip-text-dark">Application Submitted!</h2>
+                  <p className="text-xs slip-text-muted font-bold">Your request has been successfully registered with SGS Online Service.</p>
+                </div>
+
+                <div className="slip-box-inner rounded-xl p-4 space-y-3 text-xs">
+                  <div className="flex items-center justify-between border-b border-slate-300 pb-2">
+                    <span className="slip-text-muted font-bold">Application UID:</span>
+                    <span className="font-black text-blue-700 text-sm tracking-wide">{submittedReceipt.uid}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between border-b border-slate-300 pb-2">
+                    <span className="slip-text-muted font-bold">Service Name:</span>
+                    <span className="font-black slip-text-dark text-right max-w-[200px] leading-tight">{submittedReceipt.serviceTitle}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between border-b border-slate-300 pb-2">
+                    <span className="slip-text-muted font-bold">Category:</span>
+                    <span className="font-black slip-text-dark">{submittedReceipt.category}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between border-b border-slate-300 pb-2">
+                    <span className="slip-text-muted font-bold">Amount Paid:</span>
+                    <span className="font-black text-emerald-600 text-sm">{submittedReceipt.amount}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <span className="slip-text-muted font-bold">Date & Time:</span>
+                    <span className="font-bold slip-text-dark text-[11px]">{submittedReceipt.dateTime}</span>
+                  </div>
+                </div>
+
+                <div className="bg-amber-100 border border-amber-300 rounded-xl p-3 text-[11px] text-amber-950 font-bold leading-relaxed">
+                  📌 <strong>Note:</strong> Save your UID for tracking. Our assistance team will process your form and update status shortly.
+                </div>
+
+                <div className="pt-2 flex flex-col gap-2.5 no-print">
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <button 
+                      onClick={() => window.print()} 
+                      className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs py-3 px-3 rounded-xl shadow-md transition-all flex items-center justify-center gap-2"
+                    >
+                      <Icons.Download /> Download Receipt
+                    </button>
+                    
+                    {/* INSTANT WHATSAPP SHARE BUTTON */}
+                    <button 
+                      onClick={handleSendReceiptWhatsApp} 
+                      className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs py-3 px-3 rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
+                    >
+                      <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+                      Send Receipt on WhatsApp
+                    </button>
+                  </div>
+
+                  <button 
+                    onClick={() => setSubmittedReceipt(null)} 
+                    className="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-1"
+                  >
+                    Done ✓
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : activeModalPage ? (
             <div className="fixed inset-0 bg-slate-100 z-50 flex flex-col h-full w-full overflow-hidden">
               <div className="bg-gradient-to-r from-blue-800 to-indigo-900 text-white px-4 py-3 shadow-md flex items-center justify-between shrink-0">
                 <h3 className="font-extrabold text-white text-base sm:text-lg flex items-center gap-2">
                   <Icons.ShieldCheck />
                   <span>
                     {activeModalPage === 'track' && 'Track My Applications'}
+                    {activeModalPage === 'about' && 'About Us'}
                     {activeModalPage === 'privacy' && 'Privacy Policy'}
                     {activeModalPage === 'terms' && 'Terms & Conditions'}
                     {activeModalPage === 'disclaimer' && 'Disclaimer & Service Policy'}
@@ -621,17 +899,47 @@
 
               <div className="flex-1 overflow-y-auto p-4 sm:p-6 max-w-4xl w-full mx-auto text-xs text-slate-700 space-y-4">
                 
+                {/* ABOUT US MODAL PAGE */}
+                {activeModalPage === 'about' && (
+                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
+                    <div className="bg-blue-50 border-l-4 border-blue-600 p-4 rounded-r-xl text-slate-900 font-bold">
+                      🏢 ABOUT SGS ONLINE SERVICE
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">1. Who We Are</h4>
+                      <p>SGS ONLINE SERVICE is an independent private digital facilitation center and cyber cafe portal operated to assist students and residents in navigating online government, academic, and administrative application processes accurately.</p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">2. Location & Operating Area</h4>
+                      <p className="font-semibold text-slate-800">📍 Primary Location: District Arrah, Bhojpur, Bihar, India.</p>
+                      <p className="mt-1">We cater specifically to applicants across Bihar requiring assistance with university admissions (e.g., VKSU), RTPS certificates (Caste, Income, Residence), scholarships, and national competitive exam form submissions.</p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">3. Our Mission & Assistance Scope</h4>
+                      <p>Online applications can be complex and error-prone. Our mission is to provide guided, telephone-verified, and error-free form filling support on official third-party government and college portals on behalf of the applicant.</p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">4. Transparency Commitment</h4>
+                      <p>We charge a nominal facilitation charge for our time, digital infrastructure, and document compression support. We do NOT represent or act as an official government body.</p>
+                    </div>
+                  </div>
+                )}
+
                 {/* TRACK APPLICATION MODAL PAGE */}
                 {activeModalPage === 'track' && (
                   <div className="space-y-4">
                     <div className="bg-amber-50 border-l-4 border-amber-600 p-4 rounded-r-xl text-slate-900 font-medium flex items-center justify-between gap-2 flex-wrap">
                       <div>
-                        <strong>📋 Application Tracking Center:</strong> Aapke dwara submit kiye gaye sabhi online assistance requests ke UIDs.
+                        <strong>📋 Application Tracking Center:</strong> Registered UIDs for your submitted online assistance requests.
                       </div>
                       {userApps.length > 0 && (
                         <button 
                           onClick={clearAllApps}
-                          className="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 shadow-2xs"
+                          className="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 shadow-2xs neon-red-btn"
                         >
                           <Icons.Trash /> Clear All
                         </button>
@@ -640,7 +948,7 @@
 
                     {userApps.length === 0 ? (
                       <div className="bg-white p-8 rounded-2xl border border-slate-200 text-center">
-                        <p className="text-sm font-bold text-slate-500">Aapne abhi tak koi form assistance request submit nahi kiya hai.</p>
+                        <p className="text-sm font-bold text-slate-500">You have not submitted any form assistance requests yet.</p>
                       </div>
                     ) : (
                       <div className="space-y-3">
@@ -689,8 +997,8 @@
                     </div>
 
                     <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. End-to-End Secure Telegram Storage</h4>
-                      <p>User-submitted form data, compressed high-resolution images, and uploaded PDF files are transmitted through encrypted connections directly to our admin panel via Telegram. We strictly do NOT sell, lease, trade, or share user personal records with any unauthorized third parties.</p>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. End-to-End Secure Admin Panel Storage</h4>
+                      <p>All user-submitted form data, compressed high-resolution images, and uploaded PDF files are transmitted through encrypted connections directly to our secure admin panel for processing. We strictly do NOT sell, lease, trade, or share user personal records with any unauthorized third parties.</p>
                     </div>
 
                     <div>
@@ -730,7 +1038,7 @@
                   </div>
                 )}
 
-                {/* DISCLAIMER MODAL PAGE */}
+                {/* DISCLAIMER MODAL PAGE (FULL ENGLISH TRANSLATION) */}
                 {activeModalPage === 'disclaimer' && (
                   <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
                     <div className="bg-amber-50 border-l-4 border-amber-600 p-4 rounded-r-xl text-amber-950 font-bold">
@@ -738,25 +1046,25 @@
                     </div>
 
                     <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Swatantra Private Service (Non-Government)</h4>
-                      <p>SGS ONLINE SERVICE ek swatantra private online cyber cafe aur form filling assistance desk hai. Hum kisi bhi sarkari vibhag (Government Department), Bihar RTPS Portal, VKSU University, ya kisi bhi official college/university administration se affiliated ya authorized portal nahi hain.</p>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Independent Private Service (Non-Governmental)</h4>
+                      <p>SGS ONLINE SERVICE operates independently as a private online cyber cafe and digital form-filling assistance desk. We are NOT affiliated with, associated with, authorized by, or in any way officially connected to any government department, Bihar RTPS Portal, Veer Kunwar Singh University (VKSU), or any official college or university administration.</p>
                     </div>
 
                     <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Form Filling Facilitation</h4>
-                      <p>Humare dwaara pradan ki jaane wali seva sirf users ke anurodh par unka online application form sahi tarike se official portals par bharne mein madad karne ki facilitation service hai. Iske badle mein hum ek nominal assistance service charge lete hain.</p>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Form Filling Facilitation & Assistance</h4>
+                      <p>The service provided by us is strictly a form-filling assistance utility performed on behalf of the applicant upon their explicit request. We assist users in entering their data accurately on official external portals. In exchange for this support, we charge a nominal private facilitation service fee.</p>
                     </div>
 
                     <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. External Links & Official Portals</h4>
-                      <p>Aapke dwara jama kiye gaye sabhi details ko humari team verification ke baad official government / university portals par submit karti hai. Aavedan patra ki manjuri ya aswikriti (Approval/Rejection) puri tarah se sambandhit sarkari/college adhikaariyon ke haath mein hoti hai.</p>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. External Links & Official Approvals</h4>
+                      <p>All details and documents provided by the applicant are processed and submitted directly to respective official government or university portals after verification. SGS ONLINE SERVICE holds no authority over the approval, processing timeline, or rejection of any application. Final decision and verification rights reside entirely with the official government or college authorities.</p>
                     </div>
                   </div>
                 )}
               </div>
 
               <div className="p-3 bg-white border-t border-slate-200 flex justify-end shrink-0">
-                <button onClick={() => setActiveModalPage(null)} className="bg-slate-900 text-white font-bold px-6 py-2 rounded-xl text-xs shadow-md">
+                <button onClick={() => setActiveModalPage(null)} className="bg-slate-900 text-white font-bold px-6 py-2 rounded-xl text-xs shadow-md neon-red-btn">
                   Close Window
                 </button>
               </div>
@@ -785,7 +1093,7 @@
               {/* MAIN SERVICES CONTENT */}
               {activeService ? (
                 <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-6">
-                  <button onClick={() => setActiveService(null)} className="inline-flex items-center gap-2 bg-white text-slate-800 font-bold text-xs px-4 py-2 rounded-xl border border-slate-300 mb-4 shadow-2xs">
+                  <button onClick={() => setActiveService(null)} className="inline-flex items-center gap-2 bg-white text-slate-800 font-bold text-xs px-4 py-2 rounded-xl border border-slate-300 mb-4 shadow-2xs neon-red-btn">
                     <Icons.ArrowLeft /> Back to Services
                   </button>
 
@@ -862,7 +1170,7 @@
                               {/* PhonePe Button */}
                               <a 
                                 href={phonepeUrl} 
-                                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-[#5f259f] hover:bg-[#4a1c7d] text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow transition-all"
+                                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-[#5f259f] hover:bg-[#4a1c7d] text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow transition-all neon-red-btn"
                               >
                                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18.8 10.2c0-2.4-1.9-4.3-4.3-4.3H8.3c-.6 0-1.1.5-1.1 1.1v10.1c0 .6.5 1.1 1.1 1.1h2.3c.6 0 1.1-.5 1.1-1.1v-2.8h2.8c2.4 0 4.3-1.9 4.3-4.2zm-4.3 1.9h-2.8v-3.8h2.8c1 0 1.9.9 1.9 1.9 0 1-.9 1.9-1.9 1.9z"/></svg>
                                 <span>PhonePe</span>
@@ -871,7 +1179,7 @@
                               {/* GPay Button */}
                               <a 
                                 href={gpayUrl} 
-                                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-white text-slate-800 border border-slate-300 hover:bg-slate-50 font-bold text-xs py-2.5 px-3 rounded-lg shadow-sm transition-all"
+                                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-white text-slate-800 border border-slate-300 hover:bg-slate-50 font-bold text-xs py-2.5 px-3 rounded-lg shadow-sm transition-all neon-red-btn"
                               >
                                 <svg className="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
                                 <span>Google Pay</span>
@@ -880,7 +1188,7 @@
                               {/* Pay via Other Apps Button */}
                               <a 
                                 href={genericUpiUrl} 
-                                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow transition-all"
+                                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow transition-all neon-red-btn"
                               >
                                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
                                 <span>Pay via Other App</span>
@@ -908,7 +1216,7 @@
                       <button 
                         type="submit" 
                         disabled={isSubmitting}
-                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm py-3.5 rounded-xl shadow-lg transition-all active:scale-95 disabled:bg-slate-400 mt-2"
+                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm py-3.5 rounded-xl shadow-lg transition-all active:scale-95 disabled:bg-slate-400 mt-2 neon-red-btn"
                       >
                         {isSubmitting ? "Uploading & Submitting..." : "Submit Application →"}
                       </button>
@@ -968,7 +1276,7 @@
                               }
                             }}
                             style={getCategoryButtonStyle(catObj, isSelected)}
-                            className="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border shrink-0"
+                            className="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border shrink-0 neon-red-btn"
                           >
                             {catName}
                           </button>
@@ -1002,10 +1310,12 @@
                 </main>
               )}
 
-              {/* FOOTER WITH MODAL BUTTONS */}
+              {/* FOOTER WITH MODAL BUTTONS & CUSTOMER SUPPORT LINK */}
               <footer className="bg-slate-900 text-slate-400 text-xs py-6 mt-12 border-t border-slate-800 text-center px-4">
                 <p className="font-bold text-white">SGS ONLINE SERVICE © 2026</p>
                 <div className="flex flex-wrap items-center justify-center gap-4 text-xs mt-3">
+                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('about'); }} className="text-slate-400 hover:text-white underline">About Us</button>
+                  <button onClick={() => { setShowDrawer(true); }} className="text-slate-400 hover:text-white underline">Customer Support</button>
                   <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('privacy'); }} className="text-slate-400 hover:text-white underline">Privacy Policy</button>
                   <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('terms'); }} className="text-slate-400 hover:text-white underline">Terms & Conditions</button>
                   <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('disclaimer'); }} className="text-slate-400 hover:text-white underline">Disclaimer</button>
@@ -1019,6 +1329,7 @@
     }
 
     ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
 
     
   </script>
