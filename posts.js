@@ -1,6 +1,6 @@
 const STATIC_CATEGORIES = [
   { name: 'All Services', color: 'blue' },
-  { name: 'STD Collage', color: 'purpal' },
+  { name: 'STD College', color: 'purpal' },
   { name: 'Internship', color: 'indigo' },
   { name: 'Certificates (Jati/Aaya/Niwas)', color: 'emerald' },
   { name: 'College Admission', color: 'purple' },
@@ -376,7 +376,7 @@ const ALL_POSTS = [
 {
   id: "vksu-exam-form-all-sem-05",
   title: "VKSU Exam Form All Semester",
-  category: "STD Collage", 
+  category: "STD College", 
   description: "Veer Kunwar Singh University exam form fill up service all semesters (Sem 1 to Sem 8).",
   qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D630%26cu%3DINR&size=200&format=png",
   fields: [
@@ -666,7 +666,46 @@ const ALL_POSTS = [
       required: true
     }
   ]
-}
+},
+
+
+
+
+
+  
+
+
+  {
+  id: "internship-120hr-09",
+  title: "Intership 120 Hour Complete",
+  category: "Internship",
+  description: "Internship 120 Hour Complete hone par apne details bharein aur form submit karein.",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D100%26cu%3DINR&size=200&format=png",
+  fields: [
+    { id: "field_full_name", name: "full_name", label: "Name / नाम", type: "text", required: true, placeholder: "Apna name likhein" },
+    { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number / मोबाइल नंबर", type: "tel", required: true, placeholder: "10-digit mobile number" },
+    { id: "field_internship_password", name: "internship_password", label: "Internship Password (Optional) / इंटर्नशिप पासवर्ड (वैकल्पिक)", type: "text", required: false, placeholder: "Password ho to likhein" },
+    {
+      id: "field_password_forgot",
+      name: "password_forgot",
+      label: "Password yaad nahi hai? / पासवर्ड याद नहीं है?",
+      type: "radio",
+      required: false,
+      options: [
+        { id: "opt_pass_yes", label: "Yes / हाँ", value: "yes" },
+        { id: "opt_pass_no", label: "No / नहीं", value: "no" }
+      ]
+    },
+    {
+      id: "field_applicant_photo",
+      name: "applicant_photo",
+      label: "Upload Photo / फोटो अपलोड करें",
+      type: "file",
+      accept: "image/*",
+      required: true }
+    
+    ]
+  }
  
 
 
