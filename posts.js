@@ -19,7 +19,7 @@ const ALL_POSTS = [
   title: "Internship Application Online Form",
   category: "Internship",
   description: "Internship ke liye apni personal, academic aur payment details bharein.",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D300%26cu%3DINR&size=200&format=png",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D240%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "Full Name", type: "text", required: true },
     {
