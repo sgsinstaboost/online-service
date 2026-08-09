@@ -705,7 +705,57 @@ const ALL_POSTS = [
       required: true }
     
     ]
+  },
+
+
+
+
+
+
+  
+
+
+{
+  id: "pan-card-apply-10",
+  title: "New PAN Card / Correction Online Form",
+  category: "Government Forms",
+  description: "New PAN Card apply karne ya correction ke liye niche apne details bharein.",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D200%26cu%3DINR&size=200&format=png",
+  fields: [
+    { id: "field_full_name", name: "full_name", label: "Name / नाम", type: "text", required: true, placeholder: "Apna name likhein" },
+    { id: "field_father_name", name: "father_name", label: "Father Name / पिता का नाम", type: "text", required: true, placeholder: "Father name likhein" },
+    { id: "field_mother_name", name: "mother_name", label: "Mother Name / माता का नाम", type: "text", required: true, placeholder: "Mother name likhein" },
+    { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number (जो आपके आधार कार्ड से लिंक हो) / मोबाइल नंबर", type: "tel", required: true, placeholder: "Aadhaar linked mobile number" },
+    {
+      id: "field_applicant_photo",
+      name: "applicant_photo",
+      label: "Upload Photo / फोटो अपलोड करें",
+      type: "file",
+      accept: "image/*",
+      required: true
+    },
+    {
+      id: "field_applicant_sign",
+      name: "applicant_sign",
+      label: "Upload Sign / हस्ताक्षर अपलोड करें",
+      type: "file",
+      accept: "image/*",
+      required: true
+    },
+    {
+      id: "field_aadhar_card",
+      name: "aadhar_card",
+      label: "Upload Aadhaar Card Both Side / आधार कार्ड दोनों तरफ का अपलोड करें",
+      type: "file",
+      accept: "image/*, application/pdf",
+      required: true }
+    
+    ]
   }
+
+
+
+  
  
 
 
