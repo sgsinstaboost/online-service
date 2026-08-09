@@ -19,7 +19,7 @@ const ALL_POSTS = [
   title: "Internship Application Online Form",
   category: "Internship",
   description: "Internship ke liye apni personal, academic aur payment details bharein.",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D240%26cu%3DINR&size=200&format=png",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D230%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "Full Name", type: "text", required: true },
     {
@@ -146,7 +146,7 @@ const ALL_POSTS = [
   title: "Bihar RTPS Caste Certificate (जाति प्रमाण पत्र)",
   category: "Certificates (Jati/Aaya/Niwas)",
   description: "Caste Certificate apply karne ke liye niche details bharein, documents upload karein aur QR par pay karein.",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D30%26cu%3DINR&size=200&format=png",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D30%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "आवेदक का नाम / Name of Applicant", type: "text", required: true, placeholder: "Apna name likhein" },
     { id: "field_father_name", name: "father_name", label: "पिता का नाम / Father's Name", type: "text", required: true, placeholder: "Father name likhein" },
@@ -229,7 +229,7 @@ const ALL_POSTS = [
   title: "Bihar RTPS Income Certificate (आय प्रमाण पत्र)",
   category: "Certificates (Jati/Aaya/Niwas)",
   description: "Income Certificate online form bharein aur required documents upload karein.",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D30%26cu%3DINR&size=200&format=png",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D30%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "आवेदक का नाम / Name of Applicant", type: "text", required: true, placeholder: "Apna name likhein" },
     { id: "field_father_name", name: "father_name", label: "पिता का नाम / Father's Name", type: "text", required: true, placeholder: "Father name likhein" },
@@ -448,7 +448,7 @@ const ALL_POSTS = [
   title: "Bihar RTPS Combo Service (जाति, आय एवं निवास प्रमाण पत्र एक साथ बनवाएं)",
   category: "Certificates (Jati/Aaya/Niwas)",
   description: "जाति, आय एवं निवास प्रमाण पत्र एक साथ आवेदन करने के लिए नीचे अपनी पूरी डिटेल्स भरें, सभी आवश्यक दस्तावेज़ अपलोड करें और QR कोड स्कैन करके ₹90 का भुगतान करें।",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D90%26cu%3DINR&size=200&format=png",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D90%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "आवेदक का नाम / Name of Applicant", type: "text", required: true, placeholder: "Apna name likhein" },
     { id: "field_father_name", name: "father_name", label: "पिता का नाम / Father's Name", type: "text", required: true, placeholder: "Father name likhein" },
@@ -556,7 +556,7 @@ const ALL_POSTS = [
   title: "VKSU Online Admission Form (Semester 5th)",
   category: "College Admission",
   description: "Veer Kunwar Singh University, Session 2024-2028 Semester 5th Online Admission Form fill up service.",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D30%26cu%3DINR&size=200&format=png",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D30%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_student_name", name: "student_name", label: "Student Name", type: "text", required: true, placeholder: "Apna name likhein" },
     {
@@ -627,7 +627,7 @@ const ALL_POSTS = [
   title: "Bihar Character Certificate (चरित्र प्रमाण पत्र)",
   category: "Government Forms",
   description: "Character Certificate online apply karne ke liye niche details bharein, documents upload karein aur QR par pay karein.",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D40%26cu%3DINR&size=200&format=png",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D40%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "Name / नाम", type: "text", required: true, placeholder: "Apna name likhein" },
     { id: "field_father_name", name: "father_name", label: "Father Name / पिता का नाम", type: "text", required: true, placeholder: "Father name likhein" },
@@ -680,7 +680,7 @@ const ALL_POSTS = [
   title: "Intership 120 Hour Complete",
   category: "Internship",
   description: "Internship 120 Hour Complete hone par apne details bharein aur form submit karein.",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D100%26cu%3DINR&size=200&format=png",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D100%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "Name / नाम", type: "text", required: true, placeholder: "Apna name likhein" },
     { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number / मोबाइल नंबर", type: "tel", required: true, placeholder: "10-digit mobile number" },
@@ -720,7 +720,7 @@ const ALL_POSTS = [
   title: "New PAN Card / Correction Online Form",
   category: "Government Forms",
   description: "New PAN Card apply karne ya correction ke liye niche apne details bharein.",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D200%26cu%3DINR&size=200&format=png",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D200%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "Name / नाम", type: "text", required: true, placeholder: "Apna name likhein" },
     { id: "field_father_name", name: "father_name", label: "Father Name / पिता का नाम", type: "text", required: true, placeholder: "Father name likhein" },
@@ -766,7 +766,7 @@ const ALL_POSTS = [
   title: "PMS scholarship 2026-2027",
   category: "Scholarship",
   description: "Post Matric Scholarship 2026-2027 online application form fill up service.",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D200%26cu%3DINR&size=200&format=png",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D200%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_student_name", name: "student_name", label: "Name / नाम", type: "text", required: true, placeholder: "Apna name likhein" },
     { id: "field_father_name", name: "father_name", label: "Father Name / पिता का नाम", type: "text", required: true, placeholder: "Father name likhein" },
