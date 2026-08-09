@@ -858,7 +858,8 @@ const ALL_POSTS = [
         { id: "opt_sess_2023_2027", label: "2023-2027", value: "2023_2027" },
         { id: "opt_sess_2024_2028", label: "2024-2028", value: "2024_2028" },
         { id: "opt_sess_2025_2029", label: "2025-2029", value: "2025_2029" },
-        { id: "opt_sess_2026_2030", label: "2026-2030", value: "2026_2030" }
+        { id: "opt_sess_2026_2030", label: "2026-2030", value: "2026_2030" },
+        { id: "opt_sess_2025_2027", label: "2025-2027", value: "2025-2027" }
       ]
     },
     {
