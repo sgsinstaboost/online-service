@@ -751,12 +751,179 @@ const ALL_POSTS = [
       required: true }
     
     ]
-  }
+  },
+
+
+
 
 
 
   
- 
+
+
+{
+  id: "pms-scholarship-2026-2027-11",
+  title: "PMS scholarship 2026-2027",
+  category: "Scholarship",
+  description: "Post Matric Scholarship 2026-2027 online application form fill up service.",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D200%26cu%3DINR&size=200&format=png",
+  fields: [
+    { id: "field_student_name", name: "student_name", label: "Name / नाम", type: "text", required: true, placeholder: "Apna name likhein" },
+    { id: "field_father_name", name: "father_name", label: "Father Name / पिता का नाम", type: "text", required: true, placeholder: "Father name likhein" },
+    { id: "field_mother_name", name: "mother_name", label: "Mother Name / माता का नाम", type: "text", required: true, placeholder: "Mother name likhein" },
+    { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number / मोबाइल नंबर", type: "tel", required: true, placeholder: "10-digit mobile number" },
+    { id: "field_email_id", name: "email_id", label: "Email ID / ईमेल आईडी", type: "email", required: true, placeholder: "example@gmail.com" },
+    { id: "field_district", name: "district", label: "District / जिला", type: "text", required: true, placeholder: "District name likhein" },
+    { id: "field_pin_code", name: "pin_code", label: "Pin Code / पिन कोड", type: "text", required: true, placeholder: "6-digit pin code" },
+    { id: "field_ward_no", name: "ward_no", label: "Ward No. / वार्ड संख्या", type: "text", required: true, placeholder: "Ward number likhein" },
+    { id: "field_block", name: "block", label: "Block / प्रखंड", type: "text", required: true, placeholder: "Block name likhein" },
+    { id: "field_admission_date", name: "admission_date", label: "Date Of Admission / आपका नामांकन कितने तारीख को हुआ था (Optional)", type: "text", required: false, placeholder: "DD/MM/YYYY" },
+    { id: "field_registration_no", name: "registration_no", label: "Registration No. (Only For Graduation) / रजिस्ट्रेशन नंबर (Optional)", type: "text", required: false, placeholder: "Registration number likhein" },
+    { id: "field_university_roll_no", name: "university_roll_no", label: "University Roll No. (Only For Graduation) / रोल नंबर (Optional)", type: "text", required: false, placeholder: "University roll number likhein" },
+    {
+      id: "field_academic_year",
+      name: "academic_year",
+      label: "Academic Year / शैक्षणिक वर्ष",
+      type: "radio",
+      required: true,
+      options: [
+        { id: "opt_acad_2026_2027", label: "2026-2027", value: "2026_2027" }
+      ]
+    },
+    {
+      id: "field_category",
+      name: "category",
+      label: "Category / कोटि",
+      type: "radio",
+      required: true,
+      options: [
+        { id: "opt_sc", label: "SC", value: "sc" },
+        { id: "opt_st", label: "ST", value: "st" }
+      ]
+    },
+    {
+      id: "field_gender",
+      name: "gender",
+      label: "Gender / लिंग",
+      type: "radio",
+      required: true,
+      options: [
+        { id: "opt_male", label: "Male / पुरुष", value: "male" },
+        { id: "opt_female", label: "Female / महिला", value: "female" }
+      ]
+    },
+    {
+      id: "field_religion",
+      name: "religion",
+      label: "Religion / धर्म",
+      type: "radio",
+      required: true,
+      options: [
+        { id: "opt_hindu", label: "Hindu / हिंदू", value: "hindu" }
+      ]
+    },
+    {
+      id: "field_course_group",
+      name: "course_group",
+      label: "Course Group / कोर्स ग्रुप",
+      type: "radio",
+      required: true,
+      options: [
+        { id: "opt_graduation", label: "Graduation", value: "graduation" },
+        { id: "opt_12th", label: "12th", value: "12th" }
+      ]
+    },
+    {
+      id: "field_course_name",
+      name: "course_name",
+      label: "Course Name / कोर्स का नाम",
+      type: "radio",
+      required: true,
+      options: [
+        { id: "opt_ba", label: "B.A", value: "ba" },
+        { id: "opt_bcom", label: "B.COM", value: "bcom" },
+        { id: "opt_bsc", label: "B.SC", value: "bsc" },
+        { id: "opt_arts", label: "ARTS", value: "arts" },
+        { id: "opt_commerce", label: "COMMERCE", value: "commerce" },
+        { id: "opt_science", label: "SCIENCE", value: "science" }
+      ]
+    },
+    {
+      id: "field_course_session",
+      name: "course_session",
+      label: "Course Session / कोर्स सत्र",
+      type: "radio",
+      required: true,
+      options: [
+        { id: "opt_sess_2023_2027", label: "2023-2027", value: "2023_2027" },
+        { id: "opt_sess_2024_2028", label: "2024-2028", value: "2024_2028" },
+        { id: "opt_sess_2025_2029", label: "2025-2029", value: "2025_2029" },
+        { id: "opt_sess_2026_2030", label: "2026-2030", value: "2026_2030" }
+      ]
+    },
+    {
+      id: "field_photo",
+      name: "photo",
+      label: "Photo Upload / फोटो अपलोड करें",
+      type: "file",
+      accept: "image/*",
+      required: true
+    },
+    {
+      id: "field_aadhar_card",
+      name: "aadhar_card",
+      label: "Aadhaar Card Upload Both Side / आधार कार्ड दोनों तरफ का अपलोड करें",
+      type: "file",
+      accept: "image/*, application/pdf",
+      required: true
+    },
+    {
+      id: "field_income_cert",
+      name: "income_cert",
+      label: "Income Certificate Upload (New 2026) / नया आय प्रमाण पत्र अपलोड करें",
+      type: "file",
+      accept: "image/*, application/pdf",
+      required: true
+    },
+    {
+      id: "field_caste_cert",
+      name: "caste_cert",
+      label: "Caste Certificate Upload / जाति प्रमाण पत्र अपलोड करें",
+      type: "file",
+      accept: "image/*, application/pdf",
+      required: true
+    },
+    {
+      id: "field_fee_paid_slip",
+      name: "fee_paid_slip",
+      label: "Fee Paid Receipts / कितना पैसा जमा किये हैं उन सभी का स्लिप अपलोड करें (Admission + Exam Form)",
+      type: "file",
+      accept: "image/*, application/pdf",
+      required: true
+    },
+    {
+      id: "field_10th_marksheet",
+      name: "10th_marksheet",
+      label: "10th Marksheet Upload / 10वीं का मार्कशीट अपलोड करें",
+      type: "file",
+      accept: "image/*, application/pdf",
+      required: true
+    },
+    {
+      id: "field_bonafide_cert",
+      name: "bonafide_cert",
+      label: "Bonafide Certificate Upload / बोनाफाइड सर्टिफिकेट अपलोड करें",
+      type: "file",
+      accept: "image/*, application/pdf",
+      required: true }
+    
+    ]
+  }
+
+
+
+
+  
 
 
   
