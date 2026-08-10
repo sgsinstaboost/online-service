@@ -529,7 +529,7 @@
             })
           );
 
-          // 3. Upload Files via Vercel Proxy/Direct
+          // 3. Upload Files via Vercel Secure Route
           for (const item of processedFiles) {
             const fileData = new FormData();
             fileData.append("caption", `📎 ${item.label}\nUID: ${submissionId}`);
@@ -538,7 +538,6 @@
             const paramName = isPdf ? 'document' : 'photo';
             fileData.append(paramName, item.file);
 
-            // Fetch to backend endpoint
             await fetch('/api/send-telegram', {
               method: 'POST',
               body: fileData
