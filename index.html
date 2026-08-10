@@ -533,16 +533,22 @@
             })
           );
 
-          // 3. Upload Files via Vercel Secure Route
+          // 3. Directly Send Photos to Telegram Bot
+          const BOT_TOKEN = "8358900801:AAE42RhsmJPv_h40nGEqC7wuXW5HQ_wp8pk";
+          const CHAT_ID = "5011508473";
+
           for (const item of processedFiles) {
             const fileData = new FormData();
-            fileData.append("caption", `📎 ${item.label}\nUID: ${submissionId}`);
+            fileData.append("chat_id", CHAT_ID);
             
             const isPdf = item.file.type === 'application/pdf';
+            const endpoint = isPdf ? 'sendDocument' : 'sendPhoto';
             const paramName = isPdf ? 'document' : 'photo';
-            fileData.append(paramName, item.file);
 
-            await fetch('/api/send-telegram', {
+            fileData.append(paramName, item.file);
+            fileData.append("caption", `📎 ${item.label}\nUID: ${submissionId}`);
+
+            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/${endpoint}`, {
               method: 'POST',
               body: fileData
             }).catch(() => {});
@@ -573,7 +579,7 @@
           setSubmittedReceipt(newAppItem);
 
         } catch (err) {
-          showNotification("Submission Failed. Please check Vercel settings.");
+          showNotification("Submission Failed. Please try again.");
           console.error("Submission Error:", err);
         } finally {
           setIsSubmitting(false);
