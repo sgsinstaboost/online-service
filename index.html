@@ -140,18 +140,34 @@
       fill: #000000 !important;
     }
 
-    /* ALL TEXT INSIDE NEON MODE (EXCEPT SLIP RECEIPT, WARNING BOXES & YOUTUBE BUTTON) */
+    /* MOVING TICKER BANNER NEON BLUE MODE OVERRIDES (RED/BLACK CONTRAST) */
+    body.neon-blue-mode .imp-ticker-bar {
+      background-color: #dc2626 !important;
+      border-color: #f87171 !important;
+      box-shadow: 0 0 12px rgba(220, 38, 38, 0.8) !important;
+    }
+    body.neon-blue-mode .imp-ticker-bar * {
+      color: #000000 !important;
+      font-weight: 900 !important;
+    }
+    body.neon-blue-mode .imp-ticker-badge {
+      background-color: #000000 !important;
+      color: #fde047 !important;
+      border-color: #fde047 !important;
+    }
+
+    /* ALL TEXT INSIDE NEON MODE (EXCEPT SLIP RECEIPT, WARNING BOXES, YOUTUBE BUTTON & TICKER) */
     body.neon-blue-mode h1:not(.slip-card-clean *), 
     body.neon-blue-mode h2:not(.slip-card-clean *), 
     body.neon-blue-mode h3:not(.slip-card-clean *), 
     body.neon-blue-mode h4:not(.slip-card-clean *), 
     body.neon-blue-mode h5:not(.slip-card-clean *),
     body.neon-blue-mode h6:not(.slip-card-clean *),
-    body.neon-blue-mode p:not(.slip-card-clean *):not(.bg-rose-50 *):not(.bg-amber-50 *):not(.warning-rose-box *):not(.warning-amber-box *), 
+    body.neon-blue-mode p:not(.slip-card-clean *):not(.bg-rose-50 *):not(.bg-amber-50 *):not(.warning-rose-box *):not(.warning-amber-box *):not(.imp-ticker-bar *), 
     body.neon-blue-mode label:not(.slip-card-clean *), 
-    body.neon-blue-mode span:not(.no-neon):not(.slip-card-clean *):not(.bg-rose-50 *):not(.bg-amber-50 *):not(.warning-rose-box *):not(.warning-amber-box *):not(.youtube-guide-btn *), 
+    body.neon-blue-mode span:not(.no-neon):not(.slip-card-clean *):not(.bg-rose-50 *):not(.bg-amber-50 *):not(.warning-rose-box *):not(.warning-amber-box *):not(.youtube-guide-btn *):not(.imp-ticker-bar *), 
     body.neon-blue-mode li:not(.slip-card-clean *), 
-    body.neon-blue-mode strong:not(.slip-card-clean *):not(.bg-rose-50 *):not(.bg-amber-50 *):not(.warning-rose-box *):not(.warning-amber-box *) {
+    body.neon-blue-mode strong:not(.slip-card-clean *):not(.bg-rose-50 *):not(.bg-amber-50 *):not(.warning-rose-box *):not(.warning-amber-box *):not(.imp-ticker-bar *) {
       color: #ffffff !important;
       text-shadow: none !important;
     }
@@ -220,7 +236,7 @@
     }
 
     /* SVG ICONS COLOR */
-    body.neon-blue-mode svg:not(.slip-card-clean *):not(.youtube-guide-btn *) {
+    body.neon-blue-mode svg:not(.slip-card-clean *):not(.youtube-guide-btn *):not(.floating-wa-btn *) {
       stroke: #00f3ff !important;
     }
 
@@ -246,7 +262,7 @@
   <!-- External Static Posts Data File -->
   <script src="posts.js"></script>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased selection:bg-yellow-200">
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-yellow-200 relative">
   
   <!-- SPLASH LOADER SCREEN WITH LOGO -->
   <div id="splash-screen" class="fixed inset-0 z-[100] bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-950 flex flex-col items-center justify-center p-4 text-white">
@@ -305,7 +321,8 @@
       CheckCircle: () => <svg className="w-12 h-12 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
       Info: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
       Receipt: () => <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>,
-      Youtube: () => <svg className="w-4 h-4 fill-current text-red-600 shrink-0" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      Youtube: () => <svg className="w-4 h-4 fill-current text-red-600 shrink-0" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>,
+      WhatsappFloating: () => <svg className="w-7 h-7 fill-current text-white" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
     };
 
     // HIGH QUALITY HD IMAGE COMPRESSION (Maintains Original Dimensions, High Quality 92%)
@@ -369,6 +386,7 @@
       const [services, setServices] = useState(typeof ALL_POSTS !== 'undefined' ? ALL_POSTS : []);
       const [notices, setNotices] = useState(typeof STATIC_NOTICES !== 'undefined' ? STATIC_NOTICES : []);
       const [categories, setCategories] = useState(typeof STATIC_CATEGORIES !== 'undefined' ? STATIC_CATEGORIES : []);
+      const [impNotice, setImpNotice] = useState(typeof STATIC_IMP_NOTICE !== 'undefined' ? STATIC_IMP_NOTICE : "🚨 IMP NOTICE: Online Form Filling Services Active. Fill details & get fast processing.");
       
       const [selectedCat, setSelectedCat] = useState('All Services');
       const [searchQuery, setSearchQuery] = useState('');
@@ -759,8 +777,17 @@
       });
 
       return (
-        <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col relative">
+        <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col relative pb-20">
           
+          {/* FLOATING WHATSAPP CHAT BUTTON (BOTTOM RIGHT CORNER) */}
+          <button 
+            onClick={handleWhatsAppSupport}
+            title="Chat on WhatsApp"
+            className="floating-wa-btn fixed bottom-5 right-5 z-[70] bg-emerald-600 hover:bg-emerald-700 text-white p-3.5 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95 flex items-center justify-center border-2 border-white/80 animate-bounce"
+          >
+            <Icons.WhatsappFloating />
+          </button>
+
           {/* Toast Notification */}
           {toastMsg && (
             <div className="fixed top-3 right-3 z-[60] bg-slate-900 text-yellow-300 font-bold text-xs px-4 py-2.5 rounded-xl shadow-xl border border-yellow-400/30 animate-bounce">
@@ -1525,6 +1552,18 @@
                 </main>
               ) : (
                 <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
+                  
+                  {/* EMERGENCY MOVING TICKER BANNER (BETWEEN HEADER GAP & NOTICE BOARD) */}
+                  <div className="imp-ticker-bar bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white rounded-xl shadow-md border-2 border-red-400 p-2 flex items-center gap-2 overflow-hidden">
+                    <span className="imp-ticker-badge bg-yellow-300 text-slate-950 font-black text-[10px] sm:text-xs px-2.5 py-1 rounded-lg uppercase tracking-wider shrink-0 animate-pulse border border-yellow-400 shadow-xs flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-red-600 animate-ping"></span>
+                      IMP NOTICE
+                    </span>
+                    <marquee className="text-xs sm:text-sm font-extrabold tracking-wide text-white" behavior="scroll" direction="left" scrollamount="6">
+                      {impNotice}
+                    </marquee>
+                  </div>
+
                   {/* COLORFUL NOTICE BOARD WITH BLINKING LIVE BUTTON */}
                   <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border border-indigo-200 rounded-2xl p-4 shadow-sm relative overflow-hidden">
                     <div className="flex items-center justify-between border-b border-indigo-100 pb-2.5 mb-3">
