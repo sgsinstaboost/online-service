@@ -515,11 +515,15 @@
 
         try {
           // 1. Send Text Details to Vercel Secure API Endpoint
-          await fetch('/api/send-telegram', {
+          const resText = await fetch('/api/send-telegram', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ text: textDetails })
           });
+
+          if (!resText.ok) {
+            throw new Error("API text request failed");
+          }
 
           // 2. Compress Images
           const processedFiles = await Promise.all(
@@ -569,8 +573,8 @@
           setSubmittedReceipt(newAppItem);
 
         } catch (err) {
-          showNotification("Submission Failed. Please try again.");
-          console.error(err);
+          showNotification("Submission Failed. Please check Vercel settings.");
+          console.error("Submission Error:", err);
         } finally {
           setIsSubmitting(false);
         }
