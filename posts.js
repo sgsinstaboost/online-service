@@ -7,7 +7,7 @@ const STATIC_CATEGORIES = [
   { name: 'Scholarship', color: 'amber' },
   { name: 'Government Forms', color: 'rose' }
 ];
- 
+    
 const STATIC_NOTICES = [
   { id: 1, text: "Bihar RTPS Income / Caste Certificate online forms are active." },
   { id: 2, text: "College Admission Forms & Post Matric Scholarship portal open." }
