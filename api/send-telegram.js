@@ -9,9 +9,10 @@ export default async function handler(req, res) {
     const chatId = process.env.TELEGRAM_CHAT_ID;
 
     if (!token || !chatId) {
-      return res.status(500).json({ error: 'Missing Vercel Environment Variables' });
+      return res.status(500).json({ error: 'Vercel Environment Variables Missing!' });
     }
 
+    // Send Form Text Details to Telegram
     const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -25,6 +26,6 @@ export default async function handler(req, res) {
     const data = await response.json();
     return res.status(200).json(data);
   } catch (error) {
-    return res.status(500).json({ error: 'Server API Error', details: error.message });
+    return res.status(500).json({ error: 'Server Error', details: error.message });
   }
 }
