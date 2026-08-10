@@ -209,10 +209,6 @@
   <script type="text/babel">
     const { useState, useEffect } = React;
 
-    // Telegram Bot Credentials
-    const TELEGRAM_BOT_TOKEN = "8358900801:AAE42RhsmJPv_h40nGEqC7wuXW5HQ_wp8pk";
-    const TELEGRAM_CHAT_ID = "5011508473";
-
     // Support Encrypted Credentials
     const _0xwa = "OTExNzA4MDE2OQ==";
     const _0xem = "contactsgsonlineservice@gmail.com";
@@ -518,22 +514,11 @@
         textDetails += `📅 *Date:* ${dateStr}`;
 
         try {
-          // 1. Send Text Details to Vercel Backend / Telegram Bot
+          // 1. Send Text Details to Vercel Secure API Endpoint
           await fetch('/api/send-telegram', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ text: textDetails })
-          }).catch(async () => {
-            // Fallback direct fetch if not hosted on Vercel
-            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                chat_id: TELEGRAM_CHAT_ID,
-                text: textDetails,
-                parse_mode: "Markdown"
-              })
-            });
           });
 
           // 2. Compress Images
@@ -544,22 +529,20 @@
             })
           );
 
-          // 3. Upload Files to Telegram
+          // 3. Upload Files via Vercel Proxy/Direct
           for (const item of processedFiles) {
             const fileData = new FormData();
-            fileData.append("chat_id", TELEGRAM_CHAT_ID);
+            fileData.append("caption", `📎 ${item.label}\nUID: ${submissionId}`);
             
             const isPdf = item.file.type === 'application/pdf';
-            const endpoint = isPdf ? 'sendDocument' : 'sendPhoto';
             const paramName = isPdf ? 'document' : 'photo';
-
             fileData.append(paramName, item.file);
-            fileData.append("caption", `📎 ${item.label}\nUID: ${submissionId}`);
 
-            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/${endpoint}`, {
-              method: "POST",
+            // Fetch to backend endpoint
+            await fetch('/api/send-telegram', {
+              method: 'POST',
               body: fileData
-            });
+            }).catch(() => {});
           }
 
           // 4. Save UID, Title, Category, Amount & Date to LocalStorage
