@@ -8,7 +8,7 @@
 
   
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>SGS ONLINE SERVICE - Form Filling Assistance & Help Desk</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
@@ -17,7 +17,7 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <style>
-    html, body { overscroll-behavior-y: contain; }
+    html, body { overscroll-behavior-y: contain; text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
     .scrollbar-none::-webkit-scrollbar { display: none; }
     .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
     #splash-screen { transition: opacity 0.3s ease-out; }
@@ -518,15 +518,22 @@
         textDetails += `📅 *Date:* ${dateStr}`;
 
         try {
-          // 1. Send Complete Text Message First
-          await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              chat_id: TELEGRAM_CHAT_ID,
-              text: textDetails,
-              parse_mode: "Markdown"
-            })
+          // 1. Send Text Details to Vercel Backend / Telegram Bot
+          await fetch('/api/send-telegram', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: textDetails })
+          }).catch(async () => {
+            // Fallback direct fetch if not hosted on Vercel
+            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                chat_id: TELEGRAM_CHAT_ID,
+                text: textDetails,
+                parse_mode: "Markdown"
+              })
+            });
           });
 
           // 2. Compress Images
