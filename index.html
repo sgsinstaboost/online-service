@@ -730,19 +730,12 @@
                   </p>
                 </div>
 
-                <div className="p-4 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row gap-2">
+                <div className="p-4 bg-slate-50 border-t border-slate-200 flex justify-center">
                   <button 
                     onClick={handleConfirmServiceSelection} 
-                    className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs py-3 rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-1.5 neon-red-btn"
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm py-3 rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-1.5 neon-red-btn"
                   >
-                    <span>I Agree & Continue (मैं सहमत हूँ)</span> →
-                  </button>
-                  
-                  <button 
-                    onClick={() => setPendingService(null)} 
-                    className="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs py-3 px-4 rounded-xl transition-colors no-neon"
-                  >
-                    रद्द करें (Cancel)
+                    <span>I Agree & Continue</span> →
                   </button>
                 </div>
               </div>
