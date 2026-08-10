@@ -4,7 +4,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { text } = req.body;
     const token = process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID;
 
@@ -12,19 +11,34 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Vercel Environment Variables Missing!' });
     }
 
-    // Send Form Text Details to Telegram
-    const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: text,
-        parse_mode: 'Markdown'
-      })
-    });
+    // Check if payload contains raw JSON text or FormData file stream
+    const contentType = req.headers['content-type'] || '';
 
-    const data = await response.json();
-    return res.status(200).json(data);
+    if (contentType.includes('application/json')) {
+      const { text } = req.body;
+      const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: text,
+          parse_mode: 'Markdown'
+        })
+      });
+      const data = await response.json();
+      return res.status(200).json(data);
+    } else {
+      // Forward Multipart Form Data for Scanned Images/PDFs
+      const response = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
+        method: 'POST',
+        headers: {
+          'content-type': contentType
+        },
+        body: req
+      });
+      const data = await response.json();
+      return res.status(200).json(data);
+    }
   } catch (error) {
     return res.status(500).json({ error: 'Server Error', details: error.message });
   }
