@@ -2,9 +2,7 @@
 <html lang="en"> 
 <head>
 
-
 <meta name="google-site-verification" content="n6gutNuaXm4jPFef6_Yxsfz5UcDynkGHi86Py-8IH-0" />
-
 
   
   <meta charset="UTF-8" />
@@ -76,18 +74,51 @@
       font-weight: 700 !important;
     }
 
-    /* ALL TEXT INSIDE NEON MODE (EXCEPT SLIP RECEIPT) */
+    /* WARNING / AMBER / ROSE BOX OVERRIDES IN NEON BLUE MODE FOR MAXIMUM CONTRAST & VISIBILITY */
+    body.neon-blue-mode div[class*="bg-rose-50"],
+    body.neon-blue-mode .warning-rose-box {
+      background-color: #ef4444 !important;
+      border: 2px solid #fca5a5 !important;
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.8) !important;
+    }
+    body.neon-blue-mode div[class*="bg-rose-50"] p,
+    body.neon-blue-mode div[class*="bg-rose-50"] span,
+    body.neon-blue-mode .warning-rose-box p,
+    body.neon-blue-mode .warning-rose-box span {
+      color: #000000 !important;
+      font-weight: 900 !important;
+      text-shadow: none !important;
+    }
+
+    body.neon-blue-mode div[class*="bg-amber-50"],
+    body.neon-blue-mode .warning-amber-box {
+      background-color: #f59e0b !important;
+      border: 2px solid #fde047 !important;
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.7) !important;
+    }
+    body.neon-blue-mode div[class*="bg-amber-50"] p,
+    body.neon-blue-mode div[class*="bg-amber-50"] span,
+    body.neon-blue-mode div[class*="bg-amber-50"] strong,
+    body.neon-blue-mode .warning-amber-box p,
+    body.neon-blue-mode .warning-amber-box span,
+    body.neon-blue-mode .warning-amber-box strong {
+      color: #000000 !important;
+      font-weight: 900 !important;
+      text-shadow: none !important;
+    }
+
+    /* ALL TEXT INSIDE NEON MODE (EXCEPT SLIP RECEIPT & WARNING BOXES) */
     body.neon-blue-mode h1:not(.slip-card-clean *), 
     body.neon-blue-mode h2:not(.slip-card-clean *), 
     body.neon-blue-mode h3:not(.slip-card-clean *), 
     body.neon-blue-mode h4:not(.slip-card-clean *), 
     body.neon-blue-mode h5:not(.slip-card-clean *),
     body.neon-blue-mode h6:not(.slip-card-clean *),
-    body.neon-blue-mode p:not(.slip-card-clean *), 
+    body.neon-blue-mode p:not(.slip-card-clean *):not(.bg-rose-50 *):not(.bg-amber-50 *):not(.warning-rose-box *):not(.warning-amber-box *), 
     body.neon-blue-mode label:not(.slip-card-clean *), 
-    body.neon-blue-mode span:not(.no-neon):not(.slip-card-clean *), 
+    body.neon-blue-mode span:not(.no-neon):not(.slip-card-clean *):not(.bg-rose-50 *):not(.bg-amber-50 *):not(.warning-rose-box *):not(.warning-amber-box *), 
     body.neon-blue-mode li:not(.slip-card-clean *), 
-    body.neon-blue-mode strong:not(.slip-card-clean *) {
+    body.neon-blue-mode strong:not(.slip-card-clean *):not(.bg-rose-50 *):not(.bg-amber-50 *):not(.warning-rose-box *):not(.warning-amber-box *) {
       color: #ffffff !important;
       text-shadow: none !important;
     }
@@ -138,6 +169,13 @@
       background-color: #121e42 !important;
       color: #00f3ff !important;
       border: 1px solid #00f3ff !important;
+    }
+
+    /* FIXED PREFIX BADGE NEON MODE SUPPORT */
+    body.neon-blue-mode .prefix-badge {
+      background-color: #0a1128 !important;
+      color: #00f3ff !important;
+      border-color: #00f3ff !important;
     }
 
     /* HEADER BAR */
@@ -236,7 +274,7 @@
       Receipt: () => <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
     };
 
-    // HIGH QUALITY HD IMAGE COMPRESSION (1600px Max, 85% Quality)
+    // HIGH QUALITY HD IMAGE COMPRESSION (Maintains Original Dimensions, High Quality 92%)
     const compressImage = (file) => {
       return new Promise((resolve) => {
         if (!file || file.type === 'application/pdf' || !file.type.startsWith('image/')) {
@@ -250,16 +288,8 @@
           img.src = event.target.result;
           img.onload = () => {
             const canvas = document.createElement('canvas');
-            const maxWidth = 1600;
-            const scaleSize = maxWidth / img.width;
-            
-            if (scaleSize < 1) {
-              canvas.width = maxWidth;
-              canvas.height = img.height * scaleSize;
-            } else {
-              canvas.width = img.width;
-              canvas.height = img.height;
-            }
+            canvas.width = img.width;
+            canvas.height = img.height;
 
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
@@ -274,7 +304,7 @@
               } else {
                 resolve(file);
               }
-            }, 'image/jpeg', 0.85);
+            }, 'image/jpeg', 0.92);
           };
         };
       });
@@ -511,7 +541,11 @@
               }
               textDetails += `• *${f.label}:* ${selectedLabel || 'Not Selected'}\n`;
             } else {
-              const val = formData.get(f.name);
+              let val = formData.get(f.name);
+              const isPhoneField = f.type === 'tel' || f.name?.toLowerCase().includes('mobile') || f.name?.toLowerCase().includes('phone') || f.label?.toLowerCase().includes('mobile') || f.label?.toLowerCase().includes('phone');
+              if (val && isPhoneField && !val.startsWith('+91')) {
+                val = `+91 ${val}`;
+              }
               if (val) {
                 textDetails += `• *${f.label}:* ${val}\n`;
               }
@@ -712,7 +746,7 @@
                 </div>
 
                 <div className="p-5 text-xs sm:text-sm text-slate-800 space-y-3.5 leading-relaxed">
-                  <div className="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r-lg text-amber-950 font-bold">
+                  <div className="bg-amber-50 warning-amber-box border-l-4 border-amber-500 p-3 rounded-r-lg text-amber-950 font-bold">
                     ⚠️ <strong>आवश्यक सूचना:</strong> आवेदन भरने से पहले नीचे दिए गए निर्देशों को ध्यान से पढ़ें।
                   </div>
 
@@ -720,9 +754,9 @@
                     कृपया अपनी सभी विवरण और दस्तावेज़ (Details & Documents) सही-सही और ध्यानपूर्वक भरें।
                   </p>
 
-                  <div className="bg-rose-50 border border-rose-200 rounded-xl p-3 text-rose-950 text-xs font-bold space-y-1">
-                    <p>• आपके द्वारा दी गई जानकारी गलत होने पर यदि फॉर्म आधिकारिक पोर्टल से रिजेक्ट (Reject) होता है, तो इसकी पूरी जिम्मेदारी आपकी होगी।</p>
-                    <p>• गलत विवरण के कारण फॉर्म रिजेक्ट होने पर आपका भुगतान (Payment) रिफंड (Refund) नहीं किया जाएगा।</p>
+                  <div className="bg-rose-50 warning-rose-box border border-rose-200 rounded-xl p-3 text-rose-950 text-xs font-bold space-y-1">
+                    <p className="text-rose-950">• आपके द्वारा दी गई जानकारी गलत होने पर यदि फॉर्म आधिकारिक पोर्टल से रिजेक्ट (Reject) होता है, तो इसकी पूरी जिम्मेदारी आपकी होगी।</p>
+                    <p className="text-rose-950">• गलत विवरण के कारण फॉर्म रिजेक्ट होने पर आपका भुगतान (Payment) रिफंड (Refund) नहीं किया जाएगा।</p>
                   </div>
 
                   <p className="text-[11px] text-slate-500 font-medium">
@@ -754,7 +788,7 @@
                 </div>
 
                 <div className="p-5 text-xs text-slate-700 space-y-4 leading-relaxed max-h-[65vh] overflow-y-auto">
-                  <div className="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r-lg text-amber-950 font-semibold">
+                  <div className="bg-amber-50 warning-amber-box border-l-4 border-amber-500 p-3 rounded-r-lg text-amber-950 font-semibold">
                     Please read our complete Privacy Policy, Terms & Conditions, and Disclaimer before proceeding to use SGS ONLINE SERVICE.
                   </div>
 
@@ -786,7 +820,7 @@
                   </div>
 
                   {/* 3. DISCLAIMER NOTICE DETAILS */}
-                  <div className="border border-slate-200 p-3.5 rounded-xl bg-amber-50/60 space-y-2">
+                  <div className="border border-slate-200 p-3.5 rounded-xl bg-amber-50/60 warning-amber-box space-y-2">
                     <h4 className="font-extrabold text-amber-900 text-xs uppercase tracking-wider flex items-center gap-1">
                       ⚠️ 3. Non-Government Disclaimer
                     </h4>
@@ -957,7 +991,7 @@
                   </div>
                 </div>
 
-                <div className="bg-amber-100 border border-amber-300 rounded-xl p-3 text-[11px] text-amber-950 font-bold leading-relaxed">
+                <div className="bg-amber-100 warning-amber-box border border-amber-300 rounded-xl p-3 text-[11px] text-amber-950 font-bold leading-relaxed">
                   📌 <strong>Note:</strong> Save your UID for tracking. Our assistance team will process your form and update status shortly.
                 </div>
 
@@ -1101,7 +1135,7 @@
                 {/* TRACK APPLICATION MODAL PAGE WITH VIEW RECEIPT BUTTON */}
                 {activeModalPage === 'track' && (
                   <div className="space-y-4">
-                    <div className="bg-amber-50 border-l-4 border-amber-600 p-4 rounded-r-xl text-slate-900 font-medium flex items-center justify-between gap-2 flex-wrap">
+                    <div className="bg-amber-50 warning-amber-box border-l-4 border-amber-600 p-4 rounded-r-xl text-slate-900 font-medium flex items-center justify-between gap-2 flex-wrap">
                       <div>
                         <strong>📋 Application Tracking Center:</strong> Registered UIDs for your submitted online assistance requests.
                       </div>
@@ -1222,7 +1256,7 @@
                 {/* DISCLAIMER MODAL PAGE (FULL ENGLISH TRANSLATION) */}
                 {activeModalPage === 'disclaimer' && (
                   <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
-                    <div className="bg-amber-50 border-l-4 border-amber-600 p-4 rounded-r-xl text-amber-950 font-bold">
+                    <div className="bg-amber-50 warning-amber-box border-l-4 border-amber-600 p-4 rounded-r-xl text-amber-950 font-bold">
                       ⚠️ DISCLAIMER & NON-AFFILIATION NOTICE
                     </div>
 
@@ -1284,53 +1318,77 @@
                     <p className="text-xs text-slate-600 mb-4">{activeService.description}</p>
 
                     {/* Form Filling Transparency Note */}
-                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-[11px] text-amber-900 font-medium mb-5">
+                    <div className="bg-amber-50 warning-amber-box border border-amber-200 rounded-lg p-3 text-[11px] text-amber-900 font-medium mb-5">
                       ℹ️ <strong>Assistance Notice:</strong> Information submitted below will be used by our team to fill out your official online form on your behalf after phone confirmation.
                     </div>
 
                     <form onSubmit={handleFormSubmit} className="space-y-4">
-                      {activeService.fields && activeService.fields.map((field, idx) => (
-                        <div key={idx} className="space-y-1">
-                          <label className="block text-xs font-bold text-slate-800">{field.label}:</label>
-                          {field.type === 'file' ? (
-                            <div>
+                      {activeService.fields && activeService.fields.map((field, idx) => {
+                        const isPhoneField = field.type === 'tel' || field.name?.toLowerCase().includes('mobile') || field.name?.toLowerCase().includes('phone') || field.label?.toLowerCase().includes('mobile') || field.label?.toLowerCase().includes('phone');
+
+                        return (
+                          <div key={idx} className="space-y-1">
+                            <label className="block text-xs font-bold text-slate-800">{field.label}:</label>
+                            {field.type === 'file' ? (
+                              <div>
+                                <input 
+                                  type="file" 
+                                  name={field.name} 
+                                  accept={field.accept || "image/*, application/pdf"} 
+                                  required={field.required}
+                                  onChange={(e) => handleFilePreview(e, `prev_img_${field.name}_${idx}`, `prev_pdf_${field.name}_${idx}`)}
+                                  className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs" 
+                                />
+                                <img id={`prev_img_${field.name}_${idx}`} className="img-preview" alt="Selected Preview" />
+                                <div id={`prev_pdf_${field.name}_${idx}`} className="pdf-preview"></div>
+                              </div>
+                            ) : field.type === 'radio' ? (
+                              <div className="space-y-2 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                                {field.options && field.options.map((opt) => (
+                                  <label key={opt.id || opt.value} className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                                    <input
+                                      type="radio"
+                                      name={field.name}
+                                      value={opt.value}
+                                      required={field.required}
+                                      className="w-4 h-4 text-blue-600 focus:ring-blue-500"
+                                    />
+                                    <span>{opt.label}</span>
+                                  </label>
+                                ))}
+                              </div>
+                            ) : isPhoneField ? (
+                              /* MOBILE NUMBER DIALER FIELD WITH FIXED +91 PREFIX & 10 DIGIT LIMIT */
+                              <div className="flex items-center">
+                                <span className="bg-slate-200 border border-r-0 border-slate-300 rounded-l-lg p-2.5 text-xs font-bold text-slate-700 prefix-badge shrink-0">
+                                  +91
+                                </span>
+                                <input 
+                                  type="tel" 
+                                  inputMode="numeric"
+                                  pattern="[0-9]{10}"
+                                  maxLength={10}
+                                  name={field.name} 
+                                  required={field.required} 
+                                  placeholder="10 digit mobile number"
+                                  onInput={(e) => {
+                                    e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
+                                  }}
+                                  className="w-full bg-slate-50 border border-slate-300 rounded-r-lg p-2.5 text-xs font-bold tracking-wide text-slate-900 focus:outline-none focus:border-blue-600" 
+                                />
+                              </div>
+                            ) : (
                               <input 
-                                type="file" 
+                                type={field.type} 
                                 name={field.name} 
-                                accept={field.accept || "image/*, application/pdf"} 
-                                required={field.required}
-                                onChange={(e) => handleFilePreview(e, `prev_img_${field.name}_${idx}`, `prev_pdf_${field.name}_${idx}`)}
-                                className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs" 
+                                required={field.required} 
+                                placeholder={field.placeholder || "Details fill karein"}
+                                className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs font-medium focus:outline-none focus:border-blue-600" 
                               />
-                              <img id={`prev_img_${field.name}_${idx}`} className="img-preview" alt="Selected Preview" />
-                              <div id={`prev_pdf_${field.name}_${idx}`} className="pdf-preview"></div>
-                            </div>
-                          ) : field.type === 'radio' ? (
-                            <div className="space-y-2 bg-slate-50 p-3 rounded-lg border border-slate-200">
-                              {field.options && field.options.map((opt) => (
-                                <label key={opt.id || opt.value} className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
-                                  <input
-                                    type="radio"
-                                    name={field.name}
-                                    value={opt.value}
-                                    required={field.required}
-                                    className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                                  />
-                                  <span>{opt.label}</span>
-                                </label>
-                              ))}
-                            </div>
-                          ) : (
-                            <input 
-                              type={field.type} 
-                              name={field.name} 
-                              required={field.required} 
-                              placeholder={field.placeholder || "Details fill karein"}
-                              className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs font-medium focus:outline-none focus:border-blue-600" 
-                            />
-                          )}
-                        </div>
-                      ))}
+                            )}
+                          </div>
+                        );
+                      })}
 
                       {/* PAYMENT SECTION WITH QR AND DYNAMIC UPI BUTTONS */}
                       {(() => {
