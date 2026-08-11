@@ -1227,9 +1227,9 @@ export const postData = {
           </tr>
         </tbody>
       </table>
-    </div>
-  )
-}
+    </div> }
+ ]
+  }
 
 
 
