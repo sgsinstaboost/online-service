@@ -1,6 +1,6 @@
 const STATIC_CATEGORIES = [
   { name: 'All Services', color: 'blue' },
-  { name: 'STD College', color: 'purpal' },
+  { name: 'STD College', color: 'purple' },
   { name: 'Internship', color: 'indigo' },
   { name: 'Certificates (Jati/Aaya/Niwas)', color: 'emerald' },
   { name: 'College Admission', color: 'purple' },
@@ -604,15 +604,15 @@ const ALL_POSTS = [
   category: "College Admission",
   description: "Veer Kunwar Singh University, Session 2024-2028 Semester 5th Online Admission Form fill up service.",
   tags: [
-  "VKSU Online Admission Form",
-  "VKSU Admission Form All Semester",
-  "VKSU BA BSc BCom Admission Online",
-  "Veer Kunwar Singh University Admission",
-  "VKSU Semester Admission Form Apply",
-  "SGS Online Service VKSU Admission",
-  "sgs store vksu admission form",
-  "Arrah VKSU Admission Form Online"
-],
+    "VKSU Online Admission Form",
+    "VKSU Admission Form All Semester",
+    "VKSU BA BSc BCom Admission Online",
+    "Veer Kunwar Singh University Admission",
+    "VKSU Semester Admission Form Apply",
+    "SGS Online Service VKSU Admission",
+    "sgs store vksu admission form",
+    "Arrah VKSU Admission Form Online"
+  ],
   qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D30%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_student_name", name: "student_name", label: "Student Name", type: "text", required: true, placeholder: "Apna name likhein" },
@@ -645,7 +645,7 @@ const ALL_POSTS = [
       type: "radio",
       required: true,
       options: [
-        { id: "opt_session_2024_2028", label: "2024_2028" }
+        { id: "opt_session_2024_2028", label: "2024-2028", value: "2024_2028" }
       ]
     },
     { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number", type: "tel", required: true, placeholder: "10-digit mobile number likhein" },
@@ -670,7 +670,6 @@ const ALL_POSTS = [
     }
   ]
 },
-
 
 
 
