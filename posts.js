@@ -1028,12 +1028,8 @@ const ALL_POSTS = [
 
 
 
-
-
-  import React from 'react';
-
-export const postData = {
-  id: "ssb-constable-tradesman-admit-card-2026",
+  {
+  id: "ssb-constable-tradesman-admit-card-2026-12",
   title: "SSB Constable Tradesman PET / PST Admit Card 2026",
   category: "Admit Cards",
   description: (
