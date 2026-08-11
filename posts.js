@@ -24,7 +24,17 @@ const ALL_POSTS = [
   title: "Internship Application Online Form",
   category: "Internship",
   description: "Internship ke liye apni personal, academic aur payment details bharein.",
+  tags: [
+      "Internship Application Online Form",
+      "Online Internship Form Bihar",
+      "Arrah Internship Apply",
+      "VKSU Internship Form",
+      "SGS Online Service Internship",
+      "sgs store internship form"
+    ],
+  
   qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D230%26cu%3DINR&size=200&format=png",
+  
   fields: [
     { id: "field_full_name", name: "full_name", label: "Full Name", type: "text", required: true },
     {
@@ -151,6 +161,16 @@ const ALL_POSTS = [
   title: "Bihar RTPS Caste Certificate (जाति प्रमाण पत्र)",
   category: "Certificates (Jati/Aaya/Niwas)",
   description: "Caste Certificate apply karne ke liye niche details bharein, documents upload karein aur QR par pay karein.",
+  tags: [
+  "Bihar RTPS Caste Certificate",
+  "Jati Praman Patra Online Apply",
+  "Bihar Jati Praman Patra",
+  "RTPS Bihar Online Service",
+  "RTPS Caste Certificate Form",
+  "SGS Online Service RTPS",
+  "sgs store jati praman patra",
+  "Arrah RTPS Jati Form"
+],
   qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D30%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "आवेदक का नाम / Name of Applicant", type: "text", required: true, placeholder: "Apna name likhein" },
@@ -234,6 +254,16 @@ const ALL_POSTS = [
   title: "Bihar RTPS Income Certificate (आय प्रमाण पत्र)",
   category: "Certificates (Jati/Aaya/Niwas)",
   description: "Income Certificate online form bharein aur required documents upload karein.",
+  tags: [
+  "Bihar RTPS Income Certificate",
+  "Aaya Praman Patra Online Apply",
+  "Bihar Income Certificate Online",
+  "RTPS Bihar Income Form",
+  "Aaya Praman Patra Bihar",
+  "SGS Online Service Income Certificate",
+  "sgs store aaya praman patra",
+  "Arrah RTPS Income Form"
+],
   qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D30%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "आवेदक का नाम / Name of Applicant", type: "text", required: true, placeholder: "Apna name likhein" },
@@ -383,6 +413,16 @@ const ALL_POSTS = [
   title: "VKSU Exam Form All Semester",
   category: "STD College", 
   description: "Veer Kunwar Singh University exam form fill up service all semesters (Sem 1 to Sem 8).",
+  tags: [
+  "VKSU Exam Form All Semester",
+  "VKSU Exam Form Online",
+  "VKSU Semester Exam Form Fill",
+  "Veer Kunwar Singh University Exam Form",
+  "VKSU BA BSc BCom Exam Form",
+  "SGS Online Service VKSU Exam Form",
+  "sgs store vksu exam form",
+  "Arrah VKSU Exam Form Apply"
+],
   qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D630%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_student_name", name: "student_name", label: "Student Name", type: "text", required: true, placeholder: "Apna name likhein" },
@@ -557,10 +597,20 @@ const ALL_POSTS = [
 
   
 {
-  id: "vksu-admission-sem5-2024-2028-07",
-  title: "VKSU Online Admission Form (Semester 5th)",
+  id: "vksu-admission-sem5-All-session-07",
+  title: "VKSU Online Admission Form (Semester 1st, 2nd, 3rd, 4th, 5th, 6th, 7th, 8th)",
   category: "College Admission",
   description: "Veer Kunwar Singh University, Session 2024-2028 Semester 5th Online Admission Form fill up service.",
+  tags: [
+  "VKSU Online Admission Form",
+  "VKSU Admission Form All Semester",
+  "VKSU BA BSc BCom Admission Online",
+  "Veer Kunwar Singh University Admission",
+  "VKSU Semester Admission Form Apply",
+  "SGS Online Service VKSU Admission",
+  "sgs store vksu admission form",
+  "Arrah VKSU Admission Form Online"
+],
   qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D30%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_student_name", name: "student_name", label: "Student Name", type: "text", required: true, placeholder: "Apna name likhein" },
@@ -632,6 +682,16 @@ const ALL_POSTS = [
   title: "Bihar Character Certificate (चरित्र प्रमाण पत्र)",
   category: "Government Forms",
   description: "Character Certificate online apply karne ke liye niche details bharein, documents upload karein aur QR par pay karein.",
+  tags: [
+  "Bihar Character Certificate",
+  "Charitra Praman Patra Online Apply",
+  "Bihar Charitra Praman Patra",
+  "RTPS Bihar Character Certificate",
+  "Police Verification Certificate Bihar",
+  "SGS Online Service Character Certificate",
+  "sgs store charitra praman patra",
+  "Arrah Character Certificate Form"
+],
   qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D40%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "Name / नाम", type: "text", required: true, placeholder: "Apna name likhein" },
@@ -685,6 +745,16 @@ const ALL_POSTS = [
   title: "Intership 120 Hour Complete",
   category: "Internship",
   description: "Internship 120 Hour Complete hone par apne details bharein aur form submit karein.",
+    tags: [
+  "Intership 120 Hour Complete",
+  "120 Hours Internship Certificate",
+  "VKSU Internship 120 Hours",
+  "College Internship 120 Hours Form",
+  "Bihar Internship 120 Hours Apply",
+  "SGS Online Service Internship",
+  "sgs store 120 hours internship",
+  "Arrah Internship 120 Hours Form"
+],
   qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D100%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "Name / नाम", type: "text", required: true, placeholder: "Apna name likhein" },
@@ -725,6 +795,16 @@ const ALL_POSTS = [
   title: "New PAN Card / Correction Online Form",
   category: "Government Forms",
   description: "New PAN Card apply karne ya correction ke liye niche apne details bharein.",
+  tags: [
+  "New PAN Card / Correction Online Form",
+  "New PAN Card Apply Online",
+  "PAN Card Correction Form Bihar",
+  "Online PAN Card Correction",
+  "NSDL NSDL PAN Card Apply",
+  "SGS Online Service PAN Card",
+  "sgs store pan card apply",
+  "Arrah PAN Card Correction Online"
+],
   qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D200%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "Name / नाम", type: "text", required: true, placeholder: "Apna name likhein" },
@@ -771,6 +851,16 @@ const ALL_POSTS = [
   title: "PMS scholarship 2026-2027",
   category: "Scholarship",
   description: "Post Matric Scholarship 2026-2027 online application form fill up service.",
+  tags: [
+  "PMS scholarship 2026-2027",
+  "Post Matric Scholarship Bihar 2026",
+  "Bihar PMS Scholarship Apply Online",
+  "PMS Online Form 2026",
+  "Post Matric Scholarship Portal",
+  "SGS Online Service PMS Scholarship",
+  "sgs store pms scholarship",
+  "Arrah Post Matric Scholarship Form"
+],
   qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D200%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_student_name", name: "student_name", label: "Name / नाम", type: "text", required: true, placeholder: "Apna name likhein" },
