@@ -241,6 +241,15 @@
       border-color: #f97316 !important;
     }
 
+    /* POST CATEGORY BADGES IN NEON MODE FIX */
+    body.neon-blue-mode .post-category-badge {
+      background-color: #0b1329 !important;
+      color: #ffedd5 !important;
+      border: 1px solid #f97316 !important;
+      box-shadow: 0 0 8px rgba(249, 115, 22, 0.35) !important;
+      font-weight: 800 !important;
+    }
+
     /* HEADER BAR IN NEON MODE */
     body.neon-blue-mode header {
       background: linear-gradient(to right, #431407, #0f172a, #064e3b) !important;
@@ -1643,7 +1652,7 @@
                       >
                         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-amber-300 to-emerald-500 opacity-80 group-hover:opacity-100 transition-opacity"></div>
                         <div>
-                          <span className="bg-orange-100 text-orange-900 text-[10px] font-bold px-2 py-0.5 rounded border border-orange-200">
+                          <span className="post-category-badge bg-orange-100 text-orange-900 text-[10px] font-bold px-2 py-0.5 rounded border border-orange-200">
                             {srv.category}
                           </span>
                           <h4 className="font-bold text-slate-900 text-sm mt-2">{srv.title}</h4>
