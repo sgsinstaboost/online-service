@@ -280,8 +280,9 @@
     }
   </style>
 
-  <!-- External Static Posts Data File -->
+  <!-- External Static Posts Data Files -->
   <script src="posts.js"></script>
+  <script src="html_posts.js"></script>
 </head>
 <body class="bg-orange-50/30 text-slate-800 antialiased selection:bg-orange-200">
 
@@ -412,7 +413,13 @@
     };
 
     function App() {
-      const [services, setServices] = useState(typeof ALL_POSTS !== 'undefined' ? ALL_POSTS : []);
+      // Merge normal posts and custom HTML posts seamlessly
+      const combinedAllPosts = [
+        ...(typeof ALL_POSTS !== 'undefined' ? ALL_POSTS : []),
+        ...(typeof HTML_POSTS !== 'undefined' ? HTML_POSTS : [])
+      ];
+
+      const [services, setServices] = useState(combinedAllPosts);
       const [notices, setNotices] = useState(typeof STATIC_NOTICES !== 'undefined' ? STATIC_NOTICES : []);
       const [categories, setCategories] = useState(typeof STATIC_CATEGORIES !== 'undefined' ? STATIC_CATEGORIES : []);
       
