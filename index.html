@@ -175,8 +175,8 @@
     body.neon-blue-mode h2:not(.slip-card-clean *), 
     body.neon-blue-mode h3:not(.slip-card-clean *), 
     body.neon-blue-mode h4:not(.slip-card-clean *), 
-    body.neon-blue-mode h5:not(.slip-card-clean *),
-    body.neon-blue-mode h6:not(.slip-card-clean *),
+    body.neon-blue-mode h5:not(.slip-card-clean *), 
+    body.neon-blue-mode h6:not(.slip-card-clean *), 
     body.neon-blue-mode p:not(.slip-card-clean *):not(.bg-rose-50 *):not(.bg-amber-50 *):not(.warning-rose-box *):not(.warning-amber-box *), 
     body.neon-blue-mode label:not(.slip-card-clean *), 
     body.neon-blue-mode span:not(.no-neon):not(.slip-card-clean *):not(.bg-rose-50 *):not(.bg-amber-50 *):not(.warning-rose-box *):not(.warning-amber-box *):not(.youtube-guide-btn *), 
@@ -283,6 +283,28 @@
   <!-- External Static Posts Data Files -->
   <script src="posts.js"></script>
   <script src="html_posts.js"></script>
+
+  <!-- SEO SCHEMA FOR SEARCH ENGINE CRAWLER -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "GovernmentService",
+    "name": "SGS ONLINE SERVICE",
+    "url": "https://sgsonlineservice.store/",
+    "description": "SGS Online Service - Online form filling assistance in Bihar, VKSU Admission, RTPS Caste Income Residence Certificate, Scholarships & Job Portal.",
+    "provider": {
+      "@type": "LocalBusiness",
+      "name": "SGS Online Service Helpdesk",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Arrah",
+        "addressRegion": "Bihar",
+        "postalCode": "802301",
+        "addressCountry": "IN"
+      }
+    }
+  }
+  </script>
 </head>
 <body class="bg-orange-50/30 text-slate-800 antialiased selection:bg-orange-200">
 
@@ -309,7 +331,26 @@
     </div>
   </div>
 
-  <div id="root" class="pt-1"></div>
+  <div id="root" class="pt-1">
+    <!-- STATIC NOSCRIPT FOR GOOGLE CRAWLER -->
+    <noscript>
+      <h1>SGS Online Service - Form Filling Assistance</h1>
+      <p>Get expert assistance for college admission forms, RTPS certificates, scholarships, and online job applications.</p>
+      <ul>
+        <li><a href="https://sgsonlineservice.store/?service=internship-application-01">Internship Application Online Form</a></li>
+        <li><a href="https://sgsonlineservice.store/?service=rtps-caste-02">Bihar RTPS Caste Certificate (जाति प्रमाण पत्र)</a></li>
+        <li><a href="https://sgsonlineservice.store/?service=rtps-income-03">Bihar RTPS Income Certificate (आय प्रमाण पत्र)</a></li>
+        <li><a href="https://sgsonlineservice.store/?service=rtps-residence-04">Bihar RTPS Residence Certificate (निवास प्रमाण पत्र)</a></li>
+        <li><a href="https://sgsonlineservice.store/?service=vksu-exam-form-all-sem-05">VKSU Exam Form All Semester</a></li>
+        <li><a href="https://sgsonlineservice.store/?service=rtps-combo-06">Bihar RTPS Combo Service</a></li>
+        <li><a href="https://sgsonlineservice.store/?service=vksu-admission-sem5-All-session-07">VKSU Online Admission Form</a></li>
+        <li><a href="https://sgsonlineservice.store/?service=Government-Forms-08">Bihar Character Certificate</a></li>
+        <li><a href="https://sgsonlineservice.store/?service=internship-120hr-09">Intership 120 Hour Complete</a></li>
+        <li><a href="https://sgsonlineservice.store/?service=pan-card-apply-10">New PAN Card / Correction Online Form</a></li>
+        <li><a href="https://sgsonlineservice.store/?service=pms-scholarship-2026-2027-11">PMS scholarship 2026-2027</a></li>
+      </ul>
+    </noscript>
+  </div>
 
   <script>
     setTimeout(() => {
@@ -502,53 +543,34 @@
         }
       };
 
-      // DYNAMIC HASH URL ROUTING & GOOGLE INDEXING SUPPORT
-      useEffect(() => {
-        const handleURLHashChange = () => {
-          const hash = window.location.hash;
-          if (hash.startsWith('#service=')) {
-            const srvId = hash.replace('#service=', '');
-            const matchedSrv = services.find(s => String(s.id) === String(srvId));
-            if (matchedSrv) {
-              setActiveService(matchedSrv);
-            }
-          } else if (hash.startsWith('#category=')) {
-            const catName = decodeURIComponent(hash.replace('#category=', ''));
-            setSelectedCat(catName);
-            setActiveService(null);
-          } else if (!hash) {
-            setActiveService(null);
+      // STANDARD QUERY URL ROUTING (FULL CLEAN URLS FOR EACH SERVICE)
+      const parseURLParams = () => {
+        const params = new URLSearchParams(window.location.search);
+        const srvId = params.get('service');
+        const catName = params.get('category');
+
+        if (srvId) {
+          const matchedSrv = services.find(s => String(s.id) === String(srvId));
+          if (matchedSrv) {
+            setActiveService(matchedSrv);
+            return;
           }
-        };
+        } else {
+          setActiveService(null);
+        }
 
-        handleURLHashChange();
+        if (catName) {
+          setSelectedCat(decodeURIComponent(catName));
+        } else {
+          setSelectedCat('All Services');
+        }
+      };
 
-        window.addEventListener('hashchange', handleURLHashChange);
-        return () => window.removeEventListener('hashchange', handleURLHashChange);
+      useEffect(() => {
+        parseURLParams();
+        window.addEventListener('popstate', parseURLParams);
+        return () => window.removeEventListener('popstate', parseURLParams);
       }, [services]);
-
-      // Hardware Mobile Back Button Sync
-      useEffect(() => {
-        const handlePopState = () => {
-          if (pendingService) {
-            setPendingService(null);
-          } else if (submittedReceipt) {
-            setSubmittedReceipt(null);
-          } else if (activeService) {
-            setActiveService(null);
-            window.location.hash = '';
-          } else if (activeModalPage) {
-            setActiveModalPage(null);
-          } else if (showDrawer) {
-            setShowDrawer(false);
-          } else if (selectedCat !== 'All Services') {
-            setSelectedCat('All Services');
-            window.location.hash = '';
-          }
-        };
-        window.addEventListener('popstate', handlePopState);
-        return () => window.removeEventListener('popstate', handlePopState);
-      }, [pendingService, submittedReceipt, activeService, activeModalPage, showDrawer, selectedCat]);
 
       const openServiceDetail = (srv) => {
         setPendingService(srv);
@@ -556,7 +578,8 @@
 
       const handleConfirmServiceSelection = () => {
         if (pendingService) {
-          window.history.pushState({ page: 'detail', id: pendingService.id }, '', `#service=${pendingService.id}`);
+          const newUrl = `${window.location.pathname}?service=${encodeURIComponent(pendingService.id)}`;
+          window.history.pushState({ service: pendingService.id }, '', newUrl);
           setActiveService(pendingService);
           setPendingService(null);
         }
@@ -564,10 +587,21 @@
 
       const handleCategorySelect = (catName) => {
         if (catName !== selectedCat) {
-          window.history.pushState({ page: 'category', cat: catName }, '', `#category=${encodeURIComponent(catName)}`);
           setSelectedCat(catName);
           setActiveService(null);
+          const newUrl = catName === 'All Services' 
+            ? window.location.pathname 
+            : `${window.location.pathname}?category=${encodeURIComponent(catName)}`;
+          window.history.pushState({ category: catName }, '', newUrl);
         }
+      };
+
+      const handleNavigateHome = () => {
+        setSelectedCat('All Services');
+        setActiveService(null);
+        setSubmittedReceipt(null);
+        setShowDrawer(false);
+        window.history.pushState({}, '', window.location.pathname);
       };
 
       const handleFilePreview = (e, imgPreviewId, pdfPreviewId) => {
@@ -709,7 +743,7 @@
           document.querySelectorAll('.pdf-preview').forEach(pdf => pdf.style.display = 'none');
           
           setActiveService(null);
-          window.history.pushState({ page: 'receipt' }, '');
+          window.history.pushState({ page: 'receipt' }, '', window.location.pathname);
           setSubmittedReceipt(newAppItem);
 
         } catch (err) {
@@ -729,7 +763,7 @@
           amount: app.amount || "Paid / Verified"
         };
         setActiveModalPage(null);
-        window.history.pushState({ page: 'receipt' }, '');
+        window.history.pushState({ page: 'receipt' }, '', window.location.pathname);
         setSubmittedReceipt(receiptData);
       };
 
@@ -843,7 +877,7 @@
 
                   <div className="bg-rose-50 warning-rose-box border border-rose-200 rounded-xl p-3 text-rose-950 text-xs font-bold space-y-1">
                     <p className="text-rose-950">• आपके द्वारा दी गई जानकारी गलत होने पर यदि फॉर्म आधिकारिक पोर्टल से रिजेक्ट (Reject) होता है, तो इसकी पूरी जिम्मेदारी आपकी होगी।</p>
-                    <p className="text-rose-950">• गलत विवरण के कारण फॉर्म रिजेक्ट होने पर आपका भुगतान (Payment) रिफंड (Refund) नहीं किया जाएगा।</p>
+                    <p className="text-rose-950">• गलत विवरण के कारण फॉर्म रिजेक्ट होने पर आपका भुगतान (Payment) रिफंड (Refund) नहीं किया जाएगा。</p>
                   </div>
 
                   <p className="text-[11px] text-slate-500 font-medium">
@@ -973,13 +1007,13 @@
 
                   {/* NAV LINKS */}
                   <nav className="space-y-2 text-xs font-bold text-slate-700">
-                    <button onClick={() => { setSelectedCat('All Services'); setActiveService(null); setSubmittedReceipt(null); setShowDrawer(false); window.location.hash = ''; }} className="w-full text-left p-2.5 rounded-lg hover:bg-orange-50 flex items-center justify-between text-orange-700 bg-orange-50/50 border border-orange-200">
+                    <button onClick={handleNavigateHome} className="w-full text-left p-2.5 rounded-lg hover:bg-orange-50 flex items-center justify-between text-orange-700 bg-orange-50/50 border border-orange-200">
                       <span>🏠 Home Page / All Services</span>
                       <Icons.ChevronRight />
                     </button>
 
                     {/* ABOUT US NAVIGATION LINK */}
-                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('about'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
+                    <button onClick={() => { setActiveModalPage('about'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
                       <span className="flex items-center gap-1.5 font-bold"><Icons.Info /> About Us</span>
                       <Icons.ChevronRight />
                     </button>
@@ -1001,7 +1035,7 @@
 
                     {/* TRACK MY APPLICATION BUTTON */}
                     <button 
-                      onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('track'); setShowDrawer(false); }} 
+                      onClick={() => { setActiveModalPage('track'); setShowDrawer(false); }} 
                       className="w-full text-left p-2.5 rounded-lg bg-amber-50 text-amber-900 flex items-center justify-between border border-amber-300 shadow-2xs"
                     >
                       <span className="flex items-center gap-1.5 font-extrabold text-amber-800">
@@ -1016,28 +1050,28 @@
                       <Icons.ChevronRight />
                     </button>
                     
-                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('privacy'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
+                    <button onClick={() => { setActiveModalPage('privacy'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
                       <span>🔒 Privacy Policy</span>
                       <Icons.ChevronRight />
                     </button>
 
                     {/* PAYMENT & NO-REFUND POLICY IN DRAWER */}
-                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('payment_policy'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
+                    <button onClick={() => { setActiveModalPage('payment_policy'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
                       <span className="flex items-center gap-1.5">💳 Payment & Refund Policy</span>
                       <Icons.ChevronRight />
                     </button>
 
                     {/* SERVICE DELIVERY TIMELINE IN DRAWER */}
-                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('delivery_policy'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
+                    <button onClick={() => { setActiveModalPage('delivery_policy'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
                       <span className="flex items-center gap-1.5">🚚 Delivery & Fulfillment Policy</span>
                       <Icons.ChevronRight />
                     </button>
 
-                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('terms'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
+                    <button onClick={() => { setActiveModalPage('terms'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
                       <span>📜 Terms & Conditions</span>
                       <Icons.ChevronRight />
                     </button>
-                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('disclaimer'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
+                    <button onClick={() => { setActiveModalPage('disclaimer'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
                       <span>⚠️ Disclaimer Notice</span>
                       <Icons.ChevronRight />
                     </button>
@@ -1163,7 +1197,7 @@
                   </div>
 
                   <button 
-                    onClick={() => { setSubmittedReceipt(null); window.location.hash = ''; }} 
+                    onClick={handleNavigateHome} 
                     className="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-1"
                   >
                     Done ✓
@@ -1531,7 +1565,7 @@
                     <Icons.Menu />
                   </button>
                   
-                  <div onClick={() => { setSelectedCat('All Services'); setActiveService(null); window.location.hash = ''; }} className="cursor-pointer text-center flex-1 flex items-center justify-center gap-2">
+                  <div onClick={handleNavigateHome} className="cursor-pointer text-center flex-1 flex items-center justify-center gap-2">
                     {/* WEBSITE LOGO IMAGE IN HEADER */}
                     <img 
                       src="logo.png" 
@@ -1558,7 +1592,7 @@
               {/* MAIN SERVICES CONTENT */}
               {activeService ? (
                 <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6">
-                  <button onClick={() => { setActiveService(null); window.location.hash = ''; }} className="inline-flex items-center gap-2 bg-white text-slate-800 font-bold text-xs px-4 py-2 rounded-xl border border-orange-200 mb-4 shadow-2xs hover:bg-orange-50">
+                  <button onClick={handleNavigateHome} className="inline-flex items-center gap-2 bg-white text-slate-800 font-bold text-xs px-4 py-2 rounded-xl border border-orange-200 mb-4 shadow-2xs hover:bg-orange-50">
                     <Icons.ArrowLeft /> Back to Services
                   </button>
 
@@ -1815,13 +1849,13 @@
                 <p className="font-extrabold text-white">SGS ONLINE SERVICE © 2026 • Private Online Assistance Desk</p>
                 <p className="text-[11px] text-slate-500 mt-1">📍 Registered Office: District Arrah, Bhojpur, Bihar, India - 802301 | Support: contactsgsonlineservice@gmail.com</p>
                 <div className="flex flex-wrap items-center justify-center gap-4 text-xs mt-3">
-                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('about'); }} className="text-slate-400 hover:text-orange-400 underline">About Us</button>
-                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('support'); }} className="text-slate-400 hover:text-emerald-400 underline">Customer Support & Grievance</button>
-                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('delivery_policy'); }} className="text-slate-400 hover:text-orange-400 underline">Fulfillment Timeline</button>
-                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('privacy'); }} className="text-slate-400 hover:text-orange-400 underline">Privacy Policy</button>
-                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('payment_policy'); }} className="text-slate-400 hover:text-emerald-400 underline">Payment & Refund Policy</button>
-                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('terms'); }} className="text-slate-400 hover:text-emerald-400 underline">Terms & Conditions</button>
-                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('disclaimer'); }} className="text-slate-400 hover:text-orange-400 underline">Disclaimer</button>
+                  <button onClick={() => { setActiveModalPage('about'); }} className="text-slate-400 hover:text-orange-400 underline">About Us</button>
+                  <button onClick={() => { setActiveModalPage('support'); }} className="text-slate-400 hover:text-emerald-400 underline">Customer Support & Grievance</button>
+                  <button onClick={() => { setActiveModalPage('delivery_policy'); }} className="text-slate-400 hover:text-orange-400 underline">Fulfillment Timeline</button>
+                  <button onClick={() => { setActiveModalPage('privacy'); }} className="text-slate-400 hover:text-orange-400 underline">Privacy Policy</button>
+                  <button onClick={() => { setActiveModalPage('payment_policy'); }} className="text-slate-400 hover:text-emerald-400 underline">Payment & Refund Policy</button>
+                  <button onClick={() => { setActiveModalPage('terms'); }} className="text-slate-400 hover:text-emerald-400 underline">Terms & Conditions</button>
+                  <button onClick={() => { setActiveModalPage('disclaimer'); }} className="text-slate-400 hover:text-orange-400 underline">Disclaimer</button>
                 </div>
               </footer>
             </>
