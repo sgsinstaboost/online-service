@@ -348,7 +348,10 @@
       CheckCircle: () => <svg className="w-12 h-12 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
       Info: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
       Receipt: () => <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>,
-      Youtube: () => <svg className="w-4 h-4 fill-current text-red-600 shrink-0" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      Youtube: () => <svg className="w-4 h-4 fill-current text-red-600 shrink-0" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>,
+      CreditCard: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>,
+      Truck: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>,
+      Building: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
     };
 
     // HIGH QUALITY HD IMAGE COMPRESSION
@@ -616,7 +619,7 @@
                 const optObj = f.options.find(o => o.value === selectedValue);
                 if (optObj) selectedLabel = optObj.label;
               }
-              textDetails += `• *${f.label}:*${selectedLabel || 'Not Selected'}\n`;
+              textDetails += `• *${f.label}:* ${selectedLabel || 'Not Selected'}\n`;
             } else {
               let val = formData.get(f.name);
               const isPhoneField = f.type === 'tel' || f.name?.toLowerCase().includes('mobile') || f.name?.toLowerCase().includes('phone') || f.label?.toLowerCase().includes('mobile') || f.label?.toLowerCase().includes('phone');
@@ -624,7 +627,7 @@
                 val = `+91 ${val}`;
               }
               if (val) {
-                textDetails += `• *${f.label}:*${val}\n`;
+                textDetails += `• *${f.label}:* ${val}\n`;
               }
             }
           });
@@ -670,7 +673,7 @@
             const paramName = isPdf ? 'document' : 'photo';
 
             fileData.append(paramName, item.file);
-            fileData.append("caption", `📎 ${item.label}\nUID:${submissionId}`);
+            fileData.append("caption", `📎 ${item.label}\nUID: ${submissionId}`);
 
             await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/${endpoint}`, {
               method: "POST",
@@ -860,13 +863,13 @@
                 <div className="bg-gradient-to-r from-orange-600 via-blue-900 to-emerald-700 text-white p-4">
                   <div className="flex items-center gap-2">
                     <span className="text-amber-300 text-lg"><Icons.ShieldCheck /></span>
-                    <h3 className="font-extrabold text-sm sm:text-base tracking-wide">Terms, Privacy Policy & Disclaimer Notice</h3>
+                    <h3 className="font-extrabold text-sm sm:text-base tracking-wide">Terms, Privacy, Pricing & Disclaimer Notice</h3>
                   </div>
                 </div>
 
                 <div className="p-5 text-xs text-slate-700 space-y-4 leading-relaxed max-h-[65vh] overflow-y-auto">
                   <div className="bg-orange-50 warning-amber-box border-l-4 border-orange-500 p-3 rounded-r-lg text-orange-950 font-semibold">
-                    Please read our complete Privacy Policy, Terms & Conditions, and Disclaimer before proceeding to use SGS ONLINE SERVICE.
+                    Please read our complete Privacy Policy, Terms & Conditions, Payment & No-Refund Policy, Service Delivery Timeline, and Disclaimer before proceeding to use SGS ONLINE SERVICE.
                   </div>
 
                   {/* 1. PRIVACY POLICY DETAILS */}
@@ -884,10 +887,32 @@
                     </ul>
                   </div>
 
-                  {/* 2. TERMS & CONDITIONS DETAILS */}
+                  {/* 2. PAYMENT, PRICING & STRICT NO-REFUND POLICY */}
+                  <div className="border border-slate-200 p-3.5 rounded-xl bg-rose-50 warning-rose-box space-y-2">
+                    <h4 className="font-extrabold text-rose-900 text-xs uppercase tracking-wider flex items-center gap-1">
+                      💳 2. Payment, Pricing & Strict No-Refund Policy
+                    </h4>
+                    <ul className="list-disc pl-4 space-y-1 text-slate-700 font-medium text-[11px]">
+                      <li><strong>Clear Transparent Pricing:</strong> Service fees include the government/university portal application fee (if applicable) plus our nominal cyber cafe form-filling facilitation charge. All amounts are displayed in INR (₹) before submission.</li>
+                      <li><strong>Strict No-Refund Rule:</strong> Once an online form assistance request (RTPS, VKSU Admission, Scholarship, Jobs) is submitted and data entry or document processing starts, fees are <strong>strictly NON-REFUNDABLE</strong> and non-transferable under any circumstances.</li>
+                      <li><strong>User Accuracy & Rejections:</strong> If an application is rejected by the official portal due to incorrect data, invalid certificates, or mismatched documents provided by the applicant, no refund will be issued.</li>
+                    </ul>
+                  </div>
+
+                  {/* 3. SERVICE DELIVERY & TURNAROUND TIME */}
+                  <div className="border border-slate-200 p-3.5 rounded-xl bg-slate-50 space-y-2">
+                    <h4 className="font-extrabold text-indigo-900 text-xs uppercase tracking-wider flex items-center gap-1">
+                      🚚 3. Service Fulfillment & Delivery Timeline (TAT)
+                    </h4>
+                    <p className="text-slate-600 text-[11px]">
+                      Application data entry and document verification begins within 15–30 minutes of payment confirmation. Official submission receipts, acknowledgements, or tracking application slips are delivered to applicants via WhatsApp / Email within <strong>24 to 48 working hours</strong>.
+                    </p>
+                  </div>
+
+                  {/* 4. TERMS & CONDITIONS DETAILS */}
                   <div className="border border-slate-200 p-3.5 rounded-xl bg-slate-50 space-y-2">
                     <h4 className="font-extrabold text-blue-900 text-xs uppercase tracking-wider flex items-center gap-1">
-                      📜 2. Terms & Conditions
+                      📜 4. Terms & Conditions
                     </h4>
                     <ul className="list-disc pl-4 space-y-1 text-slate-700 font-medium text-[11px]">
                       <li><strong>Private Facilitation:</strong> SGS ONLINE SERVICE is an independent cyber cafe / form assistance center and NOT an official government entity or college portal.</li>
@@ -896,10 +921,10 @@
                     </ul>
                   </div>
 
-                  {/* 3. DISCLAIMER NOTICE DETAILS */}
+                  {/* 5. DISCLAIMER NOTICE DETAILS */}
                   <div className="border border-slate-200 p-3.5 rounded-xl bg-emerald-50 warning-amber-box space-y-2">
                     <h4 className="font-extrabold text-emerald-900 text-xs uppercase tracking-wider flex items-center gap-1">
-                      ⚠️ 3. Non-Government Disclaimer
+                      ⚠️ 5. Non-Government Disclaimer
                     </h4>
                     <p className="text-emerald-950 font-medium text-[11px]">
                       We do NOT claim to be an official government portal. All official form submissions are carried out on respective official government / university websites on behalf of the applicant. Final approval/rejection rests with the official authority.
@@ -915,7 +940,7 @@
                     <span>I Agree & Continue</span> →
                   </button>
                   <p className="text-[10px] text-center text-slate-400 font-medium">
-                    By clicking "I Agree & Continue", you accept all Privacy Policy, Terms & Disclaimer conditions.
+                    By clicking "I Agree & Continue", you accept all Privacy Policy, Payment & Refund Rules, Terms & Disclaimer conditions.
                   </p>
                 </div>
               </div>
@@ -988,6 +1013,19 @@
                       <span>🔒 Privacy Policy</span>
                       <Icons.ChevronRight />
                     </button>
+
+                    {/* PAYMENT & NO-REFUND POLICY IN DRAWER */}
+                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('payment_policy'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
+                      <span className="flex items-center gap-1.5">💳 Payment & Refund Policy</span>
+                      <Icons.ChevronRight />
+                    </button>
+
+                    {/* SERVICE DELIVERY TIMELINE IN DRAWER */}
+                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('delivery_policy'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
+                      <span className="flex items-center gap-1.5">🚚 Delivery & Fulfillment Policy</span>
+                      <Icons.ChevronRight />
+                    </button>
+
                     <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('terms'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
                       <span>📜 Terms & Conditions</span>
                       <Icons.ChevronRight />
@@ -1001,7 +1039,7 @@
                     <a 
                       href="https://www.youtube.com/@rojgarwithberojgar-2" 
                       target="_blank" 
-                      rel="noopener noreferrer"
+                      rel="noopener noreferrer" 
                       onClick={() => setShowDrawer(false)}
                       className="youtube-guide-btn w-full text-left p-2.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 flex items-center justify-between transition-colors mt-2 font-extrabold"
                     >
@@ -1032,6 +1070,12 @@
                       <button onClick={handleEmailSupport} className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs py-2 rounded-lg transition-colors">
                         Send Email
                       </button>
+                    </div>
+
+                    {/* PHYSICAL OFFICE ADDRESS IN DRAWER */}
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-2xs text-[11px] text-slate-600 space-y-1">
+                      <p className="font-bold text-slate-800 flex items-center gap-1">📍 Center Address:</p>
+                      <p>SGS Online Service Helpdesk, District Arrah, Bhojpur, Bihar, India - 802301.</p>
                     </div>
                   </div>
                 </div>
@@ -1089,7 +1133,7 @@
                 </div>
 
                 <div className="bg-amber-100 warning-amber-box border border-amber-300 rounded-xl p-3 text-[11px] text-amber-950 font-bold leading-relaxed">
-                  📌 <strong>Note:</strong> Save your UID for tracking. Our assistance team will process your form and update status shortly.
+                  📌 <strong>Note:</strong> Save your UID for tracking. Processing starts in 15–30 mins and completed acknowledgement slip will be delivered via WhatsApp/Email within 24–48 hours. All fees are strictly non-refundable.
                 </div>
 
                 <div className="pt-2 flex flex-col gap-2.5 no-print">
@@ -1127,9 +1171,11 @@
                   <Icons.ShieldCheck />
                   <span>
                     {activeModalPage === 'track' && 'Track My Applications'}
-                    {activeModalPage === 'about' && 'About Us'}
-                    {activeModalPage === 'support' && 'Instant Customer Support'}
+                    {activeModalPage === 'about' && 'About Us & Operational Details'}
+                    {activeModalPage === 'support' && 'Instant Customer Support & Grievance'}
                     {activeModalPage === 'privacy' && 'Privacy Policy'}
+                    {activeModalPage === 'payment_policy' && 'Payment, Pricing & Strict No-Refund Policy'}
+                    {activeModalPage === 'delivery_policy' && 'Service Delivery & Fulfillment Policy'}
                     {activeModalPage === 'terms' && 'Terms & Conditions'}
                     {activeModalPage === 'disclaimer' && 'Disclaimer & Service Policy'}
                   </span>
@@ -1141,21 +1187,21 @@
 
               <div className="flex-1 overflow-y-auto p-4 sm:p-6 max-w-4xl w-full mx-auto text-xs text-slate-700 space-y-4">
                 
-                {/* DEDICATED CUSTOMER SUPPORT MODAL PAGE */}
+                {/* DEDICATED CUSTOMER SUPPORT & GRIEVANCE OFFICER MODAL PAGE */}
                 {activeModalPage === 'support' && (
                   <div className="space-y-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
                     <div className="bg-emerald-50 border-l-4 border-emerald-600 p-4 rounded-r-xl text-slate-900 font-bold flex items-center justify-between flex-wrap gap-2">
                       <div className="flex items-center gap-2">
                         <Icons.Headphones />
-                        <span>SGS Instant Helpdesk & Assistance Center</span>
+                        <span>SGS Helpdesk & Customer Support Desk</span>
                       </div>
                       <span className="bg-emerald-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider animate-pulse">
-                        24/7 Live Support
+                        24/7 Digital Support
                       </span>
                     </div>
 
                     <p className="text-slate-600 text-xs leading-relaxed">
-                      Need help regarding form submissions, application updates, fee verification, or tracking numbers? Our dedicated customer support desk is available to assist you. Select your preferred channel below:
+                      Need help regarding form submissions, fee verification, turnaround timelines, or application status? Connect directly with our helpdesk team:
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
@@ -1193,8 +1239,23 @@
                       </div>
                     </div>
 
-                    <div className="bg-orange-50 border border-orange-200 p-3 rounded-xl text-[11px] text-orange-950 font-semibold">
-                      📌 <strong>Support Hours:</strong> Online chat available 24/7. Phone verification calls are conducted between 9:00 AM to 8:00 PM IST.
+                    {/* NODAL GRIEVANCE OFFICER & PHYSICAL ADDRESS BLOCK */}
+                    <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-2 text-xs">
+                      <h4 className="font-extrabold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
+                        <Icons.Building /> Registered Business & Grievance Redressal Office
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px] text-slate-600 pt-1">
+                        <div>
+                          <p><strong>Business Name:</strong> SGS ONLINE SERVICE</p>
+                          <p><strong>Primary Address:</strong> District Arrah, Bhojpur, Bihar, India - 802301</p>
+                          <p><strong>Official Email:</strong> contactsgsonlineservice@gmail.com</p>
+                        </div>
+                        <div>
+                          <p><strong>Grievance Officer:</strong> Customer Support Desk Head</p>
+                          <p><strong>Support Operating Hours:</strong> 09:00 AM to 08:00 PM IST (Mon - Sat)</p>
+                          <p><strong>Resolution SLA:</strong> Within 24 to 48 working hours</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -1203,7 +1264,7 @@
                 {activeModalPage === 'about' && (
                   <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
                     <div className="bg-orange-50 border-l-4 border-orange-600 p-4 rounded-r-xl text-slate-900 font-bold">
-                      🏢 ABOUT SGS ONLINE SERVICE
+                      🏢 ABOUT SGS ONLINE SERVICE & PHYSICAL OPERATIONS
                     </div>
 
                     <div>
@@ -1213,7 +1274,7 @@
 
                     <div>
                       <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">2. Location & Operating Area</h4>
-                      <p className="font-semibold text-slate-800">📍 Primary Location: District Arrah, Bhojpur, Bihar, India.</p>
+                      <p className="font-semibold text-slate-800">📍 Physical Address: SGS Online Service Desk, District Arrah, Bhojpur, Bihar, India - 802301.</p>
                       <p className="mt-1">We cater specifically to applicants across Bihar requiring assistance with university admissions (e.g., VKSU), RTPS certificates (Caste, Income, Residence), scholarships, and national competitive exam form submissions.</p>
                     </div>
 
@@ -1225,6 +1286,35 @@
                     <div>
                       <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">4. Transparency Commitment</h4>
                       <p>We charge a nominal facilitation charge for our time, digital infrastructure, and document compression support. We do NOT represent or act as an official government body.</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* SERVICE DELIVERY & FULFILLMENT MODAL PAGE */}
+                {activeModalPage === 'delivery_policy' && (
+                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
+                    <div className="bg-indigo-50 border-l-4 border-indigo-600 p-4 rounded-r-xl text-slate-900 font-bold flex items-center justify-between">
+                      <span>🚚 SERVICE DELIVERY, FULFILLMENT & TURNAROUND TIMELINE (TAT)</span>
+                      <span className="text-[10px] bg-indigo-600 text-white px-2 py-0.5 rounded font-mono font-bold">24-48 Hours</span>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Digital Service Delivery Overview</h4>
+                      <p>SGS ONLINE SERVICE provides digital form-filling and online submission facilitation services. As our services are digital and electronic in nature, there is no physical shipping of tangible goods.</p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Standard Turnaround Time (TAT)</h4>
+                      <ul className="list-disc pl-5 space-y-1.5 text-slate-700 font-medium">
+                        <li><strong>Order Initiation:</strong> Once your application request and payment screenshot are received, our desk initiates data entry and document verification within <strong>15 to 30 minutes</strong> during operational hours.</li>
+                        <li><strong>Form Submission & Acknowledgement:</strong> The complete form submission is carried out on the respective official university/government portal, and the official PDF receipt/acknowledgement slip is dispatched to the user's WhatsApp or Email within <strong>24 to 48 working hours</strong>.</li>
+                        <li><strong>Live Tracking:</strong> Users can track their submitted requests anytime using their unique 6-digit Application UID in the 'Track My Application' section.</li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. Delivery Delays & External Portal Downtime</h4>
+                      <p>In case of scheduled maintenance or server downtime on official government/university servers, form processing will be queued and completed immediately upon server restoration. Applicants will be updated accordingly via WhatsApp.</p>
                     </div>
                   </div>
                 )}
@@ -1281,6 +1371,50 @@
                         ))}
                       </div>
                     )}
+                  </div>
+                )}
+
+                {/* PAYMENT, PRICING & STRICT NO-REFUND POLICY MODAL PAGE */}
+                {activeModalPage === 'payment_policy' && (
+                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
+                    <div className="bg-orange-50 border-l-4 border-orange-600 p-4 rounded-r-xl text-slate-900 font-bold flex items-center justify-between">
+                      <span>💳 PAYMENT, PRICING & STRICT NO-REFUND POLICY</span>
+                      <span className="text-[10px] bg-orange-600 text-white px-2 py-0.5 rounded font-mono font-bold">Standard Policy</span>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Transparent Pricing & Facilitation Service Charge</h4>
+                      <p>All service charges are clearly displayed in Indian Rupees (₹ INR) for every online application listed on SGS ONLINE SERVICE. Our fee structure consists of:</p>
+                      <ul className="list-disc pl-5 space-y-1 mt-1 text-slate-700 font-medium">
+                        <li><strong>Official Portal Fee:</strong> Examination / Admission / Processing fee charged directly by government portals or university boards (where applicable).</li>
+                        <li><strong>Private Facilitation & Cyber Cafe Fee:</strong> Nominal service fee for digital data entry, telephone verification, high-resolution document scanning, image resizing, and error-free submission.</li>
+                        <li>There are zero hidden recurring charges or subscription fees.</li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Accepted Payment Methods</h4>
+                      <p>We accept secure payments via NPCI Standard Dynamic UPI Intent, UPI QR Code scanning (PhonePe, Google Pay, Paytm, BHIM), and authorized digital payment gateway interfaces. Valid proof of payment (screenshot) is mandatory for processing.</p>
+                    </div>
+
+                    <div className="bg-rose-50 border border-rose-200 rounded-xl p-3.5 text-rose-950 space-y-2">
+                      <h4 className="font-black text-rose-900 text-xs uppercase tracking-wider flex items-center gap-1">
+                        ⚠️ 3. Strict No-Refund Policy (Non-Refundable Services)
+                      </h4>
+                      <p className="text-[11px] font-bold">
+                        Please note our strict policy regarding cancellations and refunds:
+                      </p>
+                      <ul className="list-disc pl-4 space-y-1 text-[11px] text-rose-900 font-semibold">
+                        <li>Once an application request is submitted and our team initiates the online form filling or document verification process, <strong>all fees paid are 100% NON-REFUNDABLE</strong> and non-cancellable.</li>
+                        <li><strong>Government & RTPS Certificates:</strong> In the event of application rejection by official block/sub-division officers due to invalid caste claims, mismatched income declarations, or improper residential proofs provided by the applicant, no refund will be provided.</li>
+                        <li><strong>University & College Forms:</strong> Admission or merit list rejection by VKSU or any college due to cut-off criteria or inaccurate academic data does not entitle the user to a refund.</li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">4. Payment Disputes & Duplicate Debits</h4>
+                      <p>In rare cases where an amount is debited from your bank account twice for a single service request or if a payment fails to link, contact our support team immediately at <strong>contactsgsonlineservice@gmail.com</strong> or via WhatsApp with your Bank UTR Reference ID. Verified accidental duplicate transactions will be refunded within 5–7 business days to the source account.</p>
+                    </div>
                   </div>
                 )}
 
@@ -1441,7 +1575,7 @@
                       <>
                         {/* Form Filling Transparency Note */}
                         <div className="bg-orange-50 warning-amber-box border border-orange-200 rounded-lg p-3 text-[11px] text-orange-950 font-medium mb-5">
-                          ℹ️ <strong>Assistance Notice:</strong> Information submitted below will be used by our team to fill out your official online form on your behalf after phone confirmation.
+                          ℹ️ <strong>Assistance Notice:</strong> Information submitted below will be used by our team to fill out your official online form on your behalf after phone confirmation. Turnaround time: 24 to 48 working hours.
                         </div>
 
                         <form onSubmit={handleFormSubmit} className="space-y-4">
@@ -1669,13 +1803,16 @@
                 </main>
               )}
 
-              {/* FOOTER WITH MODAL BUTTONS & DEDICATED CUSTOMER SUPPORT MODAL TRIGGER */}
+              {/* FOOTER WITH COMPLETE COMPLIANCE MODAL BUTTONS, TIMELINE & ADDRESS */}
               <footer className="bg-slate-950 text-slate-400 text-xs py-6 mt-12 border-t-4 border-orange-500 text-center px-4 relative">
-                <p className="font-extrabold text-white">SGS ONLINE SERVICE © 2026 • Tiranga Theme</p>
+                <p className="font-extrabold text-white">SGS ONLINE SERVICE © 2026 • Private Online Assistance Desk</p>
+                <p className="text-[11px] text-slate-500 mt-1">📍 Registered Office: District Arrah, Bhojpur, Bihar, India - 802301 | Support: contactsgsonlineservice@gmail.com</p>
                 <div className="flex flex-wrap items-center justify-center gap-4 text-xs mt-3">
                   <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('about'); }} className="text-slate-400 hover:text-orange-400 underline">About Us</button>
-                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('support'); }} className="text-slate-400 hover:text-emerald-400 underline">Customer Support</button>
+                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('support'); }} className="text-slate-400 hover:text-emerald-400 underline">Customer Support & Grievance</button>
+                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('delivery_policy'); }} className="text-slate-400 hover:text-orange-400 underline">Fulfillment Timeline</button>
                   <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('privacy'); }} className="text-slate-400 hover:text-orange-400 underline">Privacy Policy</button>
+                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('payment_policy'); }} className="text-slate-400 hover:text-emerald-400 underline">Payment & Refund Policy</button>
                   <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('terms'); }} className="text-slate-400 hover:text-emerald-400 underline">Terms & Conditions</button>
                   <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('disclaimer'); }} className="text-slate-400 hover:text-orange-400 underline">Disclaimer</button>
                 </div>
