@@ -6,7 +6,7 @@ const STATIC_CATEGORIES = [
   { name: 'College Admission', color: 'purple' },
   { name: 'Scholarship', color: 'amber' },
   { name: 'Government Forms', color: 'rose' },
-  { name: 'Admit Card', color: 'rose' }
+  { name: 'Live Alert', color: 'rose' }
  
  
 ];
