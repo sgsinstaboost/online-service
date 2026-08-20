@@ -6,14 +6,323 @@ const HTML_CATEGORIES = [
   { name: 'College Admission', color: 'purple' },
   { name: 'Scholarship', color: 'amber' },
   { name: 'Government Forms', color: 'rose' },
-  { name: 'Admit Card', color: 'rose' }
+  { name: 'Live Alert', color: 'rose' }
 ];
 
 const HTML_POSTS = [
+
+
+{
+  id: "bsf-hcm-asi-steno-admit-card-2026",
+  title: "BSF HCM & ASI Steno Admit Card 2026",
+  category: "Live Alert",
+  description: "Border Security Force (BSF) ASI Steno and Head Constable Ministerial 1752 Posts Admit Card and Important Links.",
+  tags: [
+    "BSF HCM Admit Card",
+    "BSF ASI Steno Admit Card",
+    "BSF Admit Card 2026",
+    "BSF Recruitment 2025",
+    "Government Forms",
+    "SGS Online Service BSF"
+  ],
+  htmlContent: `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSF HCM & ASI Steno Admit Card 2026</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.5;
+            color: #000;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+        h1 {
+            color: #ff0000;
+            text-align: center;
+            font-size: 22px;
+            margin: 10px 0 5px 0;
+            font-weight: bold;
+        }
+        h2 {
+            color: #008000;
+            text-align: center;
+            font-size: 18px;
+            margin: 0 0 5px 0;
+            font-weight: bold;
+        }
+        .subtitle {
+            text-align: center;
+            font-weight: bold;
+            color: #0000ff;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+        table, th, td {
+            border: 1px solid #000;
+        }
+        th, td {
+            padding: 8px 10px;
+            vertical-align: top;
+            font-size: 14px;
+        }
+        .header-maroon {
+            background-color: #600020;
+            color: #ffffff;
+            font-size: 16px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .header-green {
+            background-color: #005a2b;
+            color: #ffffff;
+            font-weight: bold;
+            text-align: center;
+        }
+        .header-orange {
+            background-color: #ff3300;
+            color: #ffffff;
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .header-navy-box {
+            background-color: #000080;
+            color: #ffffff;
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+            padding: 4px;
+            display: inline-block;
+        }
+        .highlight-yellow {
+            background-color: #ffff00;
+            font-weight: bold;
+        }
+        .text-red {
+            color: #ff0000;
+            font-weight: bold;
+        }
+        .bg-yellow-section {
+            background-color: #fde88e;
+        }
+        ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        ul li {
+            margin-bottom: 5px;
+        }
+        .click-link {
+            color: #0000ff;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .font-bold {
+            font-weight: bold;
+        }
+        .total-post-box {
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>BSF HCM & ASI Steno Admit Card 2026 – Out</h1>
+    <h2>BSF ASI Stenographer and Head Constable Examination 2025 : Short Details</h2>
+    <div class="subtitle">SarkariResult.Com.Cm</div>
+
+    <!-- Important Dates & Fee Table -->
+    <table>
+        <tr>
+            <th class="header-maroon" style="width: 50%;">Important Dates</th>
+            <th class="header-maroon" style="width: 50%;">Application Fee</th>
+        </tr>
+        <tr>
+            <td>
+                <ul>
+                    <li>Online Apply Start Date : <strong>09 June 2024</strong></li>
+                    <li>Online Apply Last Date : <strong>08 July 2024</strong></li>
+                    <li>Last Date For Fee Payment : <strong>08 July 2024</strong></li>
+                    <li class="highlight-yellow">Exam Date : 01 September 2026</li>
+                    <li>Admit Card : <span class="text-red">19 August 2026 Available Now</span></li>
+                    <li>Result Date : <strong>Will Be Updated Here Soon</strong></li>
+                    <li>Candidates Are Advised To Confirm From The <strong>BSF Official Website</strong>.</li>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    <li>For <strong>General, OBC, EWS : ₹ 147.25/-</strong></li>
+                    <li>For <strong>SC / ST, PWD : ₹ 00/-</strong></li>
+                    <li><strong>Payment Mode (Online):</strong> You Can Make The Payment Using The Following Methods:
+                        <ul>
+                            <li>Debit Card</li>
+                            <li>Credit Card</li>
+                            <li>Internet Banking</li>
+                            <li>IMPS</li>
+                            <li>Cash Card / Mobile Wallet</li>
+                        </ul>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Age Limit & Total Post Header -->
+    <table>
+        <tr>
+            <th class="header-green" style="width: 70%;">BSF ASI Stenographer And Head Constable Notification 2025 : Age Limits As On 01 August 2024</th>
+            <th class="header-orange" style="width: 30%;">Total Post</th>
+        </tr>
+        <tr>
+            <td>
+                <ul>
+                    <li>Minimum Age : <strong>18 Years</strong></li>
+                    <li>Maximum Age : <strong>25 Years</strong></li>
+                    <li><strong>BSF Provides Age Relaxation For The ASI Steno & HC Ministerial Position As Per Their Regulations.</strong></li>
+                </ul>
+            </td>
+            <td class="total-post-box">
+                1752 Posts
+            </td>
+        </tr>
+    </table>
+
+    <!-- Mode Of Selection Table -->
+    <table>
+        <tr>
+            <td class="text-center" style="padding: 6px;">
+                <div class="header-navy-box">BSF ASI Steno & HC Ministerial Recruitment 2025 : Mode Of Selection</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ul>
+                    <li><strong>Written Exam</strong></li>
+                    <li><strong>Skill Test</strong></li>
+                    <li><strong>Physical Measurement Test</strong></li>
+                    <li><strong>Document Verification</strong></li>
+                    <li><strong>Medical Examination</strong></li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Important Links Table -->
+    <table>
+        <tr class="bg-yellow-section">
+            <td class="font-bold text-center" style="width: 50%; font-size: 15px;">Download Admit Card (Server 1)</td>
+            <td class="text-center" style="width: 50%;">
+                <a href="https://cdn.digialm.com//EForms/configuredHtml/1258/102021/login.html" target="_blank" class="click-link">Click Here</a>
+            </td>
+        </tr>
+        <tr class="bg-yellow-section">
+            <td class="font-bold text-center" style="width: 50%; font-size: 15px;">Download Admit Card (Server 2 - BSF Login)</td>
+            <td class="text-center" style="width: 50%;">
+                <a href="https://rectt.bsf.gov.in/auth/login" target="_blank" class="click-link">Click Here</a>
+            </td>
+        </tr>
+        <tr class="bg-yellow-section">
+            <td class="font-bold text-center" style="width: 50%; font-size: 15px;">Check Written Exam Date Notice</td>
+            <td class="text-center" style="width: 50%;">
+                <a href="https://sarkariresult.com.cm/wp-content/uploads/2025/09/1780670624.pdf" target="_blank" class="click-link">Click Here</a>
+            </td>
+        </tr>
+        <tr class="bg-yellow-section">
+            <td class="font-bold text-center" style="width: 50%; font-size: 15px;">Download PET / PST Result</td>
+            <td class="text-center" style="width: 50%;">
+                <a href="https://d3t79nicn48uzj.cloudfront.net/bsf/custom/1756724609.pdf" target="_blank" class="click-link">Click Here</a>
+            </td>
+        </tr>
+        <tr class="bg-yellow-section">
+            <td class="font-bold text-center" style="width: 50%; font-size: 15px;">BSF Official Website</td>
+            <td class="text-center" style="width: 50%;">
+                <a href="https://bsf.gov.in/" target="_blank" class="click-link">Click Here</a>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Important Questions (FAQ) Section -->
+    <table>
+        <tr>
+            <td class="text-center" style="padding: 6px;">
+                <div class="header-navy-box">BSF HCM & ASI Steno Admit Card 2026 : Important Question</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ul>
+                    <li><strong>Question: When Will The BSF HCM & ASI Steno Exam 2026 Be Conducted?</strong></li>
+                    <li><strong>Answer:</strong> The BSF HCM & ASI Steno Written Examination Is Expected To Be Conducted In 2026 As Per The Schedule Released By The Border Security Force (BSF). Candidates Should Regularly Check The Official Website For Updates.</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ul>
+                    <li><strong>Question: How Can I Check The BSF HCM & ASI Steno Exam Date 2026?</strong></li>
+                    <li><strong>Answer:</strong> Candidates Can Visit The Official BSF Recruitment Portal And Download The Exam Date Notice PDF From The Latest Notifications Section.</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ul>
+                    <li><strong>Question: What Details Are Mentioned In The Exam Date Notice?</strong></li>
+                    <li><strong>Answer:</strong> The Notice Generally Contains The Exam Date, Reporting Time, Exam Shift, And Important Instructions For Candidates.</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ul>
+                    <li><strong>Question: When Will The BSF HCM & ASI Steno Admit Card 2026 Be Released?</strong></li>
+                    <li><strong>Answer:</strong> The Admit Card Is Released Before The Examination Date.</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ul>
+                    <li><strong>Question: What Is The Official Website For BSF?</strong></li>
+                    <li><strong>Answer:</strong> The Official Website For BSF Is <strong>https://bsf.gov.in/</strong></li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>
+  `
+},
+
+
+
+
+
+
+
+
+  
   {
     id: "ssb-constable-tradesman-admit-card-2026-12",
     title: "SSB Constable Tradesman PET / PST Admit Card 2026",
-    category: "Admit Card",
+    category: "Live Alert",
     description: "Sashastra Seema Bal (SSB) Constable Tradesman 827 Posts PET / PST Admit Card download link and details.",
     tags: [
       "SSB Constable Tradesman",
@@ -300,4 +609,13 @@ const HTML_POSTS = [
 </html>
     `
   }
+
+
+
+
+
+
+
+
+  
 ];
