@@ -174,7 +174,7 @@ const ALL_POSTS = [
   "sgs store jati praman patra",
   "Arrah RTPS Jati Form"
 ],
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D28%26cu%3DINR&size=200&format=png",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D30%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "आवेदक का नाम / Name of Applicant", type: "text", required: true, placeholder: "Apna name likhein" },
     { id: "field_father_name", name: "father_name", label: "पिता का नाम / Father's Name", type: "text", required: true, placeholder: "Father name likhein" },
@@ -267,7 +267,7 @@ const ALL_POSTS = [
   "sgs store aaya praman patra",
   "Arrah RTPS Income Form"
 ],
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D28%26cu%3DINR&size=200&format=png",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D30%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "आवेदक का नाम / Name of Applicant", type: "text", required: true, placeholder: "Apna name likhein" },
     { id: "field_father_name", name: "father_name", label: "पिता का नाम / Father's Name", type: "text", required: true, placeholder: "Father name likhein" },
@@ -347,7 +347,7 @@ const ALL_POSTS = [
   title: "Bihar RTPS Residence Certificate (निवास प्रमाण पत्र)",
   category: "Certificates (Jati/Aaya/Niwas)",
   description: "Niwas Praman Patra ke liye form fill karein.",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D28%26cu%3DINR&size=200&format=png",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D30%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "आवेदक का नाम / Name of Applicant", type: "text", required: true, placeholder: "Apna name likhein" },
     { id: "field_father_name", name: "father_name", label: "पिता का नाम / Father's Name", type: "text", required: true, placeholder: "Father name likhein" },
@@ -504,7 +504,7 @@ const ALL_POSTS = [
   title: "Bihar RTPS Combo Service (जाति, आय एवं निवास प्रमाण पत्र एक साथ बनवाएं)",
   category: "Certificates (Jati/Aaya/Niwas)",
   description: "जाति, आय एवं निवास प्रमाण पत्र एक साथ आवेदन करने के लिए नीचे अपनी पूरी डिटेल्स भरें, सभी आवश्यक दस्तावेज़ अपलोड करें और QR कोड स्कैन करके ₹90 का भुगतान करें।",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D80%26cu%3DINR&size=200&format=png",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D90%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "आवेदक का नाम / Name of Applicant", type: "text", required: true, placeholder: "Apna name likhein" },
     { id: "field_father_name", name: "father_name", label: "पिता का नाम / Father's Name", type: "text", required: true, placeholder: "Father name likhein" },
