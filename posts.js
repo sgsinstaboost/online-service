@@ -420,20 +420,20 @@ const ALL_POSTS = [
 
   
 {
-  id: "vksu-exam-form-all-sem-05",
+  id: "vksu-exam-form-all-sem",
   title: "VKSU Exam Form All Semester",
-  category: "STD College", 
+  category: "STD College",
   description: "Veer Kunwar Singh University exam form fill up service all semesters (Sem 1 to Sem 8).",
   tags: [
-  "VKSU Exam Form All Semester",
-  "VKSU Exam Form Online",
-  "VKSU Semester Exam Form Fill",
-  "Veer Kunwar Singh University Exam Form",
-  "VKSU BA BSc BCom Exam Form",
-  "SGS Online Service VKSU Exam Form",
-  "sgs store vksu exam form",
-  "Arrah VKSU Exam Form Apply"
-],
+    "VKSU Exam Form All Semester",
+    "VKSU Exam Form Online",
+    "VKSU Semester Exam Form Fill",
+    "Veer Kunwar Singh University Exam Form",
+    "VKSU BA BSc BCom Exam Form",
+    "SGS Online Service VKSU Exam Form",
+    "sgs store vksu exam form",
+    "Arrah VKSU Exam Form Apply"
+  ],
   qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D630%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_student_name", name: "student_name", label: "Student Name", type: "text", required: true, placeholder: "Apna name likhein" },
@@ -449,23 +449,6 @@ const ALL_POSTS = [
         { id: "opt_bsc", label: "B.Sc", value: "bsc" }
       ]
     },
-    {
-      id: "field_semester",
-      name: "semester",
-      label: "Select Semester",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_sem1", label: "Semester 1", value: "sem_1" },
-        { id: "opt_sem2", label: "Semester 2", value: "sem_2" },
-        { id: "opt_sem3", label: "Semester 3", value: "sem_3" },
-        { id: "opt_sem4", label: "Semester 4", value: "sem_4" },
-        { id: "opt_sem5", label: "Semester 5", value: "sem_5" },
-        { id: "opt_sem6", label: "Semester 6", value: "sem_6" },
-        { id: "opt_sem7", label: "Semester 7", value: "sem_7" },
-        { id: "opt_sem8", label: "Semester 8", value: "sem_8" }
-      ]
-    },
     { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number", type: "tel", required: true, placeholder: "10-digit mobile number likhein" },
     { id: "field_vksu_reg_no", name: "vksu_reg_no", label: "VKSU Registration Number", type: "text", required: true, placeholder: "Registration number likhein" },
     { id: "field_vksu_password", name: "vksu_password", label: "VKSU Password (Optional)", type: "text", required: false, placeholder: "Agar password pata ho to likhein" },
@@ -479,18 +462,9 @@ const ALL_POSTS = [
         { id: "opt_pass_yes", label: "Yes", value: "yes" },
         { id: "opt_pass_no", label: "No", value: "no" }
       ]
-    },
-    {
-      id: "field_student_photo",
-      name: "student_photo",
-      label: "Student Photo (Image/PDF)",
-      type: "file",
-      accept: "image/*, application/pdf",
-      required: true
     }
   ]
 },
-
 
 
 
