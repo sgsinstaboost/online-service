@@ -845,7 +845,7 @@ const ALL_POSTS = [
   "sgs store pms scholarship",
   "Arrah Post Matric Scholarship Form"
 ],
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D150%26cu%3DINR&size=200&format=png",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D100%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_student_name", name: "student_name", label: "Name / नाम", type: "text", required: true, placeholder: "Apna name likhein" },
     { id: "field_father_name", name: "father_name", label: "Father Name / पिता का नाम", type: "text", required: true, placeholder: "Father name likhein" },
