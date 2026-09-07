@@ -27,8 +27,6 @@
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <!-- Crypto-JS Library for PayU Official SHA-512 Hash Generation -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
   <style>
     html, body { overscroll-behavior-y: contain; text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
@@ -371,11 +369,6 @@
     const TELEGRAM_BOT_TOKEN = "8358900801:AAE42RhsmJPv_h40nGEqC7wuXW5HQ_wp8pk";
     const TELEGRAM_CHAT_ID = "5011508473";
 
-    // PAYU OFFICIAL TEST SANDBOX CREDENTIALS
-    const PAYU_KEY = "7V5zJb";
-    const PAYU_SALT = "Cxpo7Fs4CE3dgRckhMs4ieZVdsPTCT0f";
-    const PAYU_PAYMENT_URL = "https://test.payu.in/_payment";
-
     // Support Encrypted Credentials
     const _0xwa = "OTExNzA4MDE2OQ==";
     const _0xem = "contactsgsonlineservice@gmail.com";
@@ -400,8 +393,7 @@
       Youtube: () => <svg className="w-4 h-4 fill-current text-red-600 shrink-0" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>,
       CreditCard: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>,
       Truck: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>,
-      Building: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>,
-      LockClosed: () => <svg className="w-4 h-4 text-emerald-600 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+      Building: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
     };
 
     // HIGH QUALITY HD IMAGE COMPRESSION
@@ -440,21 +432,25 @@
       });
     };
 
-    // Helper to get exact pricing for each service
-    const getServiceAmount = (service) => {
-      if (service && service.price) return String(service.price);
+    // Helper to parse UPI params from QR code URL
+    const getUpiDetails = (qrUrl) => {
+      let upiData = { pa: "s.kumar.2372@superyes", pn: "Merchant", am: "" };
       try {
-        if (service && service.qrImageUrl) {
-          const parsedUrl = new URL(service.qrImageUrl);
+        if (qrUrl) {
+          const parsedUrl = new URL(qrUrl);
           const textParam = parsedUrl.searchParams.get("text");
           if (textParam) {
-            const upiUrl = new URL(decodeURIComponent(textParam));
-            const am = upiUrl.searchParams.get("am");
-            if (am) return am;
+            const upiString = decodeURIComponent(textParam);
+            const upiUrl = new URL(upiString);
+            upiData.pa = upiUrl.searchParams.get("pa") || upiData.pa;
+            upiData.pn = upiUrl.searchParams.get("pn") || upiData.pn;
+            upiData.am = upiUrl.searchParams.get("am") || "";
           }
         }
-      } catch (e) {}
-      return "230";
+      } catch (e) {
+        console.error("UPI parse error", e);
+      }
+      return upiData;
     };
 
     function App() {
@@ -634,29 +630,17 @@
         }
       };
 
-      // LIVE OFFICIAL PAYU REDIRECT & TELEGRAM SUBMIT LOGIC
       const handleFormSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
 
         const form = e.target;
         const formData = new FormData(form);
-        const txnid = "SGS" + Math.floor(100000 + Math.random() * 900000);
-        const servicePrice = parseFloat(getServiceAmount(activeService)).toFixed(2);
+        const submissionId = "SGS-" + Math.floor(100000 + Math.random() * 900000);
 
-        // Applicant metadata for PayU
-        const firstname = (formData.get("full_name") || formData.get("student_name") || "Applicant").replace(/[^a-zA-Z ]/g, '').trim() || "Applicant";
-        const email = formData.get("email_address") || formData.get("email_id") || "contactsgsonlineservice@gmail.com";
-        let rawPhone = formData.get("contact_number") || formData.get("mobile_no") || "9117080169";
-        const phone = rawPhone.replace(/[^0-9]/g, '').slice(-10) || "9117080169";
-        const productinfo = (activeService.title || "Form Assistance").slice(0, 50);
-
-        let textDetails = `📥 *New Assistance Order Initiated (PayU Test)*\n\n`;
-        textDetails += `🆔 *Txn ID / UID:* \`${txnid}\`\n`;
-        textDetails += `📌 *Service:* ${activeService.title}\n`;
-        textDetails += `💰 *Amount Payable:* ₹${servicePrice}\n`;
-        textDetails += `👤 *Applicant:* ${firstname} (${phone})\n`;
-        textDetails += `💳 *Gateway Status:* Redirecting to Official PayU Sandbox Gateway\n\n`;
+        let textDetails = `📥 *New Online Assistance Request Received!*\n\n`;
+        textDetails += `🆔 *UID:* \`${submissionId}\`\n`;
+        textDetails += `📌 *Service:* ${activeService.title}\n\n`;
         textDetails += `👤 *USER SUBMITTED DETAILS:*\n`;
 
         const rawFileInputs = [];
@@ -690,8 +674,15 @@
           });
         }
 
+        // Custom File Input for Main Payment Screenshot
+        const mainPayProof = formData.get("main_payment_screenshot");
+        if (mainPayProof && mainPayProof instanceof File && mainPayProof.size > 0) {
+          rawFileInputs.push({ label: "Main Payment Screenshot", name: "main_payment_screenshot", file: mainPayProof });
+        }
+
         const dateStr = new Date().toLocaleString();
-        textDetails += `\n📅 *Date:* ${dateStr}`;
+        textDetails += `\n💳 *Payment Screenshot:* Attached Below\n`;
+        textDetails += `📅 *Date:* ${dateStr}`;
 
         try {
           // 1. Send Complete Text Message First
@@ -723,7 +714,7 @@
             const paramName = isPdf ? 'document' : 'photo';
 
             fileData.append(paramName, item.file);
-            fileData.append("caption", `📎 ${item.label}\nUID: ${txnid}`);
+            fileData.append("caption", `📎 ${item.label}\nUID: ${submissionId}`);
 
             await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/${endpoint}`, {
               method: "POST",
@@ -731,60 +722,34 @@
             });
           }
 
-          // 4. Save to Local Tracking
+          // 4. Save UID, Title, Category, Amount & Date to LocalStorage
+          const upi = getUpiDetails(activeService.qrImageUrl);
+          const paidAmount = upi.am ? `₹${upi.am}` : "As Applicable / Paid";
+
           const newAppItem = {
-            uid: txnid,
+            uid: submissionId,
             serviceTitle: activeService.title,
             category: activeService.category,
-            amount: `₹${servicePrice}`,
+            amount: paidAmount,
             dateTime: dateStr
           };
           const updatedApps = [newAppItem, ...userApps];
           setUserApps(updatedApps);
           localStorage.setItem('sgs_user_applications', JSON.stringify(updatedApps));
 
-          showNotification("Connecting to PayU Secure Gateway...");
-
-          // 5. OFFICIAL PAYU SHA-512 HASH CALCULATION
-          // Format: key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5||||||SALT
-          const hashString = `${PAYU_KEY}|${txnid}|${servicePrice}|${productinfo}|${firstname}|${email}|||||||||||${PAYU_SALT}`;
-          const calculatedHash = CryptoJS.SHA512(hashString).toString(CryptoJS.enc.Hex);
-
-          // 6. AUTO POST TO PAYU TEST SANDBOX CHECKOUT
-          setTimeout(() => {
-            const payuForm = document.createElement("form");
-            payuForm.method = "POST";
-            payuForm.action = PAYU_PAYMENT_URL;
-
-            const postFields = {
-              key: PAYU_KEY,
-              txnid: txnid,
-              amount: servicePrice,
-              productinfo: productinfo,
-              firstname: firstname,
-              email: email,
-              phone: phone,
-              surl: `${window.location.origin}/?payment=success&uid=${txnid}`,
-              furl: `${window.location.origin}/?payment=failed&uid=${txnid}`,
-              hash: calculatedHash,
-              service_provider: "payu_paisa"
-            };
-
-            for (const [k, v] of Object.entries(postFields)) {
-              const hiddenInput = document.createElement("input");
-              hiddenInput.type = "hidden";
-              hiddenInput.name = k;
-              hiddenInput.value = v;
-              payuForm.appendChild(hiddenInput);
-            }
-
-            document.body.appendChild(payuForm);
-            payuForm.submit();
-          }, 800);
+          showNotification(`Application Submitted! UID: ${submissionId}`);
+          form.reset();
+          document.querySelectorAll('.img-preview').forEach(img => img.style.display = 'none');
+          document.querySelectorAll('.pdf-preview').forEach(pdf => pdf.style.display = 'none');
+          
+          setActiveService(null);
+          window.history.pushState({ page: 'receipt' }, '', window.location.pathname);
+          setSubmittedReceipt(newAppItem);
 
         } catch (err) {
           showNotification("Submission Failed. Please try again.");
           console.error(err);
+        } finally {
           setIsSubmitting(false);
         }
       };
@@ -957,7 +922,7 @@
                       SGS ONLINE SERVICE operates independently as a private digital facilitation desk helping users fill out online application forms (college admission, RTPS certificates, scholarship forms, etc.) accurately.
                     </p>
                     <ul className="list-disc pl-4 space-y-1 text-slate-700 font-medium text-[11px]">
-                      <li><strong>Data Collected:</strong> Name, DOB, Parent Names, Contact Number, Address, Academic Qualifications, and Uploaded Scanned Documents/PDFs.</li>
+                      <li><strong>Data Collected:</strong> Name, DOB, Parent Names, Contact Number, Address, Academic Qualifications, Uploaded Scanned Documents/PDFs, and Payment Screenshots.</li>
                       <li><strong>Purpose:</strong> Data is solely collected to fill out official forms on external portals on your behalf after verification via call/WhatsApp.</li>
                       <li><strong>Secure Storage:</strong> All user-submitted form data, compressed images, and documents are securely transmitted via end-to-end encrypted connection directly to our secure admin panel for processing. Your private records are 100% confidential and never shared or sold to third parties.</li>
                     </ul>
@@ -993,7 +958,7 @@
                     <ul className="list-disc pl-4 space-y-1 text-slate-700 font-medium text-[11px]">
                       <li><strong>Private Facilitation:</strong> SGS ONLINE SERVICE is an independent cyber cafe / form assistance center and NOT an official government entity or college portal.</li>
                       <li><strong>Accuracy Responsibility:</strong> Users are solely responsible for providing 100% accurate and authentic personal details and documents.</li>
-                      <li><strong>Fee Policy:</strong> Payment includes the official fee (if applicable) plus our nominal form-filling service charge processed through secure payment gateway.</li>
+                      <li><strong>Fee Policy:</strong> Payment includes the official fee (if applicable) plus our nominal form-filling service charge. Valid payment screenshot proof is mandatory.</li>
                     </ul>
                   </div>
 
@@ -1382,7 +1347,7 @@
                     <div>
                       <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Standard Turnaround Time (TAT)</h4>
                       <ul className="list-disc pl-5 space-y-1.5 text-slate-700 font-medium">
-                        <li><strong>Order Initiation:</strong> Once your application request and payment confirmation are received, our desk initiates data entry and document verification within <strong>15 to 30 minutes</strong> during operational hours.</li>
+                        <li><strong>Order Initiation:</strong> Once your application request and payment screenshot are received, our desk initiates data entry and document verification within <strong>15 to 30 minutes</strong> during operational hours.</li>
                         <li><strong>Form Submission & Acknowledgement:</strong> The complete form submission is carried out on the respective official university/government portal, and the official PDF receipt/acknowledgement slip is dispatched to the user's WhatsApp or Email within <strong>24 to 48 working hours</strong>.</li>
                         <li><strong>Live Tracking:</strong> Users can track their submitted requests anytime using their unique 6-digit Application UID in the 'Track My Application' section.</li>
                       </ul>
@@ -1470,7 +1435,7 @@
 
                     <div>
                       <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Accepted Payment Methods</h4>
-                      <p>We accept secure payments via authorized digital payment gateway interfaces (PayU), UPI Intent, Debit/Credit Cards, and Net Banking.</p>
+                      <p>We accept secure payments via NPCI Standard Dynamic UPI Intent, UPI QR Code scanning (PhonePe, Google Pay, Paytm, BHIM), and authorized digital payment gateway interfaces. Valid proof of payment (screenshot) is mandatory for processing.</p>
                     </div>
 
                     <div className="bg-rose-50 border border-rose-200 rounded-xl p-3.5 text-rose-950 space-y-2">
@@ -1540,7 +1505,7 @@
                       <li><strong>Contact Information:</strong> Email address, Mobile Number, Full Postal Address, District, Pin Code, and State.</li>
                       <li><strong>Academic & Identity Records:</strong> Educational Qualification details, Roll Numbers, Registration Numbers, Marksheets, and Certificates.</li>
                       <li><strong>Uploaded Documents & Media:</strong> Applicant Photograph, Digital Signature Scans, PDF Documents, and Identity Proof files uploaded by the user.</li>
-                      <li><strong>Payment Verification Data:</strong> Transaction ID, Fee Receipts, and Date of Payment.</li>
+                      <li><strong>Payment Verification Data:</strong> Payment Screenshots, Fee Receipts, and Date of Payment.</li>
                     </ul>
 
                     <h4 className="font-extrabold text-slate-800 text-xs uppercase tracking-wider pt-2">Usage Data</h4>
@@ -1977,46 +1942,75 @@
                             );
                           })}
 
-                          {/* OFFICIAL COMPLIANT PAYU CHECKOUT SUMMARY & PAYMENT GATEWAY SUBMIT CARD */}
-                          <div className="bg-slate-50 border-2 border-orange-300 rounded-2xl p-4 my-5 shadow-sm space-y-3">
-                            <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-                              <span className="text-xs font-extrabold text-slate-700 flex items-center gap-1.5">
-                                <Icons.CreditCard /> Online Application Fee & Processing Charge
-                              </span>
-                              <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">
-                                PayU Verified Checkout
-                              </span>
-                            </div>
+                          {/* PAYMENT SECTION WITH QR AND DYNAMIC UPI BUTTONS */}
+                          {activeService.qrImageUrl && (() => {
+                            const upi = getUpiDetails(activeService.qrImageUrl);
+                            const amParam = upi.am ? `&am=${upi.am}` : "";
+                            const phonepeUrl = `phonepe://pay?pa=${upi.pa}&pn=${encodeURIComponent(upi.pn)}${amParam}&cu=INR`;
+                            const gpayUrl = `tez://upi/pay?pa=${upi.pa}&pn=${encodeURIComponent(upi.pn)}${amParam}&cu=INR`;
+                            const genericUpiUrl = `upi://pay?pa=${upi.pa}&pn=${encodeURIComponent(upi.pn)}${amParam}&cu=INR`;
 
-                            <div className="space-y-1.5 text-xs">
-                              <div className="flex justify-between text-slate-600">
-                                <span>Selected Service:</span>
-                                <span className="font-semibold text-slate-900">{activeService.title}</span>
-                              </div>
-                              <div className="flex justify-between text-slate-600">
-                                <span>Assistance & Facilitation Charge:</span>
-                                <span className="font-semibold text-slate-900">Included</span>
-                              </div>
-                              <div className="flex justify-between text-slate-900 font-black text-sm pt-2 border-t border-dashed border-slate-300">
-                                <span>Total Amount to Pay:</span>
-                                <span className="text-orange-600 text-base">₹{getServiceAmount(activeService)}</span>
-                              </div>
-                            </div>
+                            return (
+                              <div className="bg-orange-50/80 border border-orange-200 p-4 rounded-xl text-center my-4 space-y-3">
+                                <p className="text-xs font-extrabold text-orange-950">Scan QR or Click Below to Pay {upi.am ? `₹${upi.am}` : ''}</p>
+                                
+                                <img src={activeService.qrImageUrl} alt="Payment QR Code" className="max-w-[180px] mx-auto rounded-lg border-2 border-orange-500 shadow-sm" />
 
-                            <div className="pt-2">
-                              <button 
-                                type="submit" 
-                                disabled={isSubmitting}
-                                className="w-full tiranga-btn-primary font-extrabold text-sm py-3.5 rounded-xl shadow-lg transition-all active:scale-95 disabled:bg-slate-400 flex items-center justify-center gap-2"
-                              >
-                                {isSubmitting ? "Connecting to PayU Secure Gateway..." : `Pay ₹${getServiceAmount(activeService)} via PayU Gateway →`}
-                              </button>
-                            </div>
+                                {/* DYNAMIC UPI BUTTONS */}
+                                <div className="pt-2 flex flex-col sm:flex-row gap-2 justify-center items-center">
+                                  {/* PhonePe Button */}
+                                  <a 
+                                    href={phonepeUrl} 
+                                    className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-[#5f259f] hover:bg-[#4a1c7d] text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow transition-all"
+                                  >
+                                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18.8 10.2c0-2.4-1.9-4.3-4.3-4.3H8.3c-.6 0-1.1.5-1.1 1.1v10.1c0 .6.5 1.1 1.1 1.1h2.3c.6 0 1.1-.5 1.1-1.1v-2.8h2.8c2.4 0 4.3-1.9 4.3-4.2zm-4.3 1.9h-2.8v-3.8h2.8c1 0 1.9.9 1.9 1.9 0 1-.9 1.9-1.9 1.9z"/></svg>
+                                    <span>PhonePe</span>
+                                  </a>
 
-                            <p className="text-[10px] text-center text-slate-500 font-medium">
-                              🔒 <Icons.LockClosed /> 256-Bit SSL Encrypted Transaction. Official receipt will be delivered upon successful payment.
-                            </p>
+                                  {/* GPay Button */}
+                                  <a 
+                                    href={gpayUrl} 
+                                    className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-white text-slate-800 border border-slate-300 hover:bg-slate-50 font-bold text-xs py-2.5 px-3 rounded-lg shadow-sm transition-all"
+                                  >
+                                    <svg className="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+                                    <span>Google Pay</span>
+                                  </a>
+
+                                  {/* Pay via Other Apps Button */}
+                                  <a 
+                                    href={genericUpiUrl} 
+                                    className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow transition-all"
+                                  >
+                                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                    <span>Pay via Other App</span>
+                                  </a>
+                                </div>
+                              </div>
+                            );
+                          })()}
+
+                          {/* PAYMENT SCREENSHOT UPLOAD */}
+                          <div className="space-y-1">
+                            <label className="block text-xs font-extrabold text-rose-600">Upload Payment Screenshot (Mandatory):</label>
+                            <input 
+                              type="file" 
+                              name="main_payment_screenshot" 
+                              accept="image/*" 
+                              required 
+                              onChange={(e) => handleFilePreview(e, 'prev_img_main_payment', 'prev_pdf_main_payment')}
+                              className="w-full bg-slate-50 border border-rose-300 rounded-lg p-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-rose-600" 
+                            />
+                            <img id="prev_img_main_payment" className="img-preview" alt="Payment Screenshot Preview" />
+                            <div id="prev_pdf_main_payment" className="pdf-preview"></div>
                           </div>
+
+                          <button 
+                            type="submit" 
+                            disabled={isSubmitting}
+                            className="w-full tiranga-btn-primary font-extrabold text-sm py-3.5 rounded-xl shadow-lg transition-all active:scale-95 disabled:bg-slate-400 mt-2"
+                          >
+                            {isSubmitting ? "Uploading & Submitting..." : "Submit Application →"}
+                          </button>
                         </form>
                       </>
                     )}
