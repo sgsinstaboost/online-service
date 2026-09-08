@@ -1,2127 +1,336 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
 <head>
-
-<meta name="google-site-verification" content="n6gutNuaXm4jPFef6_Yxsfz5UcDynkGHi86Py-8IH-0" />
-
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>SGS ONLINE SERVICE - Form Filling Assistance & Help Desk</title>
-  
-  <link opacity="1.0" rel="icon" type="image/png" href="logo.png" />
-
-  <!-- Social Media Sharing Meta Tags -->
-  <meta property="og:title" content="SGS ONLINE SERVICE - Form Filling Assistance Desk" />
-  <meta property="og:description" content="Get expert assistance for college admission forms, RTPS certificates, scholarships, and online job applications." />
-  <meta property="og:image" content="https://sgsonlineservice.store/logo.png" />
-  <meta property="og:url" content="https://sgsonlineservice.store/" />
-  <meta property="og:type" content="website" />
-
-<!-- Primary SEO Meta Tags -->
-<meta name="description" content="SGS Online Service - Online form filling assistance in Bihar, VKSU Admission, RTPS Caste Income Residence Certificate, Scholarships & Job Portal." />
-<meta name="keywords" content="SGS Online Service, online form filling, Arrah Cyber Cafe, sachin cyber cafe, sgs online store, sgs store, sgs online services, VKSU admission form, Bihar RTPS certificate online, Caste certificate Bihar, Income certificate Bihar, Bihar scholarship form, job form online assistance, Bihar online helpdesk" />
-<meta name="author" content="SGS Online Service" />
-<meta name="robots" content="index, follow" />
-
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-  <style>
-    html, body { overscroll-behavior-y: contain; text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
-    .scrollbar-none::-webkit-scrollbar { display: none; }
-    .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
-    #splash-screen { transition: opacity 0.3s ease-out; }
-    .img-preview { max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px dashed #ea580c; display: none; object-fit: cover; margin-top: 6px; }
-    .pdf-preview { display: none; margin-top: 6px; font-size: 11px; font-weight: bold; color: #1e3a8a; background: #eff6ff; padding: 6px 10px; border-radius: 6px; border: 1px solid #bfdbfe; width: fit-content; }
-
-    /* TIRANGA THEME ACCENTS & GRADIENTS */
-    .tiranga-stripe {
-      height: 4px;
-      background: linear-gradient(90deg, #FF9933 0%, #FF9933 33.3%, #FFFFFF 33.3%, #FFFFFF 66.6%, #138808 66.6%, #138808 100%);
-    }
-
-    .tiranga-gradient-bg {
-      background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 50%, #064e3b 100%);
-    }
-
-    .tiranga-card-header {
-      background: linear-gradient(90deg, #ea580c 0%, #0284c7 50%, #16a34a 100%);
-    }
-
-    .tiranga-btn-primary {
-      background: linear-gradient(135deg, #f97316 0%, #ea580c 40%, #16a34a 100%);
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
-    }
-    .tiranga-btn-primary:hover {
-      background: linear-gradient(135deg, #ea580c 0%, #c2410c 40%, #15803d 100%);
-    }
-
-    .text-saffron { color: #f97316; }
-    .text-tiranga-green { color: #16a34a; }
-    .text-chakra { color: #1e3a8a; }
-
-    /* HIGH-CONTRAST TIRANGA NEON NIGHT MODE OVERRIDES */
-    body.neon-blue-mode {
-      background-color: #050811 !important;
-      color: #ffffff !important;
-    }
-    
-    /* Main Background Containers in Neon Mode */
-    body.neon-blue-mode div[class*="bg-white"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *),
-    body.neon-blue-mode div[class*="bg-slate-50"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *),
-    body.neon-blue-mode div[class*="bg-indigo"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *),
-    body.neon-blue-mode div[class*="bg-amber"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *),
-    body.neon-blue-mode div[class*="bg-emerald"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *),
-    body.neon-blue-mode div[class*="bg-blue"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *) {
-      background-color: #0b1329 !important;
-      color: #ffffff !important;
-      border-color: #f97316 !important;
-      box-shadow: 0 0 10px rgba(249, 115, 22, 0.2) !important;
-    }
-
-    /* DRAWER OVERLAY & PANEL IN NEON MODE */
-    body.neon-blue-mode .drawer-panel {
-      background-color: #090f20 !important;
-      color: #ffffff !important;
-      border-right: 2px solid #f97316 !important;
-      box-shadow: 5px 0 25px rgba(249, 115, 22, 0.3) !important;
-    }
-
-    body.neon-blue-mode .drawer-panel div[class*="bg-"] {
-      background-color: #111a36 !important;
-      border-color: rgba(249, 115, 22, 0.5) !important;
-    }
-
-    body.neon-blue-mode .drawer-panel div[class*="bg-"] *,
-    body.neon-blue-mode .drawer-panel nav button,
-    body.neon-blue-mode .drawer-panel nav button span,
-    body.neon-blue-mode .drawer-panel h3,
-    body.neon-blue-mode .drawer-panel h4,
-    body.neon-blue-mode .drawer-panel h5,
-    body.neon-blue-mode .drawer-panel p {
-      color: #ffffff !important;
-    }
-
-    /* NOTICE BOARD FULL OVERRIDE IN NEON MODE */
-    body.neon-blue-mode .notice-board-box,
-    body.neon-blue-mode div[class*="from-orange-50"] {
-      background: linear-gradient(135deg, #1f0b02 0%, #062b14 100%) !important;
-      border: 2px solid #f97316 !important;
-      box-shadow: 0 0 16px rgba(249, 115, 22, 0.4) !important;
-    }
-    body.neon-blue-mode .notice-board-box h2,
-    body.neon-blue-mode .notice-board-box span:not(.no-neon) {
-      color: #ffedd5 !important;
-      font-weight: 900 !important;
-    }
-    body.neon-blue-mode .notice-board-box svg {
-      stroke: #f97316 !important;
-    }
-    body.neon-blue-mode .notice-board-box div[class*="bg-white"] {
-      background-color: #0b1329 !important;
-      border-color: rgba(234, 88, 12, 0.7) !important;
-      color: #ffffff !important;
-    }
-    body.neon-blue-mode .notice-board-box div[class*="bg-white"] span {
-      color: #ffffff !important;
-      font-weight: 700 !important;
-    }
-
-    /* WARNING / AMBER / ROSE BOX OVERRIDES IN NEON MODE */
-    body.neon-blue-mode div[class*="bg-rose-50"],
-    body.neon-blue-mode .warning-rose-box {
-      background-color: #991b1b !important;
-      border: 2px solid #fca5a5 !important;
-      box-shadow: 0 0 12px rgba(239, 68, 68, 0.8) !important;
-    }
-    body.neon-blue-mode div[class*="bg-rose-50"] p,
-    body.neon-blue-mode div[class*="bg-rose-50"] span,
-    body.neon-blue-mode .warning-rose-box p,
-    body.neon-blue-mode .warning-rose-box span {
-      color: #ffffff !important;
-      font-weight: 900 !important;
-    }
-
-    body.neon-blue-mode div[class*="bg-amber-50"],
-    body.neon-blue-mode .warning-amber-box {
-      background-color: #854d0e !important;
-      border: 2px solid #fde047 !important;
-      box-shadow: 0 0 10px rgba(245, 158, 11, 0.7) !important;
-    }
-    body.neon-blue-mode div[class*="bg-amber-50"] p,
-    body.neon-blue-mode div[class*="bg-amber-50"] span,
-    body.neon-blue-mode div[class*="bg-amber-50"] strong,
-    body.neon-blue-mode .warning-amber-box p,
-    body.neon-blue-mode .warning-amber-box span,
-    body.neon-blue-mode .warning-amber-box strong {
-      color: #ffffff !important;
-      font-weight: 900 !important;
-    }
-
-    /* YOUTUBE GUIDE BUTTON OVERRIDE IN NEON MODE */
-    body.neon-blue-mode nav a.youtube-guide-btn,
-    body.neon-blue-mode nav a.youtube-guide-btn * {
-      background-color: #dc2626 !important;
-      color: #ffffff !important;
-      font-weight: 900 !important;
-      border-color: #f87171 !important;
-    }
-
-    /* ALL TEXT INSIDE NEON MODE */
-    body.neon-blue-mode h1:not(.slip-card-clean *), 
-    body.neon-blue-mode h2:not(.slip-card-clean *), 
-    body.neon-blue-mode h3:not(.slip-card-clean *), 
-    body.neon-blue-mode h4:not(.slip-card-clean *), 
-    body.neon-blue-mode h5:not(.slip-card-clean *), 
-    body.neon-blue-mode h6:not(.slip-card-clean *), 
-    body.neon-blue-mode p:not(.slip-card-clean *):not(.bg-rose-50 *):not(.bg-amber-50 *):not(.warning-rose-box *):not(.warning-amber-box *), 
-    body.neon-blue-mode label:not(.slip-card-clean *), 
-    body.neon-blue-mode span:not(.no-neon):not(.slip-card-clean *):not(.bg-rose-50 *):not(.bg-amber-50 *):not(.warning-rose-box *):not(.warning-amber-box *):not(.youtube-guide-btn *), 
-    body.neon-blue-mode li:not(.slip-card-clean *), 
-    body.neon-blue-mode strong:not(.slip-card-clean *):not(.bg-rose-50 *):not(.bg-amber-50 *):not(.warning-rose-box *):not(.warning-amber-box *) {
-      color: #ffffff !important;
-    }
-
-    /* SLIP RECEIPT CARD ISOLATION CSS RULES */
-    .slip-card-clean {
-      background-color: #ffffff !important;
-      color: #0f172a !important;
-      border: 2px solid #ea580c !important;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15) !important;
-    }
-    .slip-card-clean * {
-      text-shadow: none !important;
-    }
-    .slip-text-dark {
-      color: #0f172a !important;
-    }
-    .slip-text-muted {
-      color: #475569 !important;
-    }
-    .slip-box-inner {
-      background-color: #fff7ed !important;
-      border: 1px solid #fed7aa !important;
-    }
-
-    /* DRAWER NAVIGATION LINKS TEXT */
-    body.neon-blue-mode nav button span,
-    body.neon-blue-mode nav button,
-    body.neon-blue-mode nav a:not(.youtube-guide-btn) span,
-    body.neon-blue-mode nav a:not(.youtube-guide-btn) {
-      color: #ffffff !important;
-    }
-
-    /* BUTTONS & BADGES FOR NEON MODE */
-    body.neon-blue-mode button:not(.no-neon):not(.slip-card-clean *),
-    body.neon-blue-mode .neon-red-btn,
-    body.neon-blue-mode span[class*="bg-slate-100"]:not(.slip-card-clean *),
-    body.neon-blue-mode span[class*="bg-blue-600"]:not(.slip-card-clean *) {
-      background-color: #ea580c !important;
-      color: #ffffff !important;
-      font-weight: 900 !important;
-      border: 1px solid #fb923c !important;
-    }
-
-    /* INPUT FIELDS IN NEON MODE */
-    body.neon-blue-mode input,
-    body.neon-blue-mode select,
-    body.neon-blue-mode textarea {
-      background-color: #111a36 !important;
-      color: #fdba74 !important;
-      border: 1px solid #f97316 !important;
-    }
-
-    /* PREFIX BADGE */
-    body.neon-blue-mode .prefix-badge {
-      background-color: #0b1329 !important;
-      color: #fdba74 !important;
-      border-color: #f97316 !important;
-    }
-
-    /* POST CATEGORY BADGES IN NEON MODE FIX */
-    body.neon-blue-mode .post-category-badge {
-      background-color: #0b1329 !important;
-      color: #ffedd5 !important;
-      border: 1px solid #f97316 !important;
-      box-shadow: 0 0 8px rgba(249, 115, 22, 0.35) !important;
-      font-weight: 800 !important;
-    }
-
-    /* HEADER BAR IN NEON MODE */
-    body.neon-blue-mode header {
-      background: linear-gradient(to right, #431407, #0f172a, #064e3b) !important;
-      border-bottom: 2px solid #f97316 !important;
-    }
-
-    /* SVG ICONS COLOR IN NEON MODE */
-    body.neon-blue-mode svg:not(.slip-card-clean *):not(.youtube-guide-btn *) {
-      stroke: #fdba74 !important;
-    }
-
-    @media print {
-      body * {
-        visibility: hidden;
-      }
-      #printable-receipt, #printable-receipt * {
-        visibility: visible;
-      }
-      #printable-receipt {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-      }
-      .no-print {
-        display: none !important;
-      }
-    }
-  </style>
-
-  <!-- External Static Posts Data Files -->
-  <script src="posts.js"></script>
-  <script src="html_posts.js"></script>
-
-  <!-- SEO SCHEMA FOR SEARCH ENGINE CRAWLER -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "GovernmentService",
-    "name": "SGS ONLINE SERVICE",
-    "url": "https://sgsonlineservice.store/",
-    "description": "SGS Online Service - Online form filling assistance in Bihar, VKSU Admission, RTPS Caste Income Residence Certificate, Scholarships & Job Portal.",
-    "provider": {
-      "@type": "LocalBusiness",
-      "name": "SGS Online Service Helpdesk",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Arrah",
-        "addressRegion": "Bihar",
-        "postalCode": "802165",
-        "addressCountry": "IN"
-      }
-    }
-  }
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGS MOCK TEST - Official App Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for modals to look more native */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+    </style>
 </head>
-<body class="bg-orange-50/30 text-slate-800 antialiased selection:bg-orange-200">
+<body class="bg-slate-50 flex flex-col min-h-screen font-sans text-slate-800">
 
-  <!-- TOP TIRANGA ACCENT RIBBON -->
-  <div class="tiranga-stripe w-full fixed top-0 z-[100]"></div>
-  
-  <!-- SPLASH LOADER SCREEN WITH LOGO & TIRANGA THEME -->
-  <div id="splash-screen" class="fixed inset-0 z-[100] bg-gradient-to-br from-orange-950 via-slate-950 to-emerald-950 flex flex-col items-center justify-center p-4 text-white">
-    <div class="flex flex-col items-center text-center max-w-sm">
-      <div class="relative mb-4">
-        <img src="logo.png" alt="SGS Logo" class="w-20 h-20 rounded-2xl shadow-xl object-cover animate-pulse border-2 border-orange-400" onerror="this.onerror=null; this.style.display='none';" />
-        <div class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-white animate-ping"></div>
-      </div>
-      <h1 class="text-xl sm:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-white to-emerald-400 tracking-tight leading-tight">
-        SGS ONLINE SERVICE
-      </h1>
-      <p class="text-[11px] font-bold text-orange-200/90 uppercase tracking-widest mt-1">
-        Online Form Filling Assistance & Facilitation Portal
-      </p>
-      <div class="mt-8 flex flex-col items-center gap-2">
-        <div class="w-8 h-8 border-3 border-orange-400 border-t-emerald-500 rounded-full animate-spin"></div>
-        <p class="text-[11px] text-slate-300 font-semibold tracking-wide">Loading Assistance Portal...</p>
-      </div>
-    </div>
-  </div>
-
-  <div id="root" class="pt-1">
-    <!-- STATIC NOSCRIPT FOR GOOGLE CRAWLER -->
-    <noscript>
-      <h1>SGS Online Service - Form Filling Assistance</h1>
-      <p>Get expert assistance for college admission forms, RTPS certificates, scholarships, and online job applications.</p>
-      <ul>
-        <li><a href="https://sgsonlineservice.store/?service=internship-application-01">Internship Application Online Form</a></li>
-        <li><a href="https://sgsonlineservice.store/?service=rtps-caste-02">Bihar RTPS Caste Certificate (जाति प्रमाण पत्र)</a></li>
-        <li><a href="https://sgsonlineservice.store/?service=rtps-income-03">Bihar RTPS Income Certificate (आय प्रमाण पत्र)</a></li>
-        <li><a href="https://sgsonlineservice.store/?service=rtps-residence-04">Bihar RTPS Residence Certificate (निवास प्रमाण पत्र)</a></li>
-        <li><a href="https://sgsonlineservice.store/?service=vksu-exam-form-all-sem-05">VKSU Exam Form All Semester</a></li>
-        <li><a href="https://sgsonlineservice.store/?service=rtps-combo-06">Bihar RTPS Combo Service</a></li>
-        <li><a href="https://sgsonlineservice.store/?service=vksu-admission-sem5-All-session-07">VKSU Online Admission Form</a></li>
-        <li><a href="https://sgsonlineservice.store/?service=Government-Forms-08">Bihar Character Certificate</a></li>
-        <li><a href="https://sgsonlineservice.store/?service=internship-120hr-09">Intership 120 Hour Complete</a></li>
-        <li><a href="https://sgsonlineservice.store/?service=pan-card-apply-10">New PAN Card / Correction Online Form</a></li>
-        <li><a href="https://sgsonlineservice.store/?service=pms-scholarship-2026-2027-11">PMS scholarship 2026-2027</a></li>
-      </ul>
-    </noscript>
-  </div>
-
-  <script>
-    setTimeout(() => {
-      const splash = document.getElementById('splash-screen');
-      if (splash) {
-        splash.style.opacity = '0';
-        setTimeout(() => splash.remove(), 300);
-      }
-    }, 600);
-  </script>
-
-  <script type="text/babel">
-    const { useState, useEffect } = React;
-
-    // Telegram Bot Credentials
-    const TELEGRAM_BOT_TOKEN = "8358900801:AAE42RhsmJPv_h40nGEqC7wuXW5HQ_wp8pk";
-    const TELEGRAM_CHAT_ID = "5011508473";
-
-    // Support Encrypted Credentials
-    const _0xwa = "OTExNzA4MDE2OQ==";
-    const _0xem = "contactsgsonlineservice@gmail.com";
-
-    const Icons = {
-      Search: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>,
-      ArrowLeft: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>,
-      ChevronRight: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>,
-      Bell: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>,
-      Menu: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"/></svg>,
-      X: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>,
-      ShieldCheck: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>,
-      Share2: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>,
-      Headphones: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>,
-      ListCheck: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 022 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>,
-      Trash: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>,
-      Moon: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>,
-      Download: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>,
-      CheckCircle: () => <svg className="w-12 h-12 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
-      Info: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
-      Receipt: () => <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>,
-      Youtube: () => <svg className="w-4 h-4 fill-current text-red-600 shrink-0" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>,
-      CreditCard: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>,
-      Truck: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>,
-      Building: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-    };
-
-    // HIGH QUALITY HD IMAGE COMPRESSION
-    const compressImage = (file) => {
-      return new Promise((resolve) => {
-        if (!file || file.type === 'application/pdf' || !file.type.startsWith('image/')) {
-          resolve(file);
-          return;
-        }
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = (event) => {
-          const img = new Image();
-          img.src = event.target.result;
-          img.onload = () => {
-            const canvas = document.createElement('canvas');
-            canvas.width = img.width;
-            canvas.height = img.height;
-
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            
-            canvas.toBlob((blob) => {
-              if (blob) {
-                const compressedFile = new File([blob], file.name, {
-                  type: 'image/jpeg',
-                  lastModified: Date.now()
-                });
-                resolve(compressedFile);
-              } else {
-                resolve(file);
-              }
-            }, 'image/jpeg', 0.92);
-          };
-        };
-      });
-    };
-
-    // Helper to parse UPI params from QR code URL
-    const getUpiDetails = (qrUrl) => {
-      let upiData = { pa: "s.kumar.2372@superyes", pn: "Merchant", am: "" };
-      try {
-        if (qrUrl) {
-          const parsedUrl = new URL(qrUrl);
-          const textParam = parsedUrl.searchParams.get("text");
-          if (textParam) {
-            const upiString = decodeURIComponent(textParam);
-            const upiUrl = new URL(upiString);
-            upiData.pa = upiUrl.searchParams.get("pa") || upiData.pa;
-            upiData.pn = upiUrl.searchParams.get("pn") || upiData.pn;
-            upiData.am = upiUrl.searchParams.get("am") || "";
-          }
-        }
-      } catch (e) {
-        console.error("UPI parse error", e);
-      }
-      return upiData;
-    };
-
-    function App() {
-      // Merge normal posts and custom HTML posts seamlessly
-      const combinedAllPosts = [
-        ...(typeof ALL_POSTS !== 'undefined' ? ALL_POSTS : []),
-        ...(typeof HTML_POSTS !== 'undefined' ? HTML_POSTS : [])
-      ];
-
-      const [services, setServices] = useState(combinedAllPosts);
-      const [notices, setNotices] = useState(typeof STATIC_NOTICES !== 'undefined' ? STATIC_NOTICES : []);
-      const [categories, setCategories] = useState(typeof STATIC_CATEGORIES !== 'undefined' ? STATIC_CATEGORIES : []);
-      
-      const [selectedCat, setSelectedCat] = useState('All Services');
-      const [searchQuery, setSearchQuery] = useState('');
-      const [activeService, setActiveService] = useState(null); 
-      const [showDrawer, setShowDrawer] = useState(false);
-      const [activeModalPage, setActiveModalPage] = useState(null);
-      const [toastMsg, setToastMsg] = useState('');
-      const [isSubmitting, setIsSubmitting] = useState(false);
-      const [submittedReceipt, setSubmittedReceipt] = useState(null);
-
-      // Post Selection Confirmation Warning Modal State
-      const [pendingService, setPendingService] = useState(null);
-
-      // Neon Mode State
-      const [isNeonMode, setIsNeonMode] = useState(() => {
-        try {
-          return localStorage.getItem('sgs_theme') === 'neon';
-        } catch (e) {
-          return false;
-        }
-      });
-
-      useEffect(() => {
-        if (isNeonMode) {
-          document.body.classList.add('neon-blue-mode');
-          try { localStorage.setItem('sgs_theme', 'neon'); } catch (e) {}
-        } else {
-          document.body.classList.remove('neon-blue-mode');
-          try { localStorage.setItem('sgs_theme', 'light'); } catch (e) {}
-        }
-      }, [isNeonMode]);
-
-      // First Time Visit Legal Agreement State
-      const [hasAgreed, setHasAgreed] = useState(() => {
-        try {
-          return localStorage.getItem('sgs_terms_accepted') === 'true';
-        } catch (e) {
-          return false;
-        }
-      });
-
-      const handleAcceptTerms = () => {
-        try {
-          localStorage.setItem('sgs_terms_accepted', 'true');
-        } catch (e) {}
-        setHasAgreed(true);
-      };
-
-      // User Applications State from LocalStorage
-      const [userApps, setUserApps] = useState(() => {
-        try {
-          const saved = localStorage.getItem('sgs_user_applications');
-          return saved ? JSON.parse(saved) : [];
-        } catch (e) {
-          return [];
-        }
-      });
-
-      const showNotification = (msg) => {
-        setToastMsg(msg);
-        setTimeout(() => setToastMsg(''), 3000);
-      };
-
-      // Helper function to delete single item from tracking list
-      const deleteSingleApp = (uidToDelete) => {
-        const updated = userApps.filter(item => item.uid !== uidToDelete);
-        setUserApps(updated);
-        localStorage.setItem('sgs_user_applications', JSON.stringify(updated));
-        showNotification("Application removed from tracking!");
-      };
-
-      // Helper function to clear all tracking items
-      const clearAllApps = () => {
-        if (window.confirm("Do you want to clear all application tracking history?")) {
-          setUserApps([]);
-          localStorage.removeItem('sgs_user_applications');
-          showNotification("All tracking history cleared!");
-        }
-      };
-
-      // STANDARD QUERY URL ROUTING (FULL CLEAN URLS FOR EACH SERVICE)
-      const parseURLParams = () => {
-        const params = new URLSearchParams(window.location.search);
-        const srvId = params.get('service');
-        const catName = params.get('category');
-
-        if (srvId) {
-          const matchedSrv = services.find(s => String(s.id) === String(srvId));
-          if (matchedSrv) {
-            setActiveService(matchedSrv);
-            return;
-          }
-        } else {
-          setActiveService(null);
-        }
-
-        if (catName) {
-          setSelectedCat(decodeURIComponent(catName));
-        } else {
-          setSelectedCat('All Services');
-        }
-      };
-
-      useEffect(() => {
-        parseURLParams();
-        window.addEventListener('popstate', parseURLParams);
-        return () => window.removeEventListener('popstate', parseURLParams);
-      }, [services]);
-
-      const openServiceDetail = (srv) => {
-        setPendingService(srv);
-      };
-
-      const handleConfirmServiceSelection = () => {
-        if (pendingService) {
-          const newUrl = `${window.location.pathname}?service=${encodeURIComponent(pendingService.id)}`;
-          window.history.pushState({ service: pendingService.id }, '', newUrl);
-          setActiveService(pendingService);
-          setPendingService(null);
-        }
-      };
-
-      const handleCategorySelect = (catName) => {
-        if (catName !== selectedCat) {
-          setSelectedCat(catName);
-          setActiveService(null);
-          const newUrl = catName === 'All Services' 
-            ? window.location.pathname 
-            : `${window.location.pathname}?category=${encodeURIComponent(catName)}`;
-          window.history.pushState({ category: catName }, '', newUrl);
-        }
-      };
-
-      const handleNavigateHome = () => {
-        setSelectedCat('All Services');
-        setActiveService(null);
-        setSubmittedReceipt(null);
-        setShowDrawer(false);
-        window.history.pushState({}, '', window.location.pathname);
-      };
-
-      const handleFilePreview = (e, imgPreviewId, pdfPreviewId) => {
-        const file = e.target.files[0];
-        const imgPreview = document.getElementById(imgPreviewId);
-        const pdfPreview = document.getElementById(pdfPreviewId);
-
-        if (!file) return;
-
-        if (file.type === 'application/pdf') {
-          if (imgPreview) imgPreview.style.display = 'none';
-          if (pdfPreview) {
-            pdfPreview.innerText = `📄 PDF Selected: ${file.name}`;
-            pdfPreview.style.display = 'block';
-          }
-        } else if (file.type.startsWith('image/')) {
-          if (pdfPreview) pdfPreview.style.display = 'none';
-          const reader = new FileReader();
-          reader.onload = (event) => {
-            if (imgPreview) {
-              imgPreview.src = event.target.result;
-              imgPreview.style.display = 'block';
-            }
-          };
-          reader.readAsDataURL(file);
-        }
-      };
-
-      const handleFormSubmit = async (e) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-
-        const form = e.target;
-        const formData = new FormData(form);
-        const submissionId = "SGS-" + Math.floor(100000 + Math.random() * 900000);
-
-        let textDetails = `📥 *New Online Assistance Request Received!*\n\n`;
-        textDetails += `🆔 *UID:* \`${submissionId}\`\n`;
-        textDetails += `📌 *Service:* ${activeService.title}\n\n`;
-        textDetails += `👤 *USER SUBMITTED DETAILS:*\n`;
-
-        const rawFileInputs = [];
-
-        // Loop through all defined fields in post configuration
-        if (activeService.fields) {
-          activeService.fields.forEach((f) => {
-            if (f.type === 'file') {
-              const fileObj = formData.get(f.name);
-              if (fileObj && fileObj instanceof File && fileObj.size > 0) {
-                rawFileInputs.push({ label: f.label, name: f.name, file: fileObj });
-              }
-            } else if (f.type === 'radio') {
-              const selectedValue = formData.get(f.name);
-              let selectedLabel = selectedValue;
-              if (f.options) {
-                const optObj = f.options.find(o => o.value === selectedValue);
-                if (optObj) selectedLabel = optObj.label;
-              }
-              textDetails += `• *${f.label}:* ${selectedLabel || 'Not Selected'}\n`;
-            } else {
-              let val = formData.get(f.name);
-              const isPhoneField = f.type === 'tel' || f.name?.toLowerCase().includes('mobile') || f.name?.toLowerCase().includes('phone') || f.label?.toLowerCase().includes('mobile') || f.label?.toLowerCase().includes('phone');
-              if (val && isPhoneField && !val.startsWith('+91')) {
-                val = `+91 ${val}`;
-              }
-              if (val) {
-                textDetails += `• *${f.label}:* ${val}\n`;
-              }
-            }
-          });
-        }
-
-        // Custom File Input for Main Payment Screenshot
-        const mainPayProof = formData.get("main_payment_screenshot");
-        if (mainPayProof && mainPayProof instanceof File && mainPayProof.size > 0) {
-          rawFileInputs.push({ label: "Main Payment Screenshot", name: "main_payment_screenshot", file: mainPayProof });
-        }
-
-        const dateStr = new Date().toLocaleString();
-        textDetails += `\n💳 *Payment Screenshot:* Attached Below\n`;
-        textDetails += `📅 *Date:* ${dateStr}`;
-
-        try {
-          // 1. Send Complete Text Message First
-          await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              chat_id: TELEGRAM_CHAT_ID,
-              text: textDetails,
-              parse_mode: "Markdown"
-            })
-          });
-
-          // 2. Compress Images
-          const processedFiles = await Promise.all(
-            rawFileInputs.map(async (item) => {
-              const fileObj = await compressImage(item.file);
-              return { label: item.label, name: item.name, file: fileObj };
-            })
-          );
-
-          // 3. Upload Files to Telegram
-          for (const item of processedFiles) {
-            const fileData = new FormData();
-            fileData.append("chat_id", TELEGRAM_CHAT_ID);
-            
-            const isPdf = item.file.type === 'application/pdf';
-            const endpoint = isPdf ? 'sendDocument' : 'sendPhoto';
-            const paramName = isPdf ? 'document' : 'photo';
-
-            fileData.append(paramName, item.file);
-            fileData.append("caption", `📎 ${item.label}\nUID: ${submissionId}`);
-
-            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/${endpoint}`, {
-              method: "POST",
-              body: fileData
-            });
-          }
-
-          // 4. Save UID, Title, Category, Amount & Date to LocalStorage
-          const upi = getUpiDetails(activeService.qrImageUrl);
-          const paidAmount = upi.am ? `₹${upi.am}` : "As Applicable / Paid";
-
-          const newAppItem = {
-            uid: submissionId,
-            serviceTitle: activeService.title,
-            category: activeService.category,
-            amount: paidAmount,
-            dateTime: dateStr
-          };
-          const updatedApps = [newAppItem, ...userApps];
-          setUserApps(updatedApps);
-          localStorage.setItem('sgs_user_applications', JSON.stringify(updatedApps));
-
-          showNotification(`Application Submitted! UID: ${submissionId}`);
-          form.reset();
-          document.querySelectorAll('.img-preview').forEach(img => img.style.display = 'none');
-          document.querySelectorAll('.pdf-preview').forEach(pdf => pdf.style.display = 'none');
-          
-          setActiveService(null);
-          window.history.pushState({ page: 'receipt' }, '', window.location.pathname);
-          setSubmittedReceipt(newAppItem);
-
-        } catch (err) {
-          showNotification("Submission Failed. Please try again.");
-          console.error(err);
-        } finally {
-          setIsSubmitting(false);
-        }
-      };
-
-      const handleViewPastReceipt = (app) => {
-        const receiptData = {
-          uid: app.uid,
-          serviceTitle: app.serviceTitle,
-          category: app.category || "Service Request",
-          dateTime: app.dateTime || "Recent Submission",
-          amount: app.amount || "Paid / Verified"
-        };
-        setActiveModalPage(null);
-        window.history.pushState({ page: 'receipt' }, '', window.location.pathname);
-        setSubmittedReceipt(receiptData);
-      };
-
-      const handleShareWebsite = () => {
-        if (navigator.share) {
-          navigator.share({ title: 'SGS ONLINE SERVICE', url: window.location.href }).catch(() => {});
-        } else {
-          navigator.clipboard.writeText(window.location.href);
-          showNotification('Website link copied!');
-        }
-        setShowDrawer(false);
-      };
-
-      const generateTicketId = () => {
-        return "SGS-" + Math.floor(100000 + Math.random() * 900000);
-      };
-
-      const handleWhatsAppSupport = () => {
-        const phone = atob(_0xwa);
-        const ticketId = generateTicketId();
-        const message = encodeURIComponent(`Hello Support Team,\n\nI need help regarding SGS Online Service Portal.\nMy Support Ticket ID: ${ticketId}\n\nPlease assist me.`);
-        
-        alert(`Your Support Ticket ID: ${ticketId}\nOpening WhatsApp...`);
-        window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
-      };
-
-      const handleSendReceiptWhatsApp = () => {
-        if (!submittedReceipt) return;
-        const phone = atob(_0xwa);
-        const msg = encodeURIComponent(`Hello Admin,\n\nI have submitted a new form on SGS Online Service.\n\n🆔 Application UID: ${submittedReceipt.uid}\n📌 Service: ${submittedReceipt.serviceTitle}\n📂 Category: ${submittedReceipt.category}\n💳 Amount Paid: ${submittedReceipt.amount}\n📅 Date: ${submittedReceipt.dateTime}\n\nPlease verify and process my form.`);
-        window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
-      };
-
-      const handleEmailSupport = () => {
-        const ticketId = generateTicketId();
-        const subject = encodeURIComponent(`Support Request - Ticket #${ticketId}`);
-        const body = encodeURIComponent(`Hello Support Team,\n\nI need help regarding:\n\nSupport Ticket ID: ${ticketId}\n\nThank you.`);
-        
-        alert(`Your Support Ticket ID: ${ticketId}\nOpening Email Client...`);
-        window.open(`mailto:${_0xem}?subject=${subject}&body=${body}`, "_blank");
-      };
-
-      // Guaranteed Tiranga Inspired Button Style Renderer
-      const getCategoryButtonStyle = (catObj, isSelected) => {
-        const color = (typeof catObj === 'object' ? catObj.color : 'blue') || 'blue';
-        
-        const palette = {
-          blue: { bg: '#ea580c', text: '#ffffff', unBg: '#fff7ed', unText: '#c2410c', border: '#ffedd5' },
-          emerald: { bg: '#16a34a', text: '#ffffff', unBg: '#f0fdf4', unText: '#15803d', border: '#bbf7d0' },
-          purple: { bg: '#1e3a8a', text: '#ffffff', unBg: '#eff6ff', unText: '#1d4ed8', border: '#bfdbfe' },
-          amber: { bg: '#d97706', text: '#ffffff', unBg: '#fffbeb', unText: '#b45309', border: '#fde68a' },
-          rose: { bg: '#e11d48', text: '#ffffff', unBg: '#fff1f2', unText: '#be123c', border: '#fecdd3' },
-          red: { bg: '#dc2626', text: '#ffffff', unBg: '#fef2f2', unText: '#b91c1c', border: '#fca5a5' },
-          teal: { bg: '#0d9488', text: '#ffffff', unBg: '#f0fdfa', unText: '#0f766e', border: '#99f6e4' }
-        };
-
-        const activePalette = palette[color] || palette.blue;
-
-        if (isSelected) {
-          return {
-            backgroundColor: activePalette.bg,
-            color: activePalette.text,
-            borderColor: activePalette.bg,
-            boxShadow: '0 4px 8px -1px rgba(234, 88, 12, 0.3)'
-          };
-        } else {
-          return {
-            backgroundColor: activePalette.unBg,
-            color: activePalette.unText,
-            borderColor: activePalette.border
-          };
-        }
-      };
-
-      const filteredServices = services.filter(s => {
-        const matchCat = selectedCat === 'All Services' || s.category === selectedCat;
-        const matchSearch = s.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                            s.description?.toLowerCase().includes(searchQuery.toLowerCase());
-        return matchCat && matchSearch;
-      });
-
-      return (
-        <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col relative">
-          
-          {/* Toast Notification */}
-          {toastMsg && (
-            <div className="fixed top-4 right-4 z-[160] bg-gradient-to-r from-orange-600 to-emerald-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-2xl border border-orange-300 animate-bounce">
-              🇮🇳 {toastMsg}
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-40 border-b-2 border-sky-500">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-sky-500 p-2 rounded-lg">
+                    <i class="fas fa-graduation-cap text-white text-2xl"></i>
+                </div>
+                <h1 class="text-xl md:text-2xl font-extrabold tracking-wide uppercase">SGS Mock Test</h1>
             </div>
-          )}
-
-          {/* POST CLICK CONFIRMATION WARNING MODAL IN HINDI */}
-          {pendingService && (
-            <div className="fixed inset-0 z-[130] bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-              <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border-2 border-orange-500 overflow-hidden animate-fade-in flex flex-col">
-                <div className="bg-gradient-to-r from-orange-600 via-amber-600 to-emerald-700 text-white p-4">
-                  <div className="flex items-center gap-2">
-                    <span className="text-yellow-300 text-xl"><Icons.ShieldCheck /></span>
-                    <h3 className="font-extrabold text-sm sm:text-base tracking-wide">घोषणा एवं महत्वपूर्ण चेतावनी</h3>
-                  </div>
-                </div>
-
-                <div className="p-5 text-xs sm:text-sm text-slate-800 space-y-3.5 leading-relaxed">
-                  <div className="bg-orange-50 warning-amber-box border-l-4 border-orange-500 p-3 rounded-r-lg text-orange-950 font-bold">
-                    ⚠️ <strong>आवश्यक सूचना:</strong> आवेदन भरने से पहले नीचे दिए गए निर्देशों को ध्यान से पढ़ें।
-                  </div>
-
-                  <p className="font-semibold text-slate-700 leading-normal">
-                    कृपया अपनी सभी विवरण और दस्तावेज़ (Details & Documents) सही-सही और ध्यानपूर्वक भरें।
-                  </p>
-
-                  <div className="bg-rose-50 warning-rose-box border border-rose-200 rounded-xl p-3 text-rose-950 text-xs font-bold space-y-1">
-                    <p className="text-rose-950">• आपके द्वारा दी गई जानकारी गलत होने पर यदि फॉर्म आधिकारिक पोर्टल से रिजेक्ट (Reject) होता है, तो इसकी पूरी जिम्मेदारी आपकी होगी।</p>
-                    <p className="text-rose-950">• गलत विवरण के कारण फॉर्म रिजेक्ट होने पर आपका भुगतान (Payment) रिफंड (Refund) नहीं किया जाएगा。</p>
-                  </div>
-
-                  <p className="text-[11px] text-slate-500 font-medium">
-                    आगे बढ़ने के लिए नियम और शर्तों से सहमत होना अनिवार्य है।
-                  </p>
-                </div>
-
-                <div className="p-4 bg-slate-50 border-t border-slate-200 flex justify-center">
-                  <button 
-                    onClick={handleConfirmServiceSelection} 
-                    className="w-full tiranga-btn-primary font-black text-xs sm:text-sm py-3 rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-1.5"
-                  >
-                    <span>I Agree & Continue</span> →
-                  </button>
-                </div>
-              </div>
+            <div class="flex items-center space-x-4">
+                <span class="hidden md:inline text-sm text-slate-400"><i class="fas fa-envelope mr-1"></i> contactsgstestapp@gmail.com</span>
+                <span class="bg-amber-100 border border-amber-400 text-amber-800 text-xs font-bold px-3 py-1 rounded-full shadow-sm">BETA BUILD</span>
             </div>
-          )}
-
-          {/* FIRST VISIT MANDATORY LEGAL DISCLAIMER POPUP MODAL */}
-          {!hasAgreed && (
-            <div className="fixed inset-0 z-[120] bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-              <div className="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden animate-fade-in flex flex-col">
-                <div className="bg-gradient-to-r from-orange-600 via-blue-900 to-emerald-700 text-white p-4">
-                  <div className="flex items-center gap-2">
-                    <span className="text-amber-300 text-lg"><Icons.ShieldCheck /></span>
-                    <h3 className="font-extrabold text-sm sm:text-base tracking-wide">Terms, Privacy, Pricing & Disclaimer Notice</h3>
-                  </div>
-                </div>
-
-                <div className="p-5 text-xs text-slate-700 space-y-4 leading-relaxed max-h-[65vh] overflow-y-auto">
-                  <div className="bg-orange-50 warning-amber-box border-l-4 border-orange-500 p-3 rounded-r-lg text-orange-950 font-semibold">
-                    Please read our complete Privacy Policy, Terms & Conditions, Payment & No-Refund Policy, Service Delivery Timeline, and Disclaimer before proceeding to use SGS ONLINE SERVICE.
-                  </div>
-
-                  {/* 1. PRIVACY POLICY DETAILS */}
-                  <div className="border border-slate-200 p-3.5 rounded-xl bg-slate-50 space-y-2">
-                    <h4 className="font-extrabold text-orange-700 text-xs uppercase tracking-wider flex items-center gap-1">
-                      🔒 1. Privacy Policy & Data Collection
-                    </h4>
-                    <p className="text-slate-600">
-                      SGS ONLINE SERVICE operates independently as a private digital facilitation desk helping users fill out online application forms (college admission, RTPS certificates, scholarship forms, etc.) accurately.
-                    </p>
-                    <ul className="list-disc pl-4 space-y-1 text-slate-700 font-medium text-[11px]">
-                      <li><strong>Data Collected:</strong> Name, DOB, Parent Names, Contact Number, Address, Academic Qualifications, Uploaded Scanned Documents/PDFs, and Payment Screenshots.</li>
-                      <li><strong>Purpose:</strong> Data is solely collected to fill out official forms on external portals on your behalf after verification via call/WhatsApp.</li>
-                      <li><strong>Secure Storage:</strong> All user-submitted form data, compressed images, and documents are securely transmitted via end-to-end encrypted connection directly to our secure admin panel for processing. Your private records are 100% confidential and never shared or sold to third parties.</li>
-                    </ul>
-                  </div>
-
-                  {/* 2. PAYMENT, PRICING & STRICT NO-REFUND POLICY */}
-                  <div className="border border-slate-200 p-3.5 rounded-xl bg-rose-50 warning-rose-box space-y-2">
-                    <h4 className="font-extrabold text-rose-900 text-xs uppercase tracking-wider flex items-center gap-1">
-                      💳 2. Payment, Pricing & Strict No-Refund Policy
-                    </h4>
-                    <ul className="list-disc pl-4 space-y-1 text-slate-700 font-medium text-[11px]">
-                      <li><strong>Clear Transparent Pricing:</strong> Service fees include the government/university portal application fee (if applicable) plus our nominal cyber cafe form-filling facilitation charge. All amounts are displayed in INR (₹) before submission.</li>
-                      <li><strong>Strict No-Refund Rule:</strong> Once an online form assistance request (RTPS, VKSU Admission, Scholarship, Jobs) is submitted and data entry or document processing starts, fees are <strong>strictly NON-REFUNDABLE</strong> and non-transferable under any circumstances.</li>
-                      <li><strong>User Accuracy & Rejections:</strong> If an application is rejected by the official portal due to incorrect data, invalid certificates, or mismatched documents provided by the applicant, no refund will be issued.</li>
-                    </ul>
-                  </div>
-
-                  {/* 3. SERVICE DELIVERY & TURNAROUND TIME */}
-                  <div className="border border-slate-200 p-3.5 rounded-xl bg-slate-50 space-y-2">
-                    <h4 className="font-extrabold text-indigo-900 text-xs uppercase tracking-wider flex items-center gap-1">
-                      🚚 3. Service Fulfillment & Delivery Timeline (TAT)
-                    </h4>
-                    <p className="text-slate-600 text-[11px]">
-                      Application data entry and document verification begins within 15–30 minutes of payment confirmation. Official submission receipts, acknowledgements, or tracking application slips are delivered to applicants via WhatsApp / Email within <strong>24 to 48 working hours</strong>.
-                    </p>
-                  </div>
-
-                  {/* 4. TERMS & CONDITIONS DETAILS */}
-                  <div className="border border-slate-200 p-3.5 rounded-xl bg-slate-50 space-y-2">
-                    <h4 className="font-extrabold text-blue-900 text-xs uppercase tracking-wider flex items-center gap-1">
-                      📜 4. Terms & Conditions
-                    </h4>
-                    <ul className="list-disc pl-4 space-y-1 text-slate-700 font-medium text-[11px]">
-                      <li><strong>Private Facilitation:</strong> SGS ONLINE SERVICE is an independent cyber cafe / form assistance center and NOT an official government entity or college portal.</li>
-                      <li><strong>Accuracy Responsibility:</strong> Users are solely responsible for providing 100% accurate and authentic personal details and documents.</li>
-                      <li><strong>Fee Policy:</strong> Payment includes the official fee (if applicable) plus our nominal form-filling service charge. Valid payment screenshot proof is mandatory.</li>
-                    </ul>
-                  </div>
-
-                  {/* 5. DISCLAIMER NOTICE DETAILS */}
-                  <div className="border border-slate-200 p-3.5 rounded-xl bg-emerald-50 warning-amber-box space-y-2">
-                    <h4 className="font-extrabold text-emerald-900 text-xs uppercase tracking-wider flex items-center gap-1">
-                      ⚠️ 5. Non-Government Disclaimer
-                    </h4>
-                    <p className="text-emerald-950 font-medium text-[11px]">
-                      We do NOT claim to be an official government portal. All official form submissions are carried out on respective official government / university websites on behalf of the applicant. Final approval/rejection rests with the official authority.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="p-4 bg-slate-50 border-t border-slate-200 flex flex-col gap-2">
-                  <button 
-                    onClick={handleAcceptTerms} 
-                    className="w-full tiranga-btn-primary font-extrabold text-xs py-3 rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
-                  >
-                    <span>I Agree & Continue</span> →
-                  </button>
-                  <p className="text-[10px] text-center text-slate-400 font-medium">
-                    By clicking "I Agree & Continue", you accept all Privacy Policy, Payment & Refund Rules, Terms & Disclaimer conditions.
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* SIDE DRAWER MENU */}
-          {showDrawer && (
-            <div className="fixed inset-0 z-[80] flex">
-              <div className="fixed inset-0 bg-black/50 transition-opacity" onClick={() => setShowDrawer(false)}></div>
-              <div className="relative w-80 max-w-[85%] bg-white h-full shadow-2xl flex flex-col justify-between z-10 p-5 overflow-y-auto drawer-panel border-r-4 border-orange-500">
-                <div>
-                  <div className="flex items-center justify-between pb-4 border-b border-slate-200 mb-4">
-                    <div className="flex items-center gap-2">
-                      <img src="logo.png" alt="SGS" className="w-8 h-8 rounded-lg object-cover border-2 border-orange-500" onError={(e)=>{e.target.onerror=null; e.target.style.display='none';}} />
-                      <div>
-                        <h3 className="font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-emerald-700 text-sm sm:text-base">SGS ONLINE SERVICE</h3>
-                        <p className="text-[9px] font-bold text-orange-600 uppercase">Tiranga Edition</p>
-                      </div>
-                    </div>
-                    <button onClick={() => setShowDrawer(false)} className="text-slate-400 hover:text-slate-600"><Icons.X /></button>
-                  </div>
-
-                  {/* NAV LINKS */}
-                  <nav className="space-y-2 text-xs font-bold text-slate-700">
-                    <button onClick={handleNavigateHome} className="w-full text-left p-2.5 rounded-lg hover:bg-orange-50 flex items-center justify-between text-orange-700 bg-orange-50/50 border border-orange-200">
-                      <span>🏠 Home Page / All Services</span>
-                      <Icons.ChevronRight />
-                    </button>
-
-                    {/* ABOUT US NAVIGATION LINK */}
-                    <button onClick={() => { setActiveModalPage('about'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
-                      <span className="flex items-center gap-1.5 font-bold"><Icons.Info /> About Us</span>
-                      <Icons.ChevronRight />
-                    </button>
-
-                    {/* NEON NIGHT MODE TOGGLE BUTTON */}
-                    <div className="p-2.5 rounded-lg bg-orange-50 border border-orange-200 flex items-center justify-between">
-                      <span className="flex items-center gap-1.5 font-extrabold text-orange-950">
-                        <Icons.Moon /> Neon Tiranga Mode
-                      </span>
-                      <button 
-                        onClick={() => setIsNeonMode(!isNeonMode)} 
-                        className={`px-3 py-1 rounded-md font-bold text-[11px] transition-all no-neon ${
-                          isNeonMode ? 'bg-orange-500 text-white shadow-[0_0_10px_rgba(249,115,22,0.8)]' : 'bg-slate-800 text-white'
-                        }`}
-                      >
-                        {isNeonMode ? 'ON ⚡' : 'OFF'}
-                      </button>
-                    </div>
-
-                    {/* TRACK MY APPLICATION BUTTON */}
-                    <button 
-                      onClick={() => { setActiveModalPage('track'); setShowDrawer(false); }} 
-                      className="w-full text-left p-2.5 rounded-lg bg-amber-50 text-amber-900 flex items-center justify-between border border-amber-300 shadow-2xs"
-                    >
-                      <span className="flex items-center gap-1.5 font-extrabold text-amber-800">
-                        <Icons.ListCheck /> Track My Application ({userApps.length})
-                      </span>
-                      <Icons.ChevronRight />
-                    </button>
-
-                    {/* SHARE WEBSITE BUTTON */}
-                    <button onClick={handleShareWebsite} className="w-full text-left p-2.5 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-between border border-emerald-200">
-                      <span className="flex items-center gap-1.5 font-extrabold"><Icons.Share2 /> Share Website</span>
-                      <Icons.ChevronRight />
-                    </button>
-                    
-                    <button onClick={() => { setActiveModalPage('privacy'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
-                      <span>🔒 Privacy Policy</span>
-                      <Icons.ChevronRight />
-                    </button>
-
-                    {/* PAYMENT & NO-REFUND POLICY IN DRAWER */}
-                    <button onClick={() => { setActiveModalPage('payment_policy'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
-                      <span className="flex items-center gap-1.5">💳 Payment & Refund Policy</span>
-                      <Icons.ChevronRight />
-                    </button>
-
-                    {/* SERVICE DELIVERY TIMELINE IN DRAWER */}
-                    <button onClick={() => { setActiveModalPage('delivery_policy'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
-                      <span className="flex items-center gap-1.5">🚚 Delivery & Fulfillment Policy</span>
-                      <Icons.ChevronRight />
-                    </button>
-
-                    <button onClick={() => { setActiveModalPage('terms'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
-                      <span>📜 Terms & Conditions</span>
-                      <Icons.ChevronRight />
-                    </button>
-                    <button onClick={() => { setActiveModalPage('disclaimer'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
-                      <span>⚠️ Disclaimer Notice</span>
-                      <Icons.ChevronRight />
-                    </button>
-
-                    {/* YOUTUBE FULL GUIDE BUTTON */}
-                    <a 
-                      href="https://www.youtube.com/@sgsonlineportal" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      onClick={() => setShowDrawer(false)}
-                      className="youtube-guide-btn w-full text-left p-2.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 flex items-center justify-between transition-colors mt-2 font-extrabold"
-                    >
-                      <span className="flex items-center gap-2">
-                        <Icons.Youtube /> Website Full guide On Youtube
-                      </span>
-                      <Icons.ChevronRight />
-                    </a>
-                  </nav>
-
-                  {/* CUSTOMER SUPPORT SECTION INSIDE DRAWER */}
-                  <div className="mt-6 pt-5 border-t border-slate-200 space-y-3" id="drawer-customer-support">
-                    <h4 className="text-xs font-extrabold uppercase text-slate-400 tracking-wider flex items-center gap-1.5 mb-3">
-                      <Icons.Headphones /> Customer Support
-                    </h4>
-                    
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-2xs">
-                      <h5 className="font-extrabold text-slate-900 text-xs mb-1">WhatsApp Support</h5>
-                      <p className="text-[11px] text-slate-500 mb-2.5 leading-snug">Fast Reply (Instant Assistance). Connect directly on WhatsApp.</p>
-                      <button onClick={handleWhatsAppSupport} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2 rounded-lg transition-colors">
-                        Chat on WhatsApp
-                      </button>
-                    </div>
-
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-2xs">
-                      <h5 className="font-extrabold text-slate-900 text-xs mb-1">Email Support</h5>
-                      <p className="text-[11px] text-slate-500 mb-2.5 leading-snug">Send us an email inquiry for official ticket assistance.</p>
-                      <button onClick={handleEmailSupport} className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs py-2 rounded-lg transition-colors">
-                        Send Email
-                      </button>
-                    </div>
-
-                    {/* PHYSICAL OFFICE ADDRESS IN DRAWER */}
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-2xs text-[11px] text-slate-600 space-y-1">
-                      <p className="font-bold text-slate-800 flex items-center gap-1">📍 Center Address:</p>
-                      <p>SGS Online Service Helpdesk, District Arrah, Bhojpur, Bihar, India - 802165.</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-4 mt-6 border-t border-slate-100 text-center text-[10px] text-slate-400 font-semibold">
-                  SGS Helpdesk • Private Form Filling Facilitation Center
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* DYNAMIC SUCCESSFUL APPLICATION RECEIPT SCREEN */}
-          {submittedReceipt ? (
-            <div className="min-h-screen bg-orange-50/40 p-4 sm:p-6 flex flex-col items-center justify-center">
-              <div id="printable-receipt" className="slip-card-clean max-w-md w-full rounded-2xl border-2 border-orange-500 shadow-2xl overflow-hidden p-6 text-slate-900 space-y-5">
-                
-                {/* THANK YOU BANNER */}
-                <div className="bg-gradient-to-r from-orange-600 to-emerald-700 text-white p-3 rounded-xl text-center shadow-md mb-2">
-                  <h3 className="font-black text-xs uppercase tracking-wider">🇮🇳 Thanks for applying through SGS Online Service!</h3>
-                </div>
-
-                <div className="text-center space-y-2 border-b border-slate-200 pb-4">
-                  <div className="flex justify-center mb-1">
-                    <Icons.CheckCircle />
-                  </div>
-                  <h2 className="text-xl font-black slip-text-dark">Application Submitted!</h2>
-                  <p className="text-xs slip-text-muted font-bold">Your request has been successfully registered with SGS Online Service.</p>
-                </div>
-
-                <div className="slip-box-inner rounded-xl p-4 space-y-3 text-xs">
-                  <div className="flex items-center justify-between border-b border-orange-200 pb-2">
-                    <span className="slip-text-muted font-bold">Application UID:</span>
-                    <span className="font-black text-orange-700 text-sm tracking-wide">{submittedReceipt.uid}</span>
-                  </div>
-
-                  <div className="flex items-center justify-between border-b border-orange-200 pb-2">
-                    <span className="slip-text-muted font-bold">Service Name:</span>
-                    <span className="font-black slip-text-dark text-right max-w-[200px] leading-tight">{submittedReceipt.serviceTitle}</span>
-                  </div>
-
-                  <div className="flex items-center justify-between border-b border-orange-200 pb-2">
-                    <span className="slip-text-muted font-bold">Category:</span>
-                    <span className="font-black slip-text-dark">{submittedReceipt.category}</span>
-                  </div>
-
-                  <div className="flex items-center justify-between border-b border-orange-200 pb-2">
-                    <span className="slip-text-muted font-bold">Amount Paid:</span>
-                    <span className="font-black text-emerald-600 text-sm">{submittedReceipt.amount}</span>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <span className="slip-text-muted font-bold">Date & Time:</span>
-                    <span className="font-bold slip-text-dark text-[11px]">{submittedReceipt.dateTime}</span>
-                  </div>
-                </div>
-
-                <div className="bg-amber-100 warning-amber-box border border-amber-300 rounded-xl p-3 text-[11px] text-amber-950 font-bold leading-relaxed">
-                  📌 <strong>Note:</strong> Save your UID for tracking. Processing starts in 15–30 mins and completed acknowledgement slip will be delivered via WhatsApp/Email within 24–48 hours. All fees are strictly non-refundable.
-                </div>
-
-                <div className="pt-2 flex flex-col gap-2.5 no-print">
-                  <div className="flex flex-col sm:flex-row gap-2">
-                    <button 
-                      onClick={() => window.print()} 
-                      className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-xs py-3 px-3 rounded-xl shadow-md transition-all flex items-center justify-center gap-2"
-                    >
-                      <Icons.Download /> Download Receipt
-                    </button>
-                    
-                    {/* INSTANT WHATSAPP SHARE BUTTON */}
-                    <button 
-                      onClick={handleSendReceiptWhatsApp} 
-                      className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs py-3 px-3 rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
-                    >
-                      <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
-                      Send Receipt on WhatsApp
-                    </button>
-                  </div>
-
-                  <button 
-                    onClick={handleNavigateHome} 
-                    className="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-1"
-                  >
-                    Done ✓
-                  </button>
-                </div>
-              </div>
-            </div>
-          ) : activeModalPage ? (
-            <div className="fixed inset-0 bg-slate-100 z-50 flex flex-col h-full w-full overflow-hidden">
-              <div className="bg-gradient-to-r from-orange-600 via-indigo-900 to-emerald-700 text-white px-4 py-3 shadow-md flex items-center justify-between shrink-0">
-                <h3 className="font-extrabold text-white text-base sm:text-lg flex items-center gap-2">
-                  <Icons.ShieldCheck />
-                  <span>
-                    {activeModalPage === 'track' && 'Track My Applications'}
-                    {activeModalPage === 'about' && 'About Us & Operational Details'}
-                    {activeModalPage === 'support' && 'Instant Customer Support & Grievance'}
-                    {activeModalPage === 'privacy' && 'Privacy Policy'}
-                    {activeModalPage === 'payment_policy' && 'Payment, Pricing & Strict No-Refund Policy'}
-                    {activeModalPage === 'delivery_policy' && 'Service Delivery & Fulfillment Policy'}
-                    {activeModalPage === 'terms' && 'Terms & Conditions'}
-                    {activeModalPage === 'disclaimer' && 'Disclaimer & Service Policy'}
-                  </span>
-                </h3>
-                <button onClick={() => setActiveModalPage(null)} className="bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1">
-                  <Icons.X /> Close
-                </button>
-              </div>
-
-              <div className="flex-1 overflow-y-auto p-4 sm:p-6 max-w-4xl w-full mx-auto text-xs text-slate-700 space-y-4">
-                
-                {/* DEDICATED CUSTOMER SUPPORT & GRIEVANCE OFFICER MODAL PAGE */}
-                {activeModalPage === 'support' && (
-                  <div className="space-y-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
-                    <div className="bg-emerald-50 border-l-4 border-emerald-600 p-4 rounded-r-xl text-slate-900 font-bold flex items-center justify-between flex-wrap gap-2">
-                      <div className="flex items-center gap-2">
-                        <Icons.Headphones />
-                        <span>SGS Helpdesk & Customer Support Desk</span>
-                      </div>
-                      <span className="bg-emerald-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider animate-pulse">
-                        24/7 Digital Support
-                      </span>
-                    </div>
-
-                    <p className="text-slate-600 text-xs leading-relaxed">
-                      Need help regarding form submissions, fee verification, turnaround timelines, or application status? Connect directly with our helpdesk team:
-                    </p>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                      {/* WHATSAPP SUPPORT BOX */}
-                      <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 shadow-sm space-y-2">
-                        <h4 className="font-extrabold text-slate-900 text-sm flex items-center gap-1.5">
-                          💬 Instant WhatsApp Support
-                        </h4>
-                        <p className="text-slate-500 text-[11px] leading-snug">
-                          Connect directly with our support team on WhatsApp for real-time form assistance, status checks, and quick queries.
-                        </p>
-                        <button 
-                          onClick={handleWhatsAppSupport} 
-                          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs py-3 rounded-lg transition-colors mt-2 shadow flex items-center justify-center gap-2"
-                        >
-                          <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
-                          Connect via WhatsApp
-                        </button>
-                      </div>
-
-                      {/* EMAIL SUPPORT BOX */}
-                      <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 shadow-sm space-y-2">
-                        <h4 className="font-extrabold text-slate-900 text-sm flex items-center gap-1.5">
-                          ✉️ Official Email Support
-                        </h4>
-                        <p className="text-slate-500 text-[11px] leading-snug">
-                          Send us your detailed inquiry or ticket details directly via email. Official response delivered within 24 hours.
-                        </p>
-                        <button 
-                          onClick={handleEmailSupport} 
-                          className="w-full bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-xs py-3 rounded-lg transition-colors mt-2 shadow flex items-center justify-center gap-2"
-                        >
-                          Send Email Ticket
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* NODAL GRIEVANCE OFFICER & PHYSICAL ADDRESS BLOCK */}
-                    <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-2 text-xs">
-                      <h4 className="font-extrabold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
-                        <Icons.Building /> Registered Business & Grievance Redressal Office
-                      </h4>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px] text-slate-600 pt-1">
-                        <div>
-                          <p><strong>Business Name:</strong> SGS ONLINE SERVICE</p>
-                          <p><strong>Primary Address:</strong> District Arrah, Bhojpur, Bihar, India - 802301</p>
-                          <p><strong>Official Email:</strong> contactsgsonlineservice@gmail.com</p>
-                        </div>
-                        <div>
-                          <p><strong>Grievance Officer:</strong> Customer Support Desk Head</p>
-                          <p><strong>Support Operating Hours:</strong> 09:00 AM to 08:00 PM IST (Mon - Sat)</p>
-                          <p><strong>Resolution SLA:</strong> Within 24 to 48 working hours</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* ABOUT US MODAL PAGE */}
-                {activeModalPage === 'about' && (
-                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
-                    <div className="bg-orange-50 border-l-4 border-orange-600 p-4 rounded-r-xl text-slate-900 font-bold">
-                      🏢 ABOUT SGS ONLINE SERVICE & PHYSICAL OPERATIONS
-                    </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">1. Who We Are</h4>
-                      <p>SGS ONLINE SERVICE is an independent private digital facilitation center and cyber cafe portal operated to assist students and residents in navigating online government, academic, and administrative application processes accurately.</p>
-                    </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">2. Location & Operating Area</h4>
-                      <p className="font-semibold text-slate-800">📍 Physical Address: SGS Online Service Desk, District Arrah, Bhojpur, Bihar, India - 802301.</p>
-                      <p className="mt-1">We cater specifically to applicants across Bihar requiring assistance with university admissions (e.g., VKSU), RTPS certificates (Caste, Income, Residence), scholarships, and national competitive exam form submissions.</p>
-                    </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">3. Our Mission & Assistance Scope</h4>
-                      <p>Online applications can be complex and error-prone. Our mission is to provide guided, telephone-verified, and error-free form filling support on official third-party government and college portals on behalf of the applicant.</p>
-                    </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">4. Transparency Commitment</h4>
-                      <p>We charge a nominal facilitation charge for our time, digital infrastructure, and document compression support. We do NOT represent or act as an official government body.</p>
-                    </div>
-                  </div>
-                )}
-
-                {/* SERVICE DELIVERY & FULFILLMENT MODAL PAGE */}
-                {activeModalPage === 'delivery_policy' && (
-                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
-                    <div className="bg-indigo-50 border-l-4 border-indigo-600 p-4 rounded-r-xl text-slate-900 font-bold flex items-center justify-between">
-                      <span>🚚 SERVICE DELIVERY, FULFILLMENT & TURNAROUND TIMELINE (TAT)</span>
-                      <span className="text-[10px] bg-indigo-600 text-white px-2 py-0.5 rounded font-mono font-bold">24-48 Hours</span>
-                    </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Digital Service Delivery Overview</h4>
-                      <p>SGS ONLINE SERVICE provides digital form-filling and online submission facilitation services. As our services are digital and electronic in nature, there is no physical shipping of tangible goods.</p>
-                    </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Standard Turnaround Time (TAT)</h4>
-                      <ul className="list-disc pl-5 space-y-1.5 text-slate-700 font-medium">
-                        <li><strong>Order Initiation:</strong> Once your application request and payment screenshot are received, our desk initiates data entry and document verification within <strong>15 to 30 minutes</strong> during operational hours.</li>
-                        <li><strong>Form Submission & Acknowledgement:</strong> The complete form submission is carried out on the respective official university/government portal, and the official PDF receipt/acknowledgement slip is dispatched to the user's WhatsApp or Email within <strong>24 to 48 working hours</strong>.</li>
-                        <li><strong>Live Tracking:</strong> Users can track their submitted requests anytime using their unique 6-digit Application UID in the 'Track My Application' section.</li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. Delivery Delays & External Portal Downtime</h4>
-                      <p>In case of scheduled maintenance or server downtime on official government/university servers, form processing will be queued and completed immediately upon server restoration. Applicants will be updated accordingly via WhatsApp.</p>
-                    </div>
-                  </div>
-                )}
-
-                {/* TRACK APPLICATION MODAL PAGE WITH VIEW RECEIPT BUTTON */}
-                {activeModalPage === 'track' && (
-                  <div className="space-y-4">
-                    <div className="bg-amber-50 warning-amber-box border-l-4 border-amber-600 p-4 rounded-r-xl text-slate-900 font-medium flex items-center justify-between gap-2 flex-wrap">
-                      <div>
-                        <strong>📋 Application Tracking Center:</strong> Registered UIDs for your submitted online assistance requests.
-                      </div>
-                      {userApps.length > 0 && (
-                        <button 
-                          onClick={clearAllApps}
-                          className="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 shadow-2xs"
-                        >
-                          <Icons.Trash /> Clear All
-                        </button>
-                      )}
-                    </div>
-
-                    {userApps.length === 0 ? (
-                      <div className="bg-white p-8 rounded-2xl border border-slate-200 text-center">
-                        <p className="text-sm font-bold text-slate-500">You have not submitted any form assistance requests yet.</p>
-                      </div>
-                    ) : (
-                      <div className="space-y-3">
-                        {userApps.map((app, i) => (
-                          <div key={i} className="bg-white border border-slate-300 rounded-xl p-4 shadow-sm flex items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
-                            <div>
-                              <span className="font-black text-orange-600 text-sm block">UID: {app.uid}</span>
-                              <p className="text-xs font-bold text-slate-800 mt-0.5">Form: {app.serviceTitle}</p>
-                              {app.dateTime && <p className="text-[10px] text-slate-400 mt-0.5">Submitted: {app.dateTime}</p>}
-                            </div>
-                            
-                            <div className="flex items-center gap-2">
-                              {/* VIEW RECEIPT BUTTON */}
-                              <button 
-                                onClick={() => handleViewPastReceipt(app)} 
-                                className="bg-orange-600 hover:bg-orange-700 text-white text-[11px] font-extrabold px-3 py-1.5 rounded-lg shadow-2xs flex items-center gap-1 transition-all no-neon"
-                              >
-                                <Icons.Receipt /> View Receipt
-                              </button>
-
-                              <button 
-                                onClick={() => deleteSingleApp(app.uid)}
-                                title="Delete this record"
-                                className="text-slate-400 hover:text-rose-600 p-2 rounded-lg hover:bg-rose-50 transition-colors"
-                              >
-                                <Icons.Trash />
-                              </button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* PAYMENT, PRICING & STRICT NO-REFUND POLICY MODAL PAGE */}
-                {activeModalPage === 'payment_policy' && (
-                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
-                    <div className="bg-orange-50 border-l-4 border-orange-600 p-4 rounded-r-xl text-slate-900 font-bold flex items-center justify-between">
-                      <span>💳 PAYMENT, PRICING & STRICT NO-REFUND POLICY</span>
-                      <span className="text-[10px] bg-orange-600 text-white px-2 py-0.5 rounded font-mono font-bold">Standard Policy</span>
-                    </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Transparent Pricing & Facilitation Service Charge</h4>
-                      <p>All service charges are clearly displayed in Indian Rupees (₹ INR) for every online application listed on SGS ONLINE SERVICE. Our fee structure consists of:</p>
-                      <ul className="list-disc pl-5 space-y-1 mt-1 text-slate-700 font-medium">
-                        <li><strong>Official Portal Fee:</strong> Examination / Admission / Processing fee charged directly by government portals or university boards (where applicable).</li>
-                        <li><strong>Private Facilitation & Cyber Cafe Fee:</strong> Nominal service fee for digital data entry, telephone verification, high-resolution document scanning, image resizing, and error-free submission.</li>
-                        <li>There are zero hidden recurring charges or subscription fees.</li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Accepted Payment Methods</h4>
-                      <p>We accept secure payments via NPCI Standard Dynamic UPI Intent, UPI QR Code scanning (PhonePe, Google Pay, Paytm, BHIM), and authorized digital payment gateway interfaces. Valid proof of payment (screenshot) is mandatory for processing.</p>
-                    </div>
-
-                    <div className="bg-rose-50 border border-rose-200 rounded-xl p-3.5 text-rose-950 space-y-2">
-                      <h4 className="font-black text-rose-900 text-xs uppercase tracking-wider flex items-center gap-1">
-                        ⚠️ 3. Strict No-Refund Policy (Non-Refundable Services)
-                      </h4>
-                      <p className="text-[11px] font-bold">
-                        Please note our strict policy regarding cancellations and refunds:
-                      </p>
-                      <ul className="list-disc pl-4 space-y-1 text-[11px] text-rose-900 font-semibold">
-                        <li>Once an application request is submitted and our team initiates the online form filling or document verification process, <strong>all fees paid are 100% NON-REFUNDABLE</strong> and non-cancellable.</li>
-                        <li><strong>Government & RTPS Certificates:</strong> In the event of application rejection by official block/sub-division officers due to invalid caste claims, mismatched income declarations, or improper residential proofs provided by the applicant, no refund will be provided.</li>
-                        <li><strong>University & College Forms:</strong> Admission or merit list rejection by VKSU or any college due to cut-off criteria or inaccurate academic data does not entitle the user to a refund.</li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">4. Payment Disputes & Duplicate Debits</h4>
-                      <p>In rare cases where an amount is debited from your bank account twice for a single service request or if a payment fails to link, contact our support team immediately at <strong>contactsgsonlineservice@gmail.com</strong> or via WhatsApp with your Bank UTR Reference ID. Verified accidental duplicate transactions will be refunded within 5–7 business days to the source account.</p>
-                    </div>
-                  </div>
-                )}
-
-                {/* PRIVACY POLICY MODAL PAGE (SEAMLESSLY INTEGRATED & UNIFIED) */}
-                {activeModalPage === 'privacy' && (
-                  <div className="space-y-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
-                    <div className="bg-orange-50 border-l-4 border-orange-600 p-4 rounded-r-xl text-slate-900 font-medium">
-                      <strong>📌 Private Form Facilitation Center Privacy Policy:</strong> SGS ONLINE SERVICE operates independently as a private online digital assistance center helping users fill out government, college, and administrative online forms accurately upon request.
-                    </div>
-
-                    <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Privacy Policy</h1>
-                    <p className="text-xs text-slate-500 font-semibold">Last updated: August 22, 2026</p>
-                    <p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
-
-                    <h2 className="text-base sm:text-lg font-black text-slate-900 pt-2 border-t border-slate-200">Interpretation and Definitions</h2>
-                    <h3 className="text-sm font-bold text-slate-800">Interpretation</h3>
-                    <p>The words whose initial letters are capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.</p>
-
-                    <h3 className="text-sm font-bold text-slate-800">Definitions</h3>
-                    <p>For the purposes of this Privacy Policy:</p>
-                    <ul className="list-disc pl-5 space-y-2 text-slate-700">
-                      <li><p><strong>Account</strong> means a unique account created for You to access Our Service or parts of Our Service.</p></li>
-                      <li><p><strong>Affiliate</strong> means an entity that controls, is controlled by, or is under common control with a party, where &quot;control&quot; means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.</p></li>
-                      <li><p><strong>Company</strong> (referred to as either &quot;the Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in this Privacy Policy) refers to SGS ONLINE SERVICE.</p></li>
-                      <li><p><strong>Cookies</strong> are small files that are placed on Your computer, mobile device or any other device by a website, containing the details of Your browsing history on that website, among its many uses.</p></li>
-                      <li><p><strong>Country/State</strong> refers to: Bihar, India.</p></li>
-                      <li><p><strong>Device</strong> means any device that can access the Service, such as a computer, a cell phone or a digital tablet.</p></li>
-                      <li>
-                        <p><strong>Personal Data</strong> (or &quot;Personal Information&quot;) is any information that relates to an identified or identifiable individual.</p>
-                        <p className="mt-1">We use &quot;Personal Data&quot; and &quot;Personal Information&quot; interchangeably unless a law uses a specific term.</p>
-                      </li>
-                      <li><p><strong>Service</strong> refers to the Website.</p></li>
-                      <li><p><strong>Service Provider</strong> means any natural or legal person who processes the data on behalf of the Company. It refers to third-party companies or individuals employed by the Company to facilitate the Service, to provide the Service on behalf of the Company, to perform services related to the Service or to assist the Company in analyzing how the Service is used.</p></li>
-                      <li><p><strong>Usage Data</strong> refers to data collected automatically, either generated by the use of the Service or from the Service infrastructure itself (for example, the duration of a page visit).</p></li>
-                      <li><p><strong>User</strong> means any individual who accesses or uses the Service.</p></li>
-                      <li><p><strong>Website</strong> refers to SGS ONLINE SERVICE, accessible from <a href="https://www.sgsonlineservice.store" rel="external nofollow noopener" target="_blank" className="text-orange-600 underline font-semibold">https://www.sgsonlineservice.store</a>.</p></li>
-                      <li><p><strong>You</strong> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</p></li>
-                    </ul>
-
-                    <h2 className="text-base sm:text-lg font-black text-slate-900 pt-2 border-t border-slate-200">Collecting and Using Your Personal Information</h2>
-                    <h3 className="text-sm font-bold text-slate-800">Types of Data Collected</h3>
-                    
-                    <h4 className="font-extrabold text-slate-800 text-xs uppercase tracking-wider">Personal Data & Application Records</h4>
-                    <p>While using Our Service to fill online application forms, verify details via call/WhatsApp, and provide customer support, We may ask You to provide Us with certain personally identifiable information that can be used to contact or identify You and facilitate official form submissions on external portals. Personally identifiable information may include, but is not limited to:</p>
-                    <ul className="list-disc pl-5 space-y-1.5 text-slate-700 font-medium">
-                      <li><strong>Personal Identification Details:</strong> Full Name, Father's Name, Mother's Name, Date of Birth, Gender, Category/Caste, and Religion.</li>
-                      <li><strong>Contact Information:</strong> Email address, Mobile Number, Full Postal Address, District, Pin Code, and State.</li>
-                      <li><strong>Academic & Identity Records:</strong> Educational Qualification details, Roll Numbers, Registration Numbers, Marksheets, and Certificates.</li>
-                      <li><strong>Uploaded Documents & Media:</strong> Applicant Photograph, Digital Signature Scans, PDF Documents, and Identity Proof files uploaded by the user.</li>
-                      <li><strong>Payment Verification Data:</strong> Payment Screenshots, Fee Receipts, and Date of Payment.</li>
-                    </ul>
-
-                    <h4 className="font-extrabold text-slate-800 text-xs uppercase tracking-wider pt-2">Usage Data</h4>
-                    <p>Usage Data is collected automatically when using the Service.</p>
-                    <p>Usage Data may include information such as Your Device's Internet Protocol address (e.g. IP address), browser type, browser version, the pages of Our Service that You visit, the time and date of Your visit, the time spent on those pages, unique device identifiers and other diagnostic data.</p>
-                    <p>When You access the Service by or through a mobile device, We may collect certain information automatically, including, but not limited to, the type of mobile device You use, Your mobile device's unique ID, the IP address of Your mobile device, Your mobile operating system, the type of mobile Internet browser You use, unique device identifiers and other diagnostic data.</p>
-                    <p>We may also collect information that Your browser sends whenever You visit Our Service or when You access the Service by or through a mobile device.</p>
-
-                    <h4 className="font-extrabold text-slate-800 text-xs uppercase tracking-wider pt-2">Tracking Technologies and Cookies</h4>
-                    <p>We use tracking technologies (such as cookies) to track the activity and to improve Our Service. The technologies We use may include:</p>
-                    <ul className="list-disc pl-5 space-y-1 text-slate-700">
-                      <li><strong>Cookies or Browser Cookies.</strong> A cookie is a small file placed on Your Device. You can instruct Your browser to refuse all Cookies or to indicate when a Cookie is being sent. However, if You do not accept Cookies, You may not be able to use some parts of Our Service.</li>
-                      <li><strong>Web Beacons.</strong> Certain sections of Our Service may contain small electronic files known as web beacons (also referred to as clear gifs, pixel tags, and single-pixel gifs) that permit the Company, for example, to count users who have visited those pages and for other related website statistics (for example, recording the popularity of a certain section and verifying system and server integrity).</li>
-                    </ul>
-                    <p>Cookies can be &quot;Persistent&quot; or &quot;Session&quot; Cookies. Persistent Cookies remain on Your personal computer or mobile device when You go offline, while Session Cookies are deleted as soon as You close Your web browser.</p>
-                    <p>Where required by law, We use non-essential cookies (that is, Cookies other than the Necessary / Essential Cookies described below) only with Your consent. You can withdraw or change Your consent at any time using Our cookie preferences tool (if available) or through Your browser/device settings. Withdrawing consent does not affect the lawfulness of processing based on consent before its withdrawal.</p>
-                    <p>We use both Session and Persistent Cookies for the purposes set out below:</p>
-                    <ul className="list-disc pl-5 space-y-2 text-slate-700">
-                      <li>
-                        <p><strong>Necessary / Essential Cookies</strong></p>
-                        <p>Type: Session Cookies | Administered by: Us</p>
-                        <p>Purpose: These Cookies are essential to provide You with services available through the Website and to enable You to use some of its features. They help to authenticate users and prevent fraudulent use of user accounts. Without these Cookies, the services that You have asked for cannot be provided, and We only use these Cookies to provide You with those services.</p>
-                      </li>
-                      <li>
-                        <p><strong>Cookies Policy / Notice Acceptance Cookies</strong></p>
-                        <p>Type: Persistent Cookies | Administered by: Us</p>
-                        <p>Purpose: These Cookies identify whether users have accepted the use of cookies on the Website and record the consent choices You have made, so that We can honor those choices on future visits.</p>
-                      </li>
-                      <li>
-                        <p><strong>Functionality Cookies</strong></p>
-                        <p>Type: Persistent Cookies | Administered by: Us</p>
-                        <p>Purpose: These Cookies allow Us to remember choices You make when You use the Website, such as remembering Your Account login details or language preference. The purpose of these Cookies is to provide You with a more personal experience and to avoid You having to re-enter Your preferences every time You use the Website.</p>
-                      </li>
-                    </ul>
-
-                    <h3 className="text-sm font-bold text-slate-800 pt-2 border-t border-slate-200">Use of Your Personal Data</h3>
-                    <p>The Company may use Personal Data for the following purposes:</p>
-                    <ul className="list-disc pl-5 space-y-2 text-slate-700">
-                      <li><p><strong>To provide and maintain Our Service</strong>, including to monitor the usage of Our Service, complete digital form-filling on external government/university portals after phone verification, generate tracking IDs, and deliver completed receipts via WhatsApp or Email.</p></li>
-                      <li><p><strong>To manage Your Account:</strong> to manage Your registration as a user of the Service. The Personal Data You provide can give You access to different functionalities of the Service that are available to You as a registered user.</p></li>
-                      <li><p><strong>For the performance of a contract:</strong> the development, compliance and undertaking of the purchase contract for the products, items or services You have purchased or of any other contract with Us through the Service.</p></li>
-                      <li><p><strong>To contact You:</strong> To contact You by email, telephone calls, SMS, WhatsApp, or other equivalent forms of electronic communication, such as a mobile application's push notifications regarding updates or informative communications related to the functionalities, products or contracted services, including the security updates, when necessary or reasonable for their implementation.</p></li>
-                      <li><p><strong>To provide You</strong> with news, special offers, and general information about other goods, services and events which We offer that are similar to those that You have already purchased or inquired about. We send such marketing communications only where permitted by applicable law: where prior consent is required (for example, under the laws applicable in the EEA and the UK), We will send them only with Your consent; otherwise, We may send them until You opt out. You may opt out or withdraw Your consent at any time by using the unsubscribe link in any marketing email We send or by contacting Us.</p></li>
-                      <li><p><strong>To manage Your requests:</strong> To attend and manage Your requests to Us.</p></li>
-                      <li><p><strong>For business transfers:</strong> We may use Your Personal Data to evaluate or conduct a merger, divestiture, restructuring, reorganization, dissolution, or other sale or transfer of some or all of Our assets, whether as a going concern or as part of bankruptcy, liquidation, or similar proceeding, in which Personal Data held by Us about Our Service users is among the assets transferred.</p></li>
-                      <li><p><strong>For other purposes:</strong> We may use Your information for other purposes, such as data analysis, identifying usage trends, determining the effectiveness of Our promotional campaigns, and evaluating and improving Our Service, products, services, marketing and Your experience.</p></li>
-                    </ul>
-
-                    <p className="font-bold text-slate-900 pt-2">We may share Your Personal Data in the following situations:</p>
-                    <ul className="list-disc pl-5 space-y-1 text-slate-700">
-                      <li><strong>With Service Providers:</strong> We may share Your Personal Data with Service Providers to monitor and analyze the use of Our Service, and to contact You.</li>
-                      <li><strong>For business transfers:</strong> We may share or transfer Your Personal Data in connection with, or during negotiations of, any merger, sale of Company assets, financing, or acquisition of all or a portion of Our business to another company.</li>
-                      <li><strong>With Affiliates:</strong> We may share Your Personal Data with Our affiliates, in which case We will require those affiliates to honor this Privacy Policy. Affiliates include Our parent company and any other subsidiaries, joint venture partners or other companies that We control or that are under common control with Us.</li>
-                      <li><strong>With other users:</strong> If Our Service offers public areas, when You share Personal Data or otherwise interact in the public areas with other users, such information may be viewed by all users and may be publicly distributed outside the Service.</li>
-                      <li><strong>With Your consent:</strong> We may disclose Your Personal Data for any other purpose with Your consent.</li>
-                    </ul>
-
-                    <h4 className="font-extrabold text-slate-800 text-xs uppercase tracking-wider pt-2">Text Messages Privacy Notice</h4>
-                    <p>You have the option to receive text (SMS) messages from Us. If You opt in to text messages, We will send You updates, notifications, and other communications as described below. When You opt in, We will collect and store the information You provide in connection with text messaging, such as Your phone number, the date and method of Your consent, and message delivery and read information.</p>
-                    <p>No mobile information will be shared with or sold to third parties or affiliates for marketing or promotional purposes. The phone numbers and consent records We collect for texting are never shared with anyone for any purpose, except the Service Providers that technically have to handle them to deliver the texts.</p>
-                    <p>Consent to receive text messages is not a condition of any purchase or use of Our Service. If You consent to receive SMS from Us, You agree to receive text messages from Us related to:</p>
-                    <ul className="list-disc pl-5 space-y-1 text-slate-700">
-                      <li>Customer care and support</li>
-                      <li>Account notifications, such as activity, status, or renewal reminders</li>
-                      <li>Delivery notifications and updates on the status of a delivery</li>
-                      <li>Authentication messages, such as one-time passwords (OTP) and passcodes</li>
-                      <li>Security alerts, such as suspicious login attempts or unusual account activity</li>
-                      <li>Marketing and promotional offers, discounts, and other promotional content</li>
-                    </ul>
-                    <p className="text-[11px] text-slate-500 font-semibold">Reply STOP to opt-out. Reply HELP for support. Message &amp; data rates may apply. Messaging frequency may vary. Carriers are not liable for delayed or undelivered messages.</p>
-
-                    <h3 className="text-sm font-bold text-slate-800 pt-2 border-t border-slate-200">Retention of Your Personal Data</h3>
-                    <p>The Company will retain Your Personal Data only for as long as is necessary for the purposes set out in this Privacy Policy. We will retain and use Your Personal Data to the extent necessary to comply with Our legal obligations (for example, if We are required to retain Your data to comply with applicable laws), resolve disputes, and enforce Our legal agreements and policies.</p>
-                    <p>Where possible, We apply shorter retention periods and/or reduce identifiability by deleting, aggregating, or anonymizing data. Unless otherwise stated, the retention periods below are maximum periods (&quot;up to&quot;) and We may delete or anonymize data sooner when it is no longer needed for the relevant purpose. We apply different retention periods to different categories of Personal Data based on the purpose of processing and legal obligations:</p>
-                    <ul className="list-disc pl-5 space-y-2 text-slate-700">
-                      <li>
-                        <p><strong>Account Information</strong></p>
-                        <ul className="list-circle pl-5 text-[11px]">
-                          <li>User Accounts: retained for the duration of Your Account relationship plus up to 24 months after account closure to handle any post-termination issues or resolve disputes.</li>
-                        </ul>
-                      </li>
-                      <li>
-                        <p><strong>Customer Support Data</strong></p>
-                        <ul className="list-circle pl-5 text-[11px]">
-                          <li>Support tickets and correspondence: up to 24 months from the date of ticket closure to resolve follow-up inquiries, track service quality, and defend against potential legal claims.</li>
-                          <li>Chat transcripts: up to 24 months for quality assurance and staff training purposes.</li>
-                        </ul>
-                      </li>
-                      <li>
-                        <p><strong>Usage Data</strong></p>
-                        <ul className="list-circle pl-5 text-[11px]">
-                          <li>Website analytics data (cookies, IP addresses, device identifiers): up to 24 months from the date of collection, which allows us to analyze trends while respecting privacy principles.</li>
-                          <li>Server logs (IP addresses, access times): up to 24 months for security monitoring and troubleshooting purposes.</li>
-                        </ul>
-                      </li>
-                    </ul>
-                    <p>Usage Data is retained in accordance with the retention periods described above, and may be retained longer only where necessary for security, fraud prevention, or legal compliance.</p>
-                    <p>We may retain Personal Data beyond the periods stated above for different reasons:</p>
-                    <ul className="list-disc pl-5 space-y-1 text-slate-700">
-                      <li>Legal obligation: We are required by law to retain specific data (e.g., financial records for tax authorities).</li>
-                      <li>Legal claims: Data is necessary to establish, exercise, or defend legal claims.</li>
-                      <li>Your explicit request: You ask Us to retain specific information.</li>
-                      <li>Technical limitations: Data exists in backup systems that are scheduled for routine deletion.</li>
-                    </ul>
-                    <p>You may request information about how long We will retain Your Personal Data by contacting Us.</p>
-                    <p>When retention periods expire, We securely delete or anonymize Personal Data according to the following procedures:</p>
-                    <ul className="list-disc pl-5 space-y-1 text-slate-700">
-                      <li>Deletion: Personal Data is removed from Our systems and no longer actively processed.</li>
-                      <li>Backup retention: Residual copies may remain in encrypted backups for a limited period consistent with Our backup retention schedule and are not restored except where necessary for security, disaster recovery, or legal compliance.</li>
-                      <li>Anonymization: In some cases, We convert Personal Data into anonymous statistical data that cannot be linked back to You. This anonymized data may be retained indefinitely for research and analytics.</li>
-                    </ul>
-
-                    <h3 className="text-sm font-bold text-slate-800 pt-2 border-t border-slate-200">Transfer of Your Personal Data</h3>
-                    <p>Your information, including Personal Data, is processed at the Company's operating offices and in any other places where the parties involved in the processing are located. This means that this information may be transferred to — and maintained on — computers located outside of Your state, province, country or other governmental jurisdiction where the data protection laws may differ from those of Your jurisdiction.</p>
-                    <p>Where required by applicable law, We will ensure that international transfers of Your Personal Data are subject to appropriate safeguards and, where relevant, supplementary measures. The Company will take all steps reasonably necessary to ensure that Your data is treated securely and in accordance with this Privacy Policy and no transfer of Your Personal Data will take place to an organization or a country unless there are adequate controls in place, including the security of Your data and other personal information.</p>
-
-                    <h3 className="text-sm font-bold text-slate-800 pt-2 border-t border-slate-200">Delete Your Personal Data & User Rights</h3>
-                    <p>You have full rights to delete, review, or request that We assist in deleting or amending the Personal Data and application records that We have collected about You.</p>
-                    <p>Our Service may give You the ability to delete certain information about You from within the Service.</p>
-                    <p>You may update, amend, or delete Your information at any time by signing in to Your Account, if You have one, and visiting the account settings section that allows You to manage Your personal information. You may also contact Us directly via WhatsApp or Email along with your unique Support Ticket ID to request access to, correct, or delete any Personal Data that You have provided to Us.</p>
-                    <p>Please note, however, that We may need to retain certain information when We have a legal obligation or lawful basis to do so.</p>
-
-                    <h3 className="text-sm font-bold text-slate-800 pt-2 border-t border-slate-200">Disclosure of Your Personal Data</h3>
-                    <h4 className="font-extrabold text-slate-800 text-xs">Business Transactions</h4>
-                    <p>If the Company is involved in a merger, acquisition or asset sale, Your Personal Data may be transferred. We will provide notice before Your Personal Data is transferred and becomes subject to a different Privacy Policy.</p>
-                    <h4 className="font-extrabold text-slate-800 text-xs pt-1">Law Enforcement</h4>
-                    <p>Under certain circumstances, the Company may disclose Your Personal Data if required to do so by law or in response to valid requests by public authorities (e.g. a court or a government agency).</p>
-                    <h4 className="font-extrabold text-slate-800 text-xs pt-1">Other Legal Requirements</h4>
-                    <p>The Company may disclose Your Personal Data in the good-faith belief that such action is necessary to:</p>
-                    <ul className="list-disc pl-5 space-y-1 text-slate-700">
-                      <li>Comply with a legal obligation</li>
-                      <li>Protect and defend the rights or property of the Company</li>
-                      <li>Prevent or investigate possible wrongdoing in connection with the Service</li>
-                      <li>Protect the personal safety of Users of the Service or the public</li>
-                      <li>Protect against legal liability</li>
-                    </ul>
-
-                    <h3 className="text-sm font-bold text-slate-800 pt-2 border-t border-slate-200">Security of Your Personal Data</h3>
-                    <p>The security of Your Personal Data is important to Us. All user-submitted form data, compressed high-resolution images, and uploaded PDF files are transmitted through encrypted connections directly to our secure admin panel for processing. We strictly do NOT sell, lease, trade, or share user personal records with any unauthorized third parties. However, remember that no method of transmission over the Internet, or method of electronic storage, is 100% secure. While We strive to use commercially reasonable means to protect Your Personal Data, We cannot guarantee its absolute security.</p>
-
-                    <h2 className="text-base sm:text-lg font-black text-slate-900 pt-2 border-t border-slate-200">Children's and Minors' Privacy</h2>
-                    <p>The Service is not directed to, and We do not knowingly collect Personal Information from, anyone under the age of 16.</p>
-                    <p>If You are a parent or guardian and You believe Your child has provided Us with Personal Information, please contact Us. If We become aware that We have collected Personal Information from anyone under the age of 16, We will take steps to remove that information from Our servers as soon as reasonably possible.</p>
-                    <p>Some countries and states set a higher age at which an individual can consent to the processing of their own Personal Information. Where We rely on consent as a legal basis and the law applicable to a User sets an age higher than 16, We may require the consent of that User's parent or guardian before We collect and use their Personal Information.</p>
-
-                    <h2 className="text-base sm:text-lg font-black text-slate-900 pt-2 border-t border-slate-200">Links to Other Websites</h2>
-                    <p>Our Service may contain links to other websites that are not operated by Us. If You click on a third-party link, You will be directed to that third party's site. We strongly advise You to review the Privacy Policy of every site You visit.</p>
-                    <p>We have no control over and assume no responsibility for the content, privacy policies or practices of any third-party sites or services.</p>
-
-                    <h2 className="text-base sm:text-lg font-black text-slate-900 pt-2 border-t border-slate-200">Changes to this Privacy Policy</h2>
-                    <p>We may update Our Privacy Policy from time to time. We will notify You of any changes by posting the new Privacy Policy on this page.</p>
-                    <p>We will let You know via email and/or a prominent notice on Our Service, prior to the change becoming effective and update the &quot;Last updated&quot; date at the top of this Privacy Policy.</p>
-                    <p>You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</p>
-
-                    <h2 className="text-base sm:text-lg font-black text-slate-900 pt-2 border-t border-slate-200">Contact Us</h2>
-                    <p>If You have any questions about this Privacy Policy, You can contact Us:</p>
-                    <ul className="list-disc pl-5 space-y-1 text-slate-700 font-semibold">
-                      <li>By email: contactsgstestapp@gmail.com</li>
-                      <li>Official Helpdesk: contactsgsonlineservice@gmail.com</li>
-                    </ul>
-                  </div>
-                )}
-
-                {/* TERMS & CONDITIONS MODAL PAGE (UPDATED AND FULLY REPLACED) */}
-                {activeModalPage === 'terms' && (
-                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
-                    <div className="bg-orange-50 border-l-4 border-orange-600 p-4 rounded-r-xl text-slate-900 font-bold">
-                      📜 TERMS AND CONDITIONS • SGS ONLINE SERVICE
-                    </div>
-
-                    <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Terms and Conditions</h1>
-                    <p className="text-xs text-slate-500 font-semibold">Last updated: August 29, 2026</p>
-                    <p>Please read these terms and conditions carefully before using Our Service.</p>
-
-                    <h2 className="text-base sm:text-lg font-black text-slate-900 pt-2 border-t border-slate-200">Interpretation and Definitions</h2>
-                    <h3 className="text-sm font-bold text-slate-800">Interpretation</h3>
-                    <p>The words whose initial letters are capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.</p>
-
-                    <h3 className="text-sm font-bold text-slate-800">Definitions</h3>
-                    <p>For the purposes of these Terms and Conditions:</p>
-                    <ul className="list-disc pl-5 space-y-2 text-slate-700">
-                      <li>
-                        <p><strong>Affiliate</strong> means an entity that controls, is controlled by, or is under common control with a party, where &quot;control&quot; means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.</p>
-                      </li>
-                      <li>
-                        <p><strong>Country/State</strong> refers to: Bihar, India</p>
-                      </li>
-                      <li>
-                        <p><strong>Company</strong> (referred to as either &quot;the Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in these Terms and Conditions) refers to SGS ONLINE SERVICE.</p>
-                      </li>
-                      <li>
-                        <p><strong>Device</strong> means any device that can access the Service such as a computer, a cell phone or a digital tablet.</p>
-                      </li>
-                      <li>
-                        <p><strong>Service</strong> refers to the Website.</p>
-                      </li>
-                      <li>
-                        <p><strong>Terms and Conditions</strong> (also referred to as &quot;Terms&quot;) means these Terms and Conditions, including any documents expressly incorporated by reference, which govern Your access to and use of the Service and form the entire agreement between You and the Company regarding the Service.</p>
-                      </li>
-                      <li>
-                        <p><strong>Third-Party Social Media Service</strong> means any services or content (including data, information, products or services) provided by a third party that is displayed, included, made available, or linked to through the Service.</p>
-                      </li>
-                      <li>
-                        <p><strong>Website</strong> refers to SGS ONLINE SERVICE, accessible from <a href="https://www.sgsonlineservice.store/" rel="external nofollow noopener" target="_blank" className="text-orange-600 underline font-semibold">https://www.sgsonlineservice.store/</a></p>
-                      </li>
-                      <li>
-                        <p><strong>You</strong> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</p>
-                      </li>
-                    </ul>
-
-                    <h2 className="text-base sm:text-lg font-black text-slate-900 pt-2 border-t border-slate-200">Acknowledgment</h2>
-                    <p>These are the Terms and Conditions governing the use of this Service and the agreement between You and the Company. These Terms and Conditions set out the rights and obligations of all users regarding the use of the Service.</p>
-                    <p>Your access to and use of the Service is conditioned on Your acceptance of and compliance with these Terms and Conditions. These Terms and Conditions apply to all visitors, users and others who access or use the Service.</p>
-                    <p>By accessing or using the Service You agree to be bound by these Terms and Conditions. If You disagree with any part of these Terms and Conditions then You may not access the Service.</p>
-                    <p>You represent that you are over the age of 18. The Company does not permit those under 18 to use the Service.</p>
-                    <p>Your access to and use of the Service is also subject to Our Privacy Policy, which describes how We collect, use, and disclose personal information. Please read Our Privacy Policy carefully before using Our Service.</p>
-
-                    <h2 className="text-base sm:text-lg font-black text-slate-900 pt-2 border-t border-slate-200">Links to Other Websites</h2>
-                    <p>Our Service may contain links to third-party websites or services that are not owned or controlled by the Company.</p>
-                    <p>The Company has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third-party websites or services. You further acknowledge and agree that the Company shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with the use of or reliance on any such content, goods or services available on or through any such websites or services.</p>
-                    <p>We strongly advise You to read the terms and conditions and privacy policies of any third-party websites or services that You visit.</p>
-
-                    <h3 className="text-sm font-bold text-slate-800">Links from a Third-Party Social Media Service</h3>
-                    <p>The Service may display, include, make available, or link to content or services provided by a Third-Party Social Media Service. A Third-Party Social Media Service is not owned or controlled by the Company, and the Company does not endorse or assume responsibility for any Third-Party Social Media Service.</p>
-                    <p>You acknowledge and agree that the Company shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with Your access to or use of any Third-Party Social Media Service, including any content, goods, or services made available through them. Your use of any Third-Party Social Media Service is governed by that Third-Party Social Media Service's terms and privacy policies.</p>
-
-                    <h2 className="text-base sm:text-lg font-black text-slate-900 pt-2 border-t border-slate-200">Termination</h2>
-                    <p>We may terminate or suspend Your access immediately, without prior notice or liability, for any reason whatsoever, including without limitation if You breach these Terms and Conditions.</p>
-                    <p>Upon termination, Your right to use the Service will cease immediately.</p>
-
-                    <h2 className="text-base sm:text-lg font-black text-slate-900 pt-2 border-t border-slate-200">Limitation of Liability</h2>
-                    <p>Notwithstanding any damages that You might incur, the entire liability of the Company and any of its suppliers under any provision of these Terms and Your exclusive remedy for all of the foregoing shall be limited to the amount actually paid by You through the Service or 100 USD if You haven't purchased anything through the Service.</p>
-                    <p>To the maximum extent permitted by applicable law, in no event shall the Company or its suppliers be liable for any special, incidental, indirect, or consequential damages whatsoever (including, but not limited to, damages for loss of profits, loss of data or other information, for business interruption, for personal injury, loss of privacy arising out of or in any way related to the use of or inability to use the Service, third-party software and/or third-party hardware used with the Service, or otherwise in connection with any provision of these Terms), even if the Company or any supplier has been advised of the possibility of such damages and even if the remedy fails of its essential purpose.</p>
-                    <p>Some states do not allow the exclusion of implied warranties or limitation of liability for incidental or consequential damages, which means that some of the above limitations may not apply. In these states, each party's liability will be limited to the greatest extent permitted by law.</p>
-
-                    <h2 className="text-base sm:text-lg font-black text-slate-900 pt-2 border-t border-slate-200">&quot;AS IS&quot; and &quot;AS AVAILABLE&quot; Disclaimer</h2>
-                    <p>The Service is provided to You &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; and with all faults and defects without warranty of any kind. To the maximum extent permitted under applicable law, the Company, on its own behalf and on behalf of its Affiliates and its and their respective licensors and service providers, expressly disclaims all warranties, whether express, implied, statutory or otherwise, with respect to the Service, including all implied warranties of merchantability, fitness for a particular purpose, title and non-infringement, and warranties that may arise out of course of dealing, course of performance, usage or trade practice. Without limitation to the foregoing, the Company provides no warranty or undertaking, and makes no representation of any kind that the Service will meet Your requirements, achieve any intended results, be compatible or work with any other software, applications, systems or services, operate without interruption, meet any performance or reliability standards or be error free or that any errors or defects can or will be corrected.</p>
-                    <p>Without limiting the foregoing, neither the Company nor any of the company's provider makes any representation or warranty of any kind, express or implied: (i) as to the operation or availability of the Service, or the information, content, and materials or products included thereon; (ii) that the Service will be uninterrupted or error-free; (iii) as to the accuracy, reliability, or currency of any information or content provided through the Service; or (iv) that the Service, its servers, the content, or e-mails sent from or on behalf of the Company are free of viruses, scripts, trojan horses, worms, malware, timebombs or other harmful components.</p>
-                    <p>Some jurisdictions do not allow the exclusion of certain types of warranties or limitations on applicable statutory rights of a consumer, so some or all of the above exclusions and limitations may not apply to You. But in such a case the exclusions and limitations set forth in this section shall be applied to the greatest extent enforceable under applicable law.</p>
-
-                    <h2 className="text-base sm:text-lg font-black text-slate-900 pt-2 border-t border-slate-200">Governing Law</h2>
-                    <p>The laws of the Country/State, excluding its conflicts of law rules, shall govern these Terms and Your use of the Service. Your use of the Application may also be subject to other local, state, national, or international laws.</p>
-
-                    <h2 className="text-base sm:text-lg font-black text-slate-900 pt-2 border-t border-slate-200">Disputes Resolution</h2>
-                    <p>If You have any concern or dispute about the Service, You agree to first try to resolve the dispute informally by contacting the Company.</p>
-
-                    <h2 className="text-base sm:text-lg font-black text-slate-900 pt-2 border-t border-slate-200">For European Union (EU) Users</h2>
-                    <p>If You are a European Union consumer, you will benefit from any mandatory provisions of the law of the country in which You are resident.</p>
-
-                    <h2 className="text-base sm:text-lg font-black text-slate-900 pt-2 border-t border-slate-200">United States Legal Compliance</h2>
-                    <p>You represent and warrant that (i) You are not located in a country that is subject to the United States government embargo, or that has been designated by the United States government as a &quot;terrorist supporting&quot; country, and (ii) You are not listed on any United States government list of prohibited or restricted parties.</p>
-
-                    <h2 className="text-base sm:text-lg font-black text-slate-900 pt-2 border-t border-slate-200">Severability and Waiver</h2>
-                    <h3 className="text-sm font-bold text-slate-800">Severability</h3>
-                    <p>If any provision of these Terms is held to be unenforceable or invalid, such provision will be changed and interpreted to accomplish the objectives of such provision to the greatest extent possible under applicable law and the remaining provisions will continue in full force and effect.</p>
-
-                    <h3 className="text-sm font-bold text-slate-800">Waiver</h3>
-                    <p>Except as provided herein, the failure to exercise a right or to require performance of an obligation under these Terms shall not affect a party's ability to exercise such right or require such performance at any time thereafter nor shall the waiver of a breach constitute a waiver of any subsequent breach.</p>
-
-                    <h2 className="text-base sm:text-lg font-black text-slate-900 pt-2 border-t border-slate-200">Translation Interpretation</h2>
-                    <p>These Terms and Conditions may have been translated if We have made them available to You on our Service. You agree that the original English text shall prevail in the case of a dispute.</p>
-
-                    <h2 className="text-base sm:text-lg font-black text-slate-900 pt-2 border-t border-slate-200">Changes to These Terms and Conditions</h2>
-                    <p>We reserve the right, at Our sole discretion, to modify or replace these Terms at any time. If a revision is material We will make reasonable efforts to provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at Our sole discretion.</p>
-                    <p>By continuing to access or use Our Service after those revisions become effective, You agree to be bound by the revised terms. If You do not agree to the new terms, in whole or in part, please stop using the Service.</p>
-
-                    <h2 className="text-base sm:text-lg font-black text-slate-900 pt-2 border-t border-slate-200">Contact Us</h2>
-                    <p>If you have any questions about these Terms and Conditions, You can contact us:</p>
-                    <ul className="list-disc pl-5 space-y-1 text-slate-700 font-semibold">
-                      <li>By email: contactsgsonlineservice@gmail.com</li>
-                    </ul>
-                  </div>
-                )}
-
-                {/* DISCLAIMER MODAL PAGE */}
-                {activeModalPage === 'disclaimer' && (
-                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
-                    <div className="bg-amber-50 warning-amber-box border-l-4 border-amber-600 p-4 rounded-r-xl text-amber-950 font-bold">
-                      ⚠️ DISCLAIMER & NON-AFFILIATION NOTICE
-                    </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Independent Private Service (Non-Governmental)</h4>
-                      <p>SGS ONLINE SERVICE operates independently as a private online cyber cafe and digital form-filling assistance desk. We are NOT affiliated with, associated with, authorized by, or in any way officially connected to any government department, Bihar RTPS Portal, Veer Kunwar Singh University (VKSU), or any official college or university administration.</p>
-                    </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Form Filling Facilitation & Assistance</h4>
-                      <p>The service provided by us is strictly a form-filling assistance utility performed on behalf of the applicant upon their explicit request. We assist users in entering their data accurately on official external portals. In exchange for this support, we charge a nominal private facilitation service fee.</p>
-                    </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. External Links & Official Approvals</h4>
-                      <p>All details and documents provided by the applicant are processed and submitted directly to respective official government or university portals after verification. SGS ONLINE SERVICE holds no authority over the approval, processing timeline, or rejection of any application. Final decision and verification rights reside entirely with the official government or college authorities.</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className="p-3 bg-white border-t border-slate-200 flex justify-end shrink-0">
-                <button onClick={() => setActiveModalPage(null)} className="bg-slate-900 text-white font-bold px-6 py-2 rounded-xl text-xs shadow-md">
-                  Close Window
-                </button>
-              </div>
-            </div>
-          ) : (
-            <>
-              {/* STICKY TIRANGA HEADER WITH LOGO */}
-              <header className="sticky top-1 z-40 bg-gradient-to-r from-orange-600 via-indigo-950 to-emerald-700 text-white shadow-md py-2.5 px-3">
-                <div className="max-w-6xl mx-auto flex items-center justify-between gap-2">
-                  <button onClick={() => setShowDrawer(true)} className="p-1.5 text-white hover:bg-white/10 rounded-lg">
-                    <Icons.Menu />
-                  </button>
-                  
-                  <div onClick={handleNavigateHome} className="cursor-pointer text-center flex-1 flex items-center justify-center gap-2">
-                    {/* WEBSITE LOGO IMAGE IN HEADER */}
-                    <img 
-                      src="logo.png" 
-                      alt="SGS Logo" 
-                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg object-cover border-2 border-orange-400 shadow-sm" 
-                      onError={(e) => { e.target.onerror = null; e.target.style.display = 'none'; }} 
-                    />
-                    <div>
-                      <h1 className="text-base sm:text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-300 via-white to-emerald-300 leading-tight">
-                        SGS ONLINE SERVICE
-                      </h1>
-                      <p className="text-[9px] sm:text-[11px] font-bold text-orange-200/90 uppercase">Online Form Filling Assistance Portal (Private Service)</p>
-                    </div>
-                  </div>
-                </div>
-              </header>
-
-              {/* MANDATORY LEGAL NOTICE BANNER BELOW HEADER */}
-              <div className="bg-slate-900 text-slate-200 text-[11px] px-4 py-2 border-b border-orange-500/30 text-center font-medium">
-                <span className="bg-gradient-to-r from-orange-500 to-emerald-600 text-white font-black px-2 py-0.5 rounded text-[10px] mr-1.5 shadow">🇮🇳 NOTICE</span>
-                SGS Online Service is an independent private form filling assistance portal (Cyber Cafe). We are NOT an official government or college portal.
-              </div>
-
-              {/* MAIN SERVICES CONTENT */}
-              {activeService ? (
-                <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6">
-                  <button onClick={handleNavigateHome} className="inline-flex items-center gap-2 bg-white text-slate-800 font-bold text-xs px-4 py-2 rounded-xl border border-orange-200 mb-4 shadow-2xs hover:bg-orange-50">
-                    <Icons.ArrowLeft /> Back to Services
-                  </button>
-
-                  <div className="bg-white rounded-xl shadow-md border-2 border-orange-400 overflow-hidden p-4 sm:p-6 relative">
-                    <div className="absolute top-0 left-0 right-0 h-1.5 tiranga-stripe"></div>
-                    <span className="bg-gradient-to-r from-orange-600 to-emerald-600 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded uppercase mt-2 inline-block">{activeService.category}</span>
-                    <h2 className="text-xl sm:text-2xl font-black text-slate-900 mt-2 mb-2">{activeService.title}</h2>
-                    <p className="text-xs text-slate-600 mb-4">{activeService.description}</p>
-
-                    {/* DUAL MODE CHECK: FULL HTML OR DYNAMIC FIELDS FORM */}
-                    {activeService.htmlContent ? (
-                      <div className="w-full rounded-xl overflow-hidden border border-slate-200 mt-3 bg-white">
-                        <iframe 
-                          srcDoc={activeService.htmlContent} 
-                          title={activeService.title} 
-                          className="w-full min-h-[600px] border-0" 
-                          sandbox="allow-scripts allow-forms allow-same-origin allow-popups"
-                        />
-                      </div>
-                    ) : (
-                      <>
-                        {/* Form Filling Transparency Note */}
-                        <div className="bg-orange-50 warning-amber-box border border-orange-200 rounded-lg p-3 text-[11px] text-orange-950 font-medium mb-5">
-                          ℹ️ <strong>Assistance Notice:</strong> Information submitted below will be used by our team to fill out your official online form on your behalf after phone confirmation. Turnaround time: 24 to 48 working hours.
-                        </div>
-
-                        <form onSubmit={handleFormSubmit} className="space-y-4">
-                          {activeService.fields && activeService.fields.map((field, idx) => {
-                            const isPhoneField = field.type === 'tel' || field.name?.toLowerCase().includes('mobile') || field.name?.toLowerCase().includes('phone') || field.label?.toLowerCase().includes('mobile') || field.label?.toLowerCase().includes('phone');
-
-                            return (
-                              <div key={idx} className="space-y-1">
-                                <label className="block text-xs font-bold text-slate-800">{field.label}:</label>
-                                {field.type === 'file' ? (
-                                  <div>
-                                    <input 
-                                      type="file" 
-                                      name={field.name} 
-                                      accept={field.accept || "image/*, application/pdf"} 
-                                      required={field.required}
-                                      onChange={(e) => handleFilePreview(e, `prev_img_${field.name}_${idx}`, `prev_pdf_${field.name}_${idx}`)}
-                                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs focus:border-orange-500" 
-                                    />
-                                    <img id={`prev_img_${field.name}_${idx}`} className="img-preview" alt="Selected Preview" />
-                                    <div id={`prev_pdf_${field.name}_${idx}`} className="pdf-preview"></div>
-                                  </div>
-                                ) : field.type === 'radio' ? (
-                                  <div className="space-y-2 bg-slate-50 p-3 rounded-lg border border-slate-200">
-                                    {field.options && field.options.map((opt) => (
-                                      <label key={opt.id || opt.value} className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
-                                        <input
-                                          type="radio"
-                                          name={field.name}
-                                          value={opt.value}
-                                          required={field.required}
-                                          className="w-4 h-4 text-orange-600 focus:ring-orange-500"
-                                        />
-                                        <span>{opt.label}</span>
-                                      </label>
-                                    ))}
-                                  </div>
-                                ) : isPhoneField ? (
-                                  /* MOBILE NUMBER DIALER FIELD WITH FIXED +91 PREFIX & 10 DIGIT LIMIT */
-                                  <div className="flex items-center">
-                                    <span className="bg-orange-100 border border-r-0 border-orange-300 rounded-l-lg p-2.5 text-xs font-bold text-orange-900 prefix-badge shrink-0">
-                                      +91
-                                    </span>
-                                    <input 
-                                      type="tel" 
-                                      inputMode="numeric"
-                                      pattern="[0-9]{10}"
-                                      maxLength={10}
-                                      name={field.name} 
-                                      required={field.required} 
-                                      placeholder="10 digit mobile number"
-                                      onInput={(e) => {
-                                        e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
-                                      }}
-                                      className="w-full bg-slate-50 border border-slate-300 rounded-r-lg p-2.5 text-xs font-bold tracking-wide text-slate-900 focus:outline-none focus:border-orange-500" 
-                                    />
-                                  </div>
-                                ) : (
-                                  <input 
-                                    type={field.type} 
-                                    name={field.name} 
-                                    required={field.required} 
-                                    placeholder={field.placeholder || "Details fill karein"}
-                                    className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs font-medium focus:outline-none focus:border-orange-500" 
-                                  />
-                                )}
-                              </div>
-                            );
-                          })}
-
-                          {/* PAYMENT SECTION WITH QR AND DYNAMIC UPI BUTTONS */}
-                          {activeService.qrImageUrl && (() => {
-                            const upi = getUpiDetails(activeService.qrImageUrl);
-                            const amParam = upi.am ? `&am=${upi.am}` : "";
-                            const phonepeUrl = `phonepe://pay?pa=${upi.pa}&pn=${encodeURIComponent(upi.pn)}${amParam}&cu=INR`;
-                            const gpayUrl = `tez://upi/pay?pa=${upi.pa}&pn=${encodeURIComponent(upi.pn)}${amParam}&cu=INR`;
-                            const genericUpiUrl = `upi://pay?pa=${upi.pa}&pn=${encodeURIComponent(upi.pn)}${amParam}&cu=INR`;
-
-                            return (
-                              <div className="bg-orange-50/80 border border-orange-200 p-4 rounded-xl text-center my-4 space-y-3">
-                                <p className="text-xs font-extrabold text-orange-950">Scan QR or Click Below to Pay {upi.am ? `₹${upi.am}` : ''}</p>
-                                
-                                <img src={activeService.qrImageUrl} alt="Payment QR Code" className="max-w-[180px] mx-auto rounded-lg border-2 border-orange-500 shadow-sm" />
-
-                                {/* DYNAMIC UPI BUTTONS */}
-                                <div className="pt-2 flex flex-col sm:flex-row gap-2 justify-center items-center">
-                                  {/* PhonePe Button */}
-                                  <a 
-                                    href={phonepeUrl} 
-                                    className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-[#5f259f] hover:bg-[#4a1c7d] text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow transition-all"
-                                  >
-                                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18.8 10.2c0-2.4-1.9-4.3-4.3-4.3H8.3c-.6 0-1.1.5-1.1 1.1v10.1c0 .6.5 1.1 1.1 1.1h2.3c.6 0 1.1-.5 1.1-1.1v-2.8h2.8c2.4 0 4.3-1.9 4.3-4.2zm-4.3 1.9h-2.8v-3.8h2.8c1 0 1.9.9 1.9 1.9 0 1-.9 1.9-1.9 1.9z"/></svg>
-                                    <span>PhonePe</span>
-                                  </a>
-
-                                  {/* GPay Button */}
-                                  <a 
-                                    href={gpayUrl} 
-                                    className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-white text-slate-800 border border-slate-300 hover:bg-slate-50 font-bold text-xs py-2.5 px-3 rounded-lg shadow-sm transition-all"
-                                  >
-                                    <svg className="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
-                                    <span>Google Pay</span>
-                                  </a>
-
-                                  {/* Pay via Other Apps Button */}
-                                  <a 
-                                    href={genericUpiUrl} 
-                                    className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow transition-all"
-                                  >
-                                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                    <span>Pay via Other App</span>
-                                  </a>
-                                </div>
-                              </div>
-                            );
-                          })()}
-
-                          {/* PAYMENT SCREENSHOT UPLOAD */}
-                          <div className="space-y-1">
-                            <label className="block text-xs font-extrabold text-rose-600">Upload Payment Screenshot (Mandatory):</label>
-                            <input 
-                              type="file" 
-                              name="main_payment_screenshot" 
-                              accept="image/*" 
-                              required 
-                              onChange={(e) => handleFilePreview(e, 'prev_img_main_payment', 'prev_pdf_main_payment')}
-                              className="w-full bg-slate-50 border border-rose-300 rounded-lg p-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-rose-600" 
-                            />
-                            <img id="prev_img_main_payment" className="img-preview" alt="Payment Screenshot Preview" />
-                            <div id="prev_pdf_main_payment" className="pdf-preview"></div>
-                          </div>
-
-                          <button 
-                            type="submit" 
-                            disabled={isSubmitting}
-                            className="w-full tiranga-btn-primary font-extrabold text-sm py-3.5 rounded-xl shadow-lg transition-all active:scale-95 disabled:bg-slate-400 mt-2"
-                          >
-                            {isSubmitting ? "Uploading & Submitting..." : "Submit Application →"}
-                          </button>
-                        </form>
-                      </>
-                    )}
-                  </div>
-                </main>
-              ) : (
-                <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
-                  {/* COLORFUL TIRANGA NOTICE BOARD WITH BLINKING LIVE BUTTON */}
-                  <div className="notice-board-box bg-gradient-to-r from-orange-50 via-white to-emerald-50 border-2 border-orange-300 rounded-2xl p-4 shadow-sm relative overflow-hidden">
-                    <div className="flex items-center justify-between border-b border-orange-200 pb-2.5 mb-3">
-                      <div className="flex items-center gap-2">
-                        <span className="text-orange-600 animate-bounce"><Icons.Bell /></span>
-                        <h2 className="font-black text-orange-950 text-sm uppercase tracking-wider">Notice Board</h2>
-                      </div>
-                      
-                      {/* BLINKING LIVE BUTTON */}
-                      <span className="inline-flex items-center gap-1.5 bg-gradient-to-r from-orange-600 to-emerald-600 text-white font-extrabold text-[10px] px-2.5 py-0.5 rounded-full shadow-md tracking-wider">
-                        <span className="w-2 h-2 rounded-full bg-white animate-ping"></span>
-                        LIVE
-                      </span>
-                    </div>
-
-                    <div className="space-y-2.5">
-                      {notices.map((n) => (
-                        <div key={n.id} className="flex items-start gap-2.5 text-xs font-semibold text-slate-800 bg-white/90 p-2.5 rounded-xl border border-orange-200/80 shadow-2xs">
-                          <span className="text-orange-600 font-extrabold text-sm leading-none">•</span>
-                          <span className="leading-relaxed">{n.text}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="relative">
-                      <div className="absolute left-3.5 top-3 text-slate-400"><Icons.Search /></div>
-                      <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Search form, service..."
-                        className="w-full bg-white border border-slate-300 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm font-medium focus:outline-none focus:border-orange-500"
-                      />
-                    </div>
-
-                    <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-                      {categories.map((catObj) => {
-                        const catName = typeof catObj === 'object' ? catObj.name : catObj;
-                        const isSelected = selectedCat === catName;
-                        return (
-                          <button
-                            key={catName}
-                            onClick={() => handleCategorySelect(catName)}
-                            style={getCategoryButtonStyle(catObj, isSelected)}
-                            className="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border shrink-0"
-                          >
-                            {catName}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {filteredServices.map((srv) => (
-                      <div 
-                        key={srv.id} 
-                        onClick={() => openServiceDetail(srv)} 
-                        className="bg-white rounded-xl border border-slate-200 p-4 shadow-2xs hover:shadow-md hover:border-orange-400 transition-all cursor-pointer flex flex-col justify-between relative overflow-hidden group"
-                      >
-                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-amber-300 to-emerald-500 opacity-80 group-hover:opacity-100 transition-opacity"></div>
-                        <div>
-                          <span className="post-category-badge bg-orange-100 text-orange-900 text-[10px] font-bold px-2 py-0.5 rounded border border-orange-200">
-                            {srv.category}
-                          </span>
-                          <h4 className="font-bold text-slate-900 text-sm mt-2">{srv.title}</h4>
-                          <p className="text-xs text-slate-500 mt-1 line-clamp-2">{srv.description}</p>
-                        </div>
-
-                        <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-orange-600 mt-3 group-hover:text-emerald-700">
-                          <span>Apply Now & Fill Details</span>
-                          <Icons.ChevronRight />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </main>
-              )}
-
-              {/* FOOTER WITH COMPLETE COMPLIANCE MODAL BUTTONS, TIMELINE & ADDRESS */}
-              <footer className="bg-slate-950 text-slate-400 text-xs py-6 mt-12 border-t-4 border-orange-500 text-center px-4 relative">
-                <p className="font-extrabold text-white">SGS ONLINE SERVICE © 2026 • Private Online Assistance Desk</p>
-                <p className="text-[11px] text-slate-500 mt-1">📍 Registered Office: District Arrah, Bhojpur, Bihar, India - 802301 | Support: contactsgsonlineservice@gmail.com</p>
-                <div className="flex flex-wrap items-center justify-center gap-4 text-xs mt-3">
-                  <button onClick={() => { setActiveModalPage('about'); }} className="text-slate-400 hover:text-orange-400 underline">About Us</button>
-                  <button onClick={() => { setActiveModalPage('support'); }} className="text-slate-400 hover:text-emerald-400 underline">Customer Support & Grievance</button>
-                  <button onClick={() => { setActiveModalPage('delivery_policy'); }} className="text-slate-400 hover:text-orange-400 underline">Fulfillment Timeline</button>
-                  <button onClick={() => { setActiveModalPage('privacy'); }} className="text-slate-400 hover:text-orange-400 underline">Privacy Policy</button>
-                  <button onClick={() => { setActiveModalPage('payment_policy'); }} className="text-slate-400 hover:text-emerald-400 underline">Payment & Refund Policy</button>
-                  <button onClick={() => { setActiveModalPage('terms'); }} className="text-slate-400 hover:text-emerald-400 underline">Terms & Conditions</button>
-                  <button onClick={() => { setActiveModalPage('disclaimer'); }} className="text-slate-400 hover:text-orange-400 underline">Disclaimer</button>
-                </div>
-              </footer>
-            </>
-          )}
-
         </div>
-      );
-    }
+    </header>
 
-    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    <!-- Main Content -->
+    <main class="flex-grow max-w-5xl mx-auto px-4 py-8 w-full space-y-8">
+        
+        <!-- App Intro Section (Makes it look like a real business page) -->
+        <div class="text-center space-y-4 pt-4 pb-2">
+            <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Elevate Your Exam Preparation</h2>
+            <p class="text-slate-600 max-w-2xl mx-auto">Access premium mock tests, previous year papers, and high-quality study materials designed for competitive exam aspirants.</p>
+            <div class="flex justify-center space-x-4 pt-2">
+                <span class="bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200 text-sm font-medium text-slate-700"><i class="fas fa-sticky-note text-amber-500 mr-2"></i>Important Notes</span>
+                <span class="bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200 text-sm font-medium text-slate-700"><i class="fas fa-check-circle text-green-500 mr-2"></i>Daily Mocks</span>
+            </div>
+        </div>
 
-  </script>
+        <!-- PayU Verification Notice -->
+        <div class="bg-red-50 border-l-4 border-red-500 p-5 rounded-r-md shadow-sm mt-8">
+            <div class="flex items-start">
+                <div class="flex-shrink-0 mt-0.5">
+                    <i class="fas fa-shield-alt text-red-500 text-xl"></i>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-base font-bold text-red-900 mb-1">Merchant Verification Notice</h3>
+                    <p class="text-red-800 text-sm leading-relaxed">
+                        The <strong>SGS MOCK TEST</strong> Android application is currently in closed beta and unlisted on public stores. Due to our strict internal security policies, we cannot distribute the raw <code>.apk</code> file for verification. 
+                        <br><br>
+                        Below is a live screen recording demonstrating the complete application flow, checkout mechanism, and the integration of all required legal policies. Kindly review this video to process our payment gateway approval.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video Box Section -->
+        <div class="bg-white p-5 md:p-8 rounded-xl shadow-sm border border-slate-200 text-center">
+            <h2 class="text-xl font-bold text-slate-900 mb-2">Application Workflow Demonstration</h2>
+            <p class="text-slate-500 text-sm mb-6">Recorded directly from a physical device showing the user journey and payment initiation.</p>
+            
+            <div class="relative w-full max-w-3xl mx-auto bg-slate-900 rounded-lg shadow-inner overflow-hidden aspect-video flex items-center justify-center border-4 border-slate-100 ring-1 ring-slate-300">
+                
+                <div class="absolute z-10 text-center text-slate-400 p-4">
+                    <i class="fas fa-play-circle text-5xl mb-3 opacity-50"></i>
+                    <p class="font-medium">Video Player Placeholder</p>
+                    <p class="text-xs mt-1">Insert Google Drive embed link here</p>
+                </div>
+
+                <!-- ADD YOUR VIDEO LINK HERE -->
+                <iframe class="relative z-20 w-full h-full" src="" title="SGS Mock Test Verification" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer with Policy Links -->
+    <footer class="bg-slate-900 text-slate-300 py-12 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 text-sm">
+            
+            <div class="md:col-span-1">
+                <div class="flex items-center space-x-2 mb-4">
+                    <i class="fas fa-graduation-cap text-sky-400 text-2xl"></i>
+                    <h3 class="text-lg font-bold text-white">SGS MOCK TEST</h3>
+                </div>
+                <p class="text-slate-400 leading-relaxed mb-4">Empowering students with accessible and high-quality educational resources for competitive exams across India.</p>
+            </div>
+            
+            <div class="md:col-span-1">
+                <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4 border-b border-slate-700 pb-2 inline-block">Legal Policies</h3>
+                <ul class="space-y-3">
+                    <li><button onclick="openModal('modal-privacy')" class="text-slate-400 hover:text-sky-400 transition flex items-center"><i class="fas fa-angle-right mr-2 text-sky-500"></i> Privacy Policy</button></li>
+                    <li><button onclick="openModal('modal-terms')" class="text-slate-400 hover:text-sky-400 transition flex items-center"><i class="fas fa-angle-right mr-2 text-sky-500"></i> Terms & Conditions</button></li>
+                    <li><button onclick="openModal('modal-refund')" class="text-slate-400 hover:text-sky-400 transition flex items-center"><i class="fas fa-angle-right mr-2 text-sky-500"></i> Refund Policy</button></li>
+                </ul>
+            </div>
+
+            <div class="md:col-span-1">
+                <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4 border-b border-slate-700 pb-2 inline-block">Other Links</h3>
+                <ul class="space-y-3">
+                    <li><button onclick="openModal('modal-pricing')" class="text-slate-400 hover:text-sky-400 transition flex items-center"><i class="fas fa-angle-right mr-2 text-sky-500"></i> Pricing Policy</button></li>
+                    <li><button onclick="openModal('modal-disclaimer')" class="text-slate-400 hover:text-sky-400 transition flex items-center"><i class="fas fa-angle-right mr-2 text-sky-500"></i> Disclaimer</button></li>
+                </ul>
+            </div>
+
+            <div class="md:col-span-1">
+                <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4 border-b border-slate-700 pb-2 inline-block">Contact Support</h3>
+                <ul class="space-y-3 text-slate-400">
+                    <li class="flex items-start"><i class="fas fa-map-marker-alt text-sky-400 mt-1 w-5 flex-shrink-0"></i> <span>VILL PO TIKTHI, PS SHAHPUR, DIST BHOJPUR, STATE BIHAR, PIN 802165</span></li>
+                    <li class="flex items-center"><i class="fas fa-envelope text-sky-400 w-5 flex-shrink-0"></i> <span>contactsgstestapp@gmail.com</span></li>
+                    <li class="flex items-center"><i class="fab fa-whatsapp text-green-400 w-5 flex-shrink-0"></i> <span>+91 9117080169</span></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 mt-10 pt-6 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500">
+            <p>&copy; 2026 SGS MOCK TEST. All rights reserved.</p>
+            <p class="mt-2 md:mt-0">Operated by SGS Online Services</p>
+        </div>
+    </footer>
+
+    <!-- ==================== MODALS FOR POLICIES (EXACT TEXT PRESERVED) ==================== -->
+
+    <!-- Privacy Policy Modal -->
+    <div id="modal-privacy" class="hidden fixed inset-0 z-50 bg-black bg-opacity-70 flex justify-center items-center p-4 transition-opacity">
+        <div class="bg-slate-900 rounded-lg max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-slate-700 relative">
+            <div class="flex justify-between items-center p-5 border-b border-slate-700 sticky top-0 bg-slate-900 rounded-t-lg z-10">
+                <h2 class="text-xl font-bold text-white">Privacy Policy</h2>
+                <button onclick="closeModal('modal-privacy')" class="text-slate-400 hover:text-white text-2xl focus:outline-none">&times;</button>
+            </div>
+            <div class="p-6 overflow-y-auto text-slate-300 space-y-6 text-sm leading-relaxed">
+                <p class="text-sky-400 font-bold text-lg">Privacy Policy</p>
+                <p class="text-slate-400">Last updated: August 20, 2026<br>Application Name: SGS MOCK TEST<br>Support Email: contactsgstestapp@gmail.com</p>
+                <hr class="border-slate-700">
+                <p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.<br><br>We use Your Personal Data to provide and improve the Service. We collect, use, and disclose Your information as described in this Privacy Policy and, where required by applicable law, only where We have a valid legal basis to do so, including Your consent.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">Interpretation and Definitions</h3>
+                <p>• Account: A unique account created for You to access Our Service.<br>• Application: Refers to SGS Mock Test: All Exams Preparation.<br>• Company: Refers to SGS Mock Test.<br>• Address: VILL PO TIKTHI, PS SHAHPUR, DIST BHOJPUR, STATE BIHAR, PIN 802165<br>• Device: Any device that can access the Service (computer, cell phone, tablet).<br>• Personal Data: Any information that relates to an identified or identifiable individual.<br>• Usage Data: Data collected automatically (e.g., duration of a page visit).</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">User Media & Profile Pictures</h3>
+                <p>The SGS MOCK TEST application allows users to upload a profile picture for personalization. Please note that any image you select from your gallery is stored locally on your device's internal storage and is NEVER uploaded to or stored on our remote servers. Your privacy and local data security are fully respected.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">Types of Data Collected</h3>
+                <p>While using Our Service, We may ask You to provide Us with certain personally identifiable information (e.g., Name and Email address). We also collect Usage Data automatically, such as Your Device's Internet Protocol (IP) address, browser type, pages visited, and unique device identifiers.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">Use of Your Personal Data</h3>
+                <p>We use Your Personal Data to:<br>• Provide and maintain Our Service.<br>• Manage Your Account and registration.<br>• Manage purchase contracts for products/services.<br>• Contact You regarding updates or security notifications.<br>• Provide news and special offers (with Your consent).<br>• Manage Your requests and evaluate business transfers/data analysis.<br><br>We may share Your Data with Service Providers, Affiliates, or during business transfers. If shared publicly by You, it may be viewed by all users.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">Text Messages Privacy Notice</h3>
+                <p>If You opt in, We may send SMS updates. We collect Your phone number and consent records. No mobile information is sold to third parties for marketing. You may receive SMS related to customer care, account notifications, OTPs, security alerts, and promotional offers. Reply STOP to opt-out.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">Retention and Deletion</h3>
+                <p>We retain Your Personal Data only as long as necessary to comply with legal obligations, resolve disputes, and enforce policies. User Accounts are retained for up to 24 months post-closure. You have the right to delete or request assistance in deleting Your Personal Data.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">Security and Minors' Privacy</h3>
+                <p>While We strive to use commercially reasonable means to protect Your Personal Data, no method is 100% secure. Our Service is not directed to anyone under the age of 16. We do not knowingly collect information from minors.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">Contact Us</h3>
+                <p>If You have any questions about this Privacy Policy, You can contact Us by email: contactsgstestapp@gmail.com</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms Modal -->
+    <div id="modal-terms" class="hidden fixed inset-0 z-50 bg-black bg-opacity-70 flex justify-center items-center p-4">
+        <div class="bg-slate-900 rounded-lg max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-slate-700 relative">
+            <div class="flex justify-between items-center p-5 border-b border-slate-700 sticky top-0 bg-slate-900 rounded-t-lg z-10">
+                <h2 class="text-xl font-bold text-white">Terms & Conditions</h2>
+                <button onclick="closeModal('modal-terms')" class="text-slate-400 hover:text-white text-2xl focus:outline-none">&times;</button>
+            </div>
+            <div class="p-6 overflow-y-auto text-slate-300 space-y-6 text-sm leading-relaxed">
+                <p class="text-sky-400 font-bold text-lg">Terms and Conditions</p>
+                <p class="text-slate-400">Last updated: August 20, 2026<br>Application Name: SGS MOCK TEST<br>Support Email: contactsgstestapp@gmail.com</p>
+                <hr class="border-slate-700">
+                <p>Please read these terms and conditions carefully before using Our Service.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">Interpretation and Definitions</h3>
+                <p>• Application: Means the software program named SGS Mock Test: All Exams Preparation.<br>• Application Store: Means the Apple App Store or Google Play Store.<br>• Company: Refers to SGS Mock Test.<br>• Address: VILL PO TIKTHI, PS SHAHPUR, DIST BHOJPUR, STATE BIHAR, PIN 802165<br>• Device: Any device that can access the Service.<br>• Terms and Conditions: Means these Terms and Conditions which govern Your access to and use of the Service.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">Acknowledgment</h3>
+                <p>These are the Terms and Conditions governing the use of this Service. Your access to and use of the Service is conditioned on Your acceptance of and compliance with these Terms. By accessing or using the Service You agree to be bound by these Terms.<br><br>You represent that you are over the age of 18. The Company does not permit those under 18 to use the Service. Your use of the Service is also subject to Our Privacy Policy.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">Links to Other Websites</h3>
+                <p>Our Service may contain links to third-party websites or services. The Company has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third-party websites. We strongly advise You to read the terms and privacy policies of any third-party websites You visit.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">Termination</h3>
+                <p>We may terminate or suspend Your access immediately, without prior notice or liability, for any reason whatsoever, including without limitation if You breach these Terms and Conditions. Upon termination, Your right to use the Service will cease immediately.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">Limitation of Liability</h3>
+                <p>To the maximum extent permitted by applicable law, in no event shall the Company or its suppliers be liable for any special, incidental, indirect, or consequential damages whatsoever arising out of or in any way related to the use of or inability to use the Service.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">"AS IS" Disclaimer</h3>
+                <p>The Service is provided to You "AS IS" and "AS AVAILABLE" and with all faults and defects without warranty of any kind. The Company provides no warranty or undertaking that the Service will meet Your requirements or be error free.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">Governing Law and Disputes</h3>
+                <p>The laws of the Country/State (Bihar, India), excluding its conflicts of law rules, shall govern these Terms and Your use of the Service. If You have any concern or dispute about the Service, You agree to first try to resolve the dispute informally by contacting the Company.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">Changes to These Terms</h3>
+                <p>We reserve the right, at Our sole discretion, to modify or replace these Terms at any time. By continuing to access or use Our Service after those revisions become effective, You agree to be bound by the revised terms.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">Contact Us</h3>
+                <p>If you have any questions about these Terms and Conditions, You can contact us by email: contactsgstestapp@gmail.com</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Refund Policy Modal -->
+    <div id="modal-refund" class="hidden fixed inset-0 z-50 bg-black bg-opacity-70 flex justify-center items-center p-4">
+        <div class="bg-slate-900 rounded-lg max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-slate-700 relative">
+            <div class="flex justify-between items-center p-5 border-b border-slate-700 sticky top-0 bg-slate-900 rounded-t-lg z-10">
+                <h2 class="text-xl font-bold text-white">Refund & Cancellation Policy</h2>
+                <button onclick="closeModal('modal-refund')" class="text-slate-400 hover:text-white text-2xl focus:outline-none">&times;</button>
+            </div>
+            <div class="p-6 overflow-y-auto text-slate-300 space-y-6 text-sm leading-relaxed">
+                <p class="text-sky-400 font-bold text-lg">Comprehensive Refund and Cancellation Policy</p>
+                <p class="text-slate-400">Effective Date: September 8, 2026<br>Application Name: SGS MOCK TEST<br>Support Email: contactsgsinstaboost@gmail.com<br>24/7 WhatsApp Support: +91 9117080169</p>
+                <hr class="border-slate-700">
+                <p>Welcome to SGS MOCK TEST. We are committed to providing top-quality digital educational resources, including premium mock tests, study materials, and important notes for competitive exam preparation.<br><br>To ensure complete transparency and a smooth experience for our students, we have drafted this Comprehensive Refund and Cancellation Policy. By purchasing any subscription or digital product on our app, you acknowledge and agree to the terms mentioned below.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">1. General Rule: No Refunds for Digital Goods</h3>
+                <p>Due to the nature of our services, SGS MOCK TEST offers digital goods that are immediately accessible upon successful payment.<br><br>• Because digital content cannot be "returned" once accessed, downloaded, or viewed, we follow a strict No-Refund Policy under normal circumstances.<br>• Once a premium plan or test series is successfully activated on your account, the payment is considered final and non-refundable.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">2. Exceptions: When Refunds Are Applicable</h3>
+                <p>We value our students' hard-earned money. We will initiate a full or partial refund ONLY under the following exceptional technical circumstances:<br><br>• A. Duplicate or Multiple Charges: If a user is charged twice for the exact same subscription plan due to a network error, gateway glitch, or double-click by mistake, the extra deducted amount will be fully refunded.<br>• B. Accidental Unauthorised Transactions: If a transaction is proven to be made fraudulently without the account holder's consent, and the content has not been consumed.<br>• C. Discontinuation of Service: In the rare event that SGS MOCK TEST completely shuts down a specific premium course immediately after a user has purchased it, a pro-rated refund will be provided.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">3. Payment Deducted But Plan Not Activated (Resolution Protocol)</h3>
+                <p>In India, banking networks or UPI gateways sometimes face delays. If your money is debited from your bank account but your Premium Plan is still locked, please follow these steps:<br><br>• Do Not Pay Again: Please do not attempt a second transaction immediately.<br>• Contact Support: Message us on our 24/7 WhatsApp Support (+91 9117080169) or Email us at contactsgsinstaboost@gmail.com.<br>• Provide Proof: Share a screenshot of your payment, the UTR/Transaction ID, and your registered App Email/Number.<br>• Guaranteed Resolution: Once our technical team verifies the payment at the gateway backend, we will manually activate your purchased plan within 2 to 4 hours.<br><br>*Note: If the transaction ultimately fails at the bank's end and does not reach us, your bank will automatically refund the amount to your original payment method within 3 to 5 business days.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">4. Cancellation Policy</h3>
+                <p>• Active Subscriptions: Once a subscription plan (e.g., 28 Days, 90 Days, 365 Days) is purchased and activated, it CANNOT be cancelled, paused, or transferred to another user. The subscription will remain active until the end of your billing cycle or validity period.<br>• No Auto-Deduction: SGS MOCK TEST does not auto-renew or auto-deduct money from your bank account. All purchases are one-time payments. You only pay when you explicitly choose to renew.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">5. Refund Processing Timeline and Method</h3>
+                <p>If your case qualifies for a refund under the exceptions mentioned above, the following timeline applies:<br><br>• Approval: Our finance team will review the claim within 24-48 hours.<br>• Processing: Once approved, the refund will be initiated immediately.<br>• Credit Time: It generally takes 5 to 7 business days for the refunded amount to reflect in your original payment source (Bank Account, UPI, Credit/Debit Card, or Wallet). Refunds cannot be transferred to a different bank account.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">6. Changes to this Policy</h3>
+                <p>SGS MOCK TEST reserves the right to modify, amend, or update this Refund and Cancellation Policy at any time without prior notice. The updated policy will be effective immediately upon posting in the App.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">7. Contacting Customer Support</h3>
+                <p>If you have any questions, disputes, or require technical assistance regarding your transactions, our support team is available 24/7 (Sunday to Saturday).<br><br>• Entity Name: SGS MOCK TEST<br>• Email Helpdesk: contactsgsinstaboost@gmail.com<br>• WhatsApp Support: +91 9117080169<br>• Resolution Time: We aim to reply to all queries within 2 to 4 working hours.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pricing Policy Modal -->
+    <div id="modal-pricing" class="hidden fixed inset-0 z-50 bg-black bg-opacity-70 flex justify-center items-center p-4">
+        <div class="bg-slate-900 rounded-lg max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-slate-700 relative">
+            <div class="flex justify-between items-center p-5 border-b border-slate-700 sticky top-0 bg-slate-900 rounded-t-lg z-10">
+                <h2 class="text-xl font-bold text-white">Pricing & Fee Policy</h2>
+                <button onclick="closeModal('modal-pricing')" class="text-slate-400 hover:text-white text-2xl focus:outline-none">&times;</button>
+            </div>
+            <div class="p-6 overflow-y-auto text-slate-300 space-y-6 text-sm leading-relaxed">
+                <p class="text-sky-400 font-bold text-lg">Pricing and Fee Policy</p>
+                <p class="text-slate-400">Effective Date: September 8, 2026<br>Application Name: SGS MOCK TEST<br>Support Email: contactsgstestapp@gmail.com<br>24/7 WhatsApp Support: +91 9117080169</p>
+                <hr class="border-slate-700">
+                <p>Welcome to SGS MOCK TEST. We believe in 100% transparent pricing to help students prepare for their competitive exams without any financial stress. This policy outlines how our pricing works, what you are paying for, and our payment terms.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">1. Free vs. Premium Access</h3>
+                <p>SGS MOCK TEST operates on a freemium model. We offer certain important notes and basic features absolutely FREE of charge. However, accessing premium Mock Tests, specialized test series, and locked notes requires purchasing a Premium Subscription Pass.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">2. Subscription Plans & Pricing</h3>
+                <p>Our subscription plans are highly affordable and designed specifically for students. Currently, we offer the following standard plans:<br><br>• ₹2 Plan (Valid for 4 Days)<br>• ₹9 Plan (Valid for 11 Days)<br>• ₹39 Plan (Valid for 20 Days)<br>• ₹49 Plan (Valid for 28 Days)<br>• ₹99 Plan (Valid for 90 Days)<br>• ₹199 Plan (Valid for 210 Days)<br>• ₹299 Plan (Valid for 365 Days)<br><br>*Note: All prices mentioned are in Indian Rupees (INR) and are inclusive of all applicable taxes. What you see is exactly what you pay.*</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">3. No Hidden Fees & No Auto-Renewal</h3>
+                <p>• One-Time Payment: We DO NOT save your credit/debit card details for automatic deductions. Every purchase you make on the SGS MOCK TEST app is a strict ONE-TIME payment.<br>• No Auto-Renewal: Once your purchased validity (e.g., 28 Days) expires, your account will automatically downgrade to the Free tier. You will never be charged automatically. You must manually initiate a new payment if you wish to continue your premium access.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">4. Payment Methods</h3>
+                <p>We use secure, RBI-approved payment gateways (such as PayU) to process all transactions. We accept various modes of payment including:<br>• UPI (PhonePe, Google Pay, Paytm, BHIM, etc.)<br>• Credit Cards and Debit Cards<br>• Net Banking</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">5. Changes to Pricing</h3>
+                <p>SGS MOCK TEST reserves the right to modify, add, or remove pricing plans at any time based on promotional offers or business requirements. However, any price change will NOT affect users who have an already active subscription. The new pricing will only apply when you choose to purchase a new plan after your current one expires.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Disclaimer Modal -->
+    <div id="modal-disclaimer" class="hidden fixed inset-0 z-50 bg-black bg-opacity-70 flex justify-center items-center p-4">
+        <div class="bg-slate-900 rounded-lg max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-slate-700 relative">
+            <div class="flex justify-between items-center p-5 border-b border-slate-700 sticky top-0 bg-slate-900 rounded-t-lg z-10">
+                <h2 class="text-xl font-bold text-white">Disclaimer</h2>
+                <button onclick="closeModal('modal-disclaimer')" class="text-slate-400 hover:text-white text-2xl focus:outline-none">&times;</button>
+            </div>
+            <div class="p-6 overflow-y-auto text-slate-300 space-y-6 text-sm leading-relaxed">
+                <p class="text-sky-400 font-bold text-lg">Disclaimer</p>
+                <p class="text-slate-400">Last updated: August 20, 2026<br>Application Name: SGS MOCK TEST</p>
+                <hr class="border-slate-700">
+                <h3 class="text-white font-bold text-base mt-4">Interpretation and Definitions</h3>
+                <p>The words whose initial letters are capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.<br><br>• Company: Refers to SGS Mock Test: All Exams Preparation.<br>• Service: Refers to the Application.<br>• You: Means the individual accessing the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service.<br>• Application: Means the software program provided by the Company that You download and install on a Device, named SGS Mock Test: All Exams Preparation.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">Disclaimer</h3>
+                <p>The information contained on the Service is for general information purposes only.<br><br>The Company assumes no responsibility for errors or omissions in the contents of the Service.<br><br>In no event shall the Company be liable for any special, direct, indirect, consequential, or incidental damages or any damages whatsoever, whether in an action of contract, negligence or other tort, arising out of or in connection with the use of the Service or the contents of the Service. The Company reserves the right to make additions, deletions, or modifications to the contents on the Service at any time without prior notice.<br><br>The Company does not warrant that the Service is free of viruses or other harmful components.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">External Links Disclaimer</h3>
+                <p>The Service may contain links to external websites that are not provided or maintained by or in any way affiliated with the Company. Please note that the Company does not guarantee the accuracy, relevance, timeliness, or completeness of any information on these external websites.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">Errors and Omissions Disclaimer</h3>
+                <p>The information given by the Service is for general guidance on matters of interest only. Even if the Company takes every precaution to ensure that the content of the Service is both current and accurate, errors can occur. Plus, given the changing nature of laws, rules and regulations, there may be delays, omissions or inaccuracies in the information contained on the Service.<br><br>The Company is not responsible for any errors or omissions, or for the results obtained from the use of this information.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">Fair Use Disclaimer</h3>
+                <p>The Company may use copyrighted material which has not always been specifically authorized by the copyright owner. The Company is making such material available for criticism, comment, news reporting, teaching, scholarship, or research.<br><br>The Company believes this constitutes a "fair use" of any such copyrighted material as provided for in section 107 of the United States Copyright law (or equivalent provisions under applicable law).<br><br>If You wish to use copyrighted material from the Service for your own purposes that go beyond fair use, You must obtain permission from the copyright owner.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">Views Expressed Disclaimer</h3>
+                <p>The Service may contain views and opinions which are those of the authors and do not necessarily reflect the official policy or position of any other author, agency, organization, employer or company, including the Company.<br><br>If the Service allows users to post content (including comments), such content is the sole responsibility of the user who posted it. The Company is not liable for user-generated content and reserves the right to remove it for any reason.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">No Responsibility Disclaimer</h3>
+                <p>The information on the Service is provided with the understanding that the Company is not herein engaged in rendering legal, accounting, tax, or other professional advice and services. As such, it should not be used as a substitute for consultation with professional accounting, tax, legal or other competent advisers.<br><br>In no event shall the Company or its suppliers be liable for any special, incidental, indirect, or consequential damages whatsoever arising out of or in connection with your access or use or inability to access or use the Service.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">"Use at Your Own Risk" Disclaimer</h3>
+                <p>All information in the Service is provided "as is", with no guarantee of completeness, accuracy, timeliness or of the results obtained from the use of this information, and without warranty of any kind, express or implied, including, but not limited to warranties of performance, merchantability and fitness for a particular purpose.<br><br>The Company will not be liable to You or anyone else for any decision made or action taken in reliance on the information given by the Service or for any consequential, special or similar damages, even if advised of the possibility of such damages.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">Contact Us</h3>
+                <p>If you have any questions about this Disclaimer, You can contact Us:<br>By email: contactsgstestapp@gmail.com</p>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
