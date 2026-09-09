@@ -10,11 +10,43 @@
         function openModal(id) {
             document.getElementById(id).classList.remove('hidden');
             document.body.style.overflow = 'hidden';
+            // URL me # add karne ke liye
+            window.location.hash = id; 
         }
         function closeModal(id) {
             document.getElementById(id).classList.add('hidden');
             document.body.style.overflow = 'auto';
+            // Close hone par URL se # hatane ke liye (bina page refresh kiye)
+            history.pushState("", document.title, window.location.pathname + window.location.search);
         }
+
+        // Agar koi direct link open karta hai jisme # hai, to wo modal direct open ho jayega
+        window.addEventListener('DOMContentLoaded', () => {
+            if(window.location.hash) {
+                const id = window.location.hash.substring(1); // # hata kar ID nikalna
+                if(document.getElementById(id)) {
+                    openModal(id);
+                }
+            }
+        });
+
+        // Mobile ya browser ka back button press karne par pop-up close ho jaye
+        window.addEventListener('hashchange', () => {
+            if(!window.location.hash) {
+                const modals = ['modal-privacy', 'modal-terms', 'modal-refund', 'modal-pricing', 'modal-disclaimer'];
+                modals.forEach(id => {
+                    const m = document.getElementById(id);
+                    if(m) m.classList.add('hidden');
+                });
+                document.body.style.overflow = 'auto';
+            } else {
+                const id = window.location.hash.substring(1);
+                if(document.getElementById(id)) {
+                    document.getElementById(id).classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+        });
     </script>
     <style>
         /* Custom scrollbar for modals to look more native */
@@ -122,17 +154,18 @@
             <div class="md:col-span-1">
                 <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4 border-b border-slate-700 pb-2 inline-block">Legal Policies</h3>
                 <ul class="space-y-3">
-                    <li><button onclick="openModal('modal-privacy')" class="text-slate-400 hover:text-sky-400 transition flex items-center"><i class="fas fa-angle-right mr-2 text-sky-500"></i> Privacy Policy</button></li>
-                    <li><button onclick="openModal('modal-terms')" class="text-slate-400 hover:text-sky-400 transition flex items-center"><i class="fas fa-angle-right mr-2 text-sky-500"></i> Terms & Conditions</button></li>
-                    <li><button onclick="openModal('modal-refund')" class="text-slate-400 hover:text-sky-400 transition flex items-center"><i class="fas fa-angle-right mr-2 text-sky-500"></i> Refund Policy</button></li>
+                    <!-- CHANGED HERE: Button to Anchor tag for valid # links -->
+                    <li><a href="#modal-privacy" onclick="openModal('modal-privacy')" class="text-slate-400 hover:text-sky-400 transition flex items-center"><i class="fas fa-angle-right mr-2 text-sky-500"></i> Privacy Policy</a></li>
+                    <li><a href="#modal-terms" onclick="openModal('modal-terms')" class="text-slate-400 hover:text-sky-400 transition flex items-center"><i class="fas fa-angle-right mr-2 text-sky-500"></i> Terms & Conditions</a></li>
+                    <li><a href="#modal-refund" onclick="openModal('modal-refund')" class="text-slate-400 hover:text-sky-400 transition flex items-center"><i class="fas fa-angle-right mr-2 text-sky-500"></i> Refund Policy</a></li>
                 </ul>
             </div>
 
             <div class="md:col-span-1">
                 <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-4 border-b border-slate-700 pb-2 inline-block">Other Links</h3>
                 <ul class="space-y-3">
-                    <li><button onclick="openModal('modal-pricing')" class="text-slate-400 hover:text-sky-400 transition flex items-center"><i class="fas fa-angle-right mr-2 text-sky-500"></i> Pricing Policy</button></li>
-                    <li><button onclick="openModal('modal-disclaimer')" class="text-slate-400 hover:text-sky-400 transition flex items-center"><i class="fas fa-angle-right mr-2 text-sky-500"></i> Disclaimer</button></li>
+                    <li><a href="#modal-pricing" onclick="openModal('modal-pricing')" class="text-slate-400 hover:text-sky-400 transition flex items-center"><i class="fas fa-angle-right mr-2 text-sky-500"></i> Pricing Policy</a></li>
+                    <li><a href="#modal-disclaimer" onclick="openModal('modal-disclaimer')" class="text-slate-400 hover:text-sky-400 transition flex items-center"><i class="fas fa-angle-right mr-2 text-sky-500"></i> Disclaimer</a></li>
                 </ul>
             </div>
 
@@ -152,7 +185,7 @@
         </div>
     </footer>
 
-    <!-- ==================== MODALS FOR POLICIES (EXACT TEXT PRESERVED) ==================== -->
+    <!-- ==================== MODALS FOR POLICIES ==================== -->
 
     <!-- Privacy Policy Modal -->
     <div id="modal-privacy" class="hidden fixed inset-0 z-50 bg-black bg-opacity-70 flex justify-center items-center p-4 transition-opacity">
